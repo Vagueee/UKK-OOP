@@ -20,18 +20,15 @@ class Main(tk.Frame):
         self.user_role = None
         print(self.logged_in, self.user_role)
 
-        # Canvas
         self.canvas = tk.Canvas(self.main, width=960, height=540)
         self.canvas.pack(fill="both", expand=True)
 
         model.backgroundimg(self)
         model.btnimg(self)
 
-        # Display
         self.canvas.create_image(0, 0, image=self.image, anchor="nw")
         self.canvas.create_text(480, 50, text="Laundrive", anchor="center", font=("default", 28, "bold"))
 
-        # Card
         self.ot_frame = model.create_card(self, x = 120, y = 200)
         self.kar_frame = model.create_card(self, x = 360, y = 200)
         self.plg_frame = model.create_card(self, x = 600, y = 200)

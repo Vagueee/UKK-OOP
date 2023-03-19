@@ -14,29 +14,24 @@ class Login(tk.Frame):
         self.logged_in = False
         self.user_role = None
 
-        # Canvas
         self.canvas = tk.Canvas(self.parent, width=960, height=540)
         self.canvas.pack(fill="both", expand=True)
 
         model.backgroundimg(self)
         model.database(self)
 
-        # Add Text
         self.canvas.create_text(480, 175, text="Login", anchor="center", font=("default", 28, "bold"))
         self.canvas.create_text(415, 225, text="Username", font=("default", 18))
         self.canvas.create_text(415, 255, text="Password", font=("default", 18))
 
-        # Entry
         self.username_entry = tk.Entry(self.parent)
         self.username_entry.pack()
         self.password_entry = tk.Entry(self.parent, show="*")
         self.password_entry.pack()
 
-        # Create Window
         self.canvas.create_window(545, 225, window=self.username_entry)
         self.canvas.create_window(545, 255, window=self.password_entry)
 
-        # Login Button
         self.login_button = tk.Button(self.parent, text="Login", command=self.verify_login, font=font.Font(size=14, weight='bold'))
         self.canvas.create_window(480, 305, window=self.login_button, anchor="center")
 
