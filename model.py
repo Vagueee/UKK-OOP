@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import PhotoImage, messagebox, Canvas, font
+from tkinter import PhotoImage, messagebox, Canvas, font, ttk
 from dotenv import load_dotenv
 import os
 import mysql.connector
@@ -39,11 +39,11 @@ def database(self):
     self.cursor = self.db.cursor()
 
 def create_card(
-        self,
-        x: int,
-        y: int,
-        width: int = 150,
-        height: int = 200,
+    self,
+    x: int,
+    y: int,
+    width: int = 150,
+    height: int = 200,
     ) -> tk.Frame:
         card_frame = tk.Frame(
             self.main,
@@ -79,3 +79,54 @@ def create_button(
     )
     label.pack()
     button.pack()
+
+def crud_button(
+    self,
+    frame: tk.Frame,
+    x: int,
+    y: int,
+    text: str,
+    command: callable,
+    font_size: int = 14,
+    font_weight: str = 'bold',
+    ):
+    button = tk.Button(
+        frame,
+        text=text,
+        command=command,
+        font=font.Font(size=font_size, weight=font_weight)
+    )
+    self.canvas.create_window(x, y, window=button, anchor='center')
+
+def treeview(
+    self,
+    frame: tk.Frame,
+    proc: str,
+    columns: tuple,
+    headings: tuple,
+    texts: tuple,
+    width: int = 90,
+    minwidth: int = 90,
+    ):
+    self.treeview = ttk.Treeview(frame)
+    self.treeview.pack()
+    self.treeview['columns'] = columns
+    self.treeview.column("#0", width=0,  stretch=False)
+    for each in columns:
+        self.treeview.column(each, anchor='center', width=width, minwidth=minwidth)
+
+    self.treeview.heading("#0", text="", anchor="center")
+    for heading, text in zip(headings, texts):
+        self.treeview.heading(heading, text=text, anchor='center')
+
+    self.cursor.callproc(proc)
+    result = self.cursor.stored_results()
+
+    for data in result:
+        i = data.fetchall()
+        for row in i:
+            self.treeview.insert(parent='', index='end', values=row)
+
+    self.canvas.create_window(480, 140, anchor='n', window=self.treeview)
+    
+

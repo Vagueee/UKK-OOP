@@ -24,3 +24,24 @@ def start_karyawan(self):
     # Display
     self.canvas.create_image(0, 0, image=self.image, anchor="nw")
     self.canvas.create_text(480, 50, text="Data Karyawan", anchor="center", font=("default", 28, "bold"))
+
+    model.crud_button(self, frame=self.karyawan, x=355, y=110, text="Tambah Data", command=tambah_karyawan)
+    model.crud_button(self, frame=self.karyawan, x=480, y=110, text="Edit Data", command=edit_karyawan)
+    model.crud_button(self, frame=self.karyawan, x=600, y=110, text="Delete Data", command=delete_karyawan)
+
+    model.treeview(
+        self, 
+        frame=self.karyawan, 
+        proc='karyawanselect', 
+        columns=('id', 'outlet', 'nama', 'username', 'role'), 
+        headings=('id', 'outlet', 'nama', 'username', 'role'), 
+        texts=('ID', 'Outlet', 'Nama', 'Username', 'Role'))
+
+def tambah_karyawan():
+    pass
+
+def edit_karyawan():
+    pass
+
+def delete_karyawan():
+    pass
