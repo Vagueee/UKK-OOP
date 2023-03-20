@@ -51,23 +51,26 @@ def tambah_outlet(self):
     self.canvas.create_text(420, 125, text="Alamat", font=("default", 14))
     self.canvas.create_text(420, 150, text="No. Telp", font=("default", 14))
 
-    nama = model.create_entry(self, self.tambah, x = 540, y = 100)
-    alamat = model.create_entry(self, self.tambah, x = 540, y = 125)
-    telp = model.create_entry(self, self.tambah, x = 540, y = 150)
+    nama = model.create_tambah_entry(self, self.tambah, x = 540, y = 100)
+    alamat = model.create_tambah_entry(self, self.tambah, x = 540, y = 125)
+    telp = model.create_tambah_entry(self, self.tambah, x = 540, y = 150)
 
     def tambah():
         nama_val = nama.get()
         alamat_val = alamat.get()
         telp_val = telp.get()
 
-        model.validate_number(values=(telp_val))
-        model.tambah(
-            self, 
-            frame=self.tambah,
-            destroy=self.outlet, 
-            redirect=lambda: start_outlet(self), 
-            entries=(nama_val, alamat_val, telp_val), 
-            proc="outlettambah")
+        validate = model.validate_number(values=(telp_val))
+        if validate == True:
+            model.tambah(
+                self, 
+                frame=self.tambah,
+                destroy=self.outlet, 
+                redirect=lambda: start_outlet(self), 
+                entries=(nama_val, alamat_val, telp_val), 
+                proc="outlettambah")
+        else:
+            messagebox.showerror("Error", "Please enter a valid entry")
 
     model.create_submit_button(self, x = 480, y = 200, frame=self.tambah, command=tambah)
 
@@ -89,14 +92,29 @@ def edit_outlet(self):
     self.canvas.create_text(420, 125, text="Alamat", font=("default", 14))
     self.canvas.create_text(420, 150, text="No. Telp", font=("default", 14))
 
-    nama = model.create_entry(self, self.edit, x = 540, y = 100)
-    alamat = model.create_entry(self, self.edit, x = 540, y = 125)
-    telp = model.create_entry(self, self.edit, x = 540, y = 150)
+    nama = model.create_edit_entry(self, self.edit, x = 540, y = 100, index=1, treeview=self.treeview, procid="outletselectbyid")
+    alamat = model.create_edit_entry(self, self.edit, x = 540, y = 125, index=2, treeview=self.treeview, procid="outletselectbyid")
+    telp = model.create_edit_entry(self, self.edit, x = 540, y = 150, index=3, treeview=self.treeview, procid="outletselectbyid")
 
     def edit():
-        pass
+        id_val = model.get_id(self, treeview=self.treeview, procid="outletselectbyid")
+        nama_val = nama.get()
+        alamat_val = alamat.get()
+        telp_val = telp.get()
 
-    model.create_submit_button(self, x = 480, y = 200, frame=self.tambah, command=edit)
+        validate = model.validate_number(values=(telp_val))
+        if validate == True:
+            model.edit(
+                self,
+                frame=self.edit,
+                destroy=self.outlet,
+                redirect=lambda: start_outlet(self),
+                entries=(id_val, nama_val, alamat_val, telp_val),
+                procedit="outletedit")
+        else:
+            messagebox.showerror("Error", "Please enter a valid entry")
+
+    model.create_submit_button(self, x = 480, y = 200, frame=self.edit, command=edit)
 
 def delete_outlet(self):
     model.delete(

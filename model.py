@@ -147,13 +147,38 @@ def create_treeview(
 
 #     return frame
 
-def create_entry(
+def create_tambah_entry(
     self,
     frame: tk.Frame,
     x: int,
     y: int,
     ):
     entry = tk.Entry(frame)
+    entry.pack()
+    self.canvas.create_window(x, y, window=entry)
+    return entry
+
+def create_edit_entry(
+    self,
+    frame: tk.Frame,
+    x: int,
+    y: int,
+    index: int,
+    treeview: ttk.Treeview,
+    procid: str,
+    ):
+    editing = treeview.selection()[0]
+    values = treeview.item(editing, 'values')
+    
+    self.cursor.callproc(procid, (values[0],))
+    result = self.cursor.stored_results()
+
+    data = None
+    for each in result:
+        data = each.fetchall()[0]
+    
+    entry = tk.Entry(frame)
+    entry.insert(0, data[index])
     entry.pack()
     self.canvas.create_window(x, y, window=entry)
     return entry
@@ -173,13 +198,29 @@ def create_submit_button(
 
 def validate_number(
     values: Tuple,
-    ):
+    ) -> bool:
     for each in values:
-        try:
-            each == int
+        if each.isdigit():
             return True
-        except:
+        else:
             return False
+
+def get_id(
+    self,
+    treeview: ttk.Treeview,
+    procid: str
+    ):
+    selecting = treeview.selection()[0]
+    values = treeview.item(selecting, 'values')
+    
+    self.cursor.callproc(procid, (values[0],))
+    result = self.cursor.stored_results()
+    
+    data = None
+    for each in result:
+        data = each.fetchall()[0]
+    
+    return data[0]
 
 def tambah(
     self,
@@ -201,25 +242,12 @@ def edit(
     frame: tk.Frame,
     destroy: tk.Toplevel,
     redirect: callable,
-    treeview: ttk.Treeview,
     entries: Tuple,
-    procid: str,
     procedit: str
     ):
-    editing = treeview.selection()[0]
-    values = treeview.item(editing, 'values')
-    
-    self.cursor.callproc(procid, (values[0],))
-    result = self.cursor.stored_results()
-
-    data = None
-    for each in result:
-        data = each.fetchall()[0]
-
     values = entries
     self.cursor.callproc(procedit, values)
     self.db.commit()
-
     frame.destroy()
     destroy.destroy()
     redirect()
