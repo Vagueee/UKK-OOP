@@ -196,6 +196,34 @@ def tambah(
     destroy.destroy()
     redirect()
 
+def edit(
+    self,
+    frame: tk.Frame,
+    destroy: tk.Toplevel,
+    redirect: callable,
+    treeview: ttk.Treeview,
+    entries: Tuple,
+    procid: str,
+    procedit: str
+    ):
+    editing = treeview.selection()[0]
+    values = treeview.item(editing, 'values')
+    
+    self.cursor.callproc(procid, (values[0],))
+    result = self.cursor.stored_results()
+
+    data = None
+    for each in result:
+        data = each.fetchall()[0]
+
+    values = entries
+    self.cursor.callproc(procedit, values)
+    self.db.commit()
+
+    frame.destroy()
+    destroy.destroy()
+    redirect()
+
 def delete(
     self,
     treeview: ttk.Treeview,
