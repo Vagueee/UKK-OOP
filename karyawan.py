@@ -13,23 +13,19 @@ def start_karyawan(self):
     self.karyawan.resizable(False, False)
     self.frame = tk.Frame(self.karyawan)
     self.frame.pack(fill="both", expand=False)
-
-    # Canvas
     self.canvas = tk.Canvas(self.karyawan, width=960, height=540)
     self.canvas.pack(fill="both", expand=True)
 
     model.backgroundimg(self)
     model.database(self)
 
-    # Display
-    self.canvas.create_image(0, 0, image=self.image, anchor="nw")
     self.canvas.create_text(480, 50, text="Data Karyawan", anchor="center", font=("default", 28, "bold"))
 
-    model.crud_button(self, frame=self.karyawan, x=355, y=110, text="Tambah Data", command=tambah_karyawan)
-    model.crud_button(self, frame=self.karyawan, x=480, y=110, text="Edit Data", command=edit_karyawan)
-    model.crud_button(self, frame=self.karyawan, x=600, y=110, text="Delete Data", command=delete_karyawan)
+    model.create_crud_button(self, frame=self.karyawan, x=355, y=110, text="Tambah Data", command=tambah_karyawan)
+    model.create_crud_button(self, frame=self.karyawan, x=480, y=110, text="Edit Data", command=edit_karyawan)
+    model.create_crud_button(self, frame=self.karyawan, x=600, y=110, text="Delete Data", command=delete_karyawan)
 
-    model.treeview(
+    model.create_treeview(
         self, 
         frame=self.karyawan, 
         proc='karyawanselect', 

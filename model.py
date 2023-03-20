@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import PhotoImage, messagebox, Canvas, font, ttk
+from typing import Tuple
 from dotenv import load_dotenv
 import os
 import mysql.connector
@@ -15,6 +16,8 @@ def backgroundimg(self):
 def btnimg(self):
     ot = os.getenv("ic_outlet")
     self.otimg = PhotoImage(file=ot)
+    pkt = os.getenv("ic_paket")
+    self.pktimg = PhotoImage(file=pkt)
     kar = os.getenv("ic_karyawan")
     self.karimg = PhotoImage(file=kar)
     tr = os.getenv("ic_transaksi")
@@ -80,7 +83,7 @@ def create_button(
     label.pack()
     button.pack()
 
-def crud_button(
+def create_crud_button(
     self,
     frame: tk.Frame,
     x: int,
@@ -98,7 +101,7 @@ def crud_button(
     )
     self.canvas.create_window(x, y, window=button, anchor='center')
 
-def treeview(
+def create_treeview(
     self,
     frame: tk.Frame,
     proc: str,
@@ -122,11 +125,85 @@ def treeview(
     self.cursor.callproc(proc)
     result = self.cursor.stored_results()
 
-    for data in result:
-        i = data.fetchall()
+    for each in result:
+        i = each.fetchall()
         for row in i:
             self.treeview.insert(parent='', index='end', values=row)
 
     self.canvas.create_window(480, 140, anchor='n', window=self.treeview)
+    return self.treeview
     
+# def create_toplevel(
+#     title: str,
+#     ) -> tk.Frame:
+#     toplevel = tk.Toplevel()
+#     toplevel.title(title)
+#     toplevel.geometry("960x540+180+80")
+#     toplevel.resizable(False, False)
+#     frame = tk.Frame(toplevel)
+#     frame.pack(fill="both", expand=False)
+#     canvas = tk.Canvas(toplevel, width=960, height=540)
+#     canvas.pack(fill="both", expand=True)
 
+#     return frame
+
+def create_entry(
+    self,
+    frame: tk.Frame,
+    x: int,
+    y: int,
+    ):
+    entry = tk.Entry(frame)
+    entry.pack()
+    self.canvas.create_window(x, y, window=entry)
+    return entry
+
+def create_submit_button(
+    self,
+    frame: tk.Frame,
+    x: int,
+    y: int,
+    command: callable,
+    text: str = 'Submit',
+    font_size: int = 10,
+    font_weight: str = 'bold',
+    ):
+    self.button = tk.Button(frame, text=text, command=command, font=font.Font(size=font_size, weight=font_weight))
+    self.canvas.create_window(x, y, window=self.button, anchor="center")
+
+def validate_number(
+    values: Tuple,
+    ):
+    for each in values:
+        try:
+            each == int
+            return True
+        except:
+            return False
+
+def tambah(
+    self,
+    frame: tk.Frame,
+    destroy: tk.Toplevel,
+    redirect: callable,
+    entries: Tuple,
+    proc: str,
+    ):
+    values = entries
+    self.cursor.callproc(proc, values)
+    self.db.commit()
+    frame.destroy()
+    destroy.destroy()
+    redirect()
+
+def delete(
+    self,
+    treeview: ttk.Treeview,
+    proc: str,
+    ):
+    deleting = treeview.selection()[0]
+    values = treeview.item(deleting, 'values')
+
+    self.cursor.callproc(proc, (values[0],))
+    self.db.commit()
+    treeview.delete(deleting)

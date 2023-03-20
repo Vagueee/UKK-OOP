@@ -13,7 +13,6 @@ class Login(tk.Frame):
         self.parent = parent
         self.logged_in = False
         self.user_role = None
-
         self.canvas = tk.Canvas(self.parent, width=960, height=540)
         self.canvas.pack(fill="both", expand=True)
 
@@ -60,12 +59,10 @@ class Login(tk.Frame):
                     main.user_role = 'admin'
                 elif role == "kasir":
                     self.parent.destroy()
-                    main.Main()
                     main.logged_in = True
                     main.user_role = 'kasir'
                 elif role == "owner":
                     self.parent.destroy()
-                    main.Main()
                     main.logged_in = True
                     main.user_role = 'owner'
             else:
