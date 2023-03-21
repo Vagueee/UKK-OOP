@@ -17,6 +17,7 @@ class Login(tk.Frame):
         self.canvas.pack(fill="both", expand=True)
 
         model.backgroundimg(self)
+        self.canvas.create_image(0, 0, image=self.image, anchor="nw")
         model.database(self)
 
         self.canvas.create_text(480, 175, text="Login", anchor="center", font=("default", 28, "bold"))

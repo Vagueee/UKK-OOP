@@ -48,7 +48,7 @@ def tambah_paket(self):
     self.canvas.create_image(0, 0, image=self.image, anchor="nw")
     model.database(self)
 
-    self.canvas.create_text(480, 50, text="Tambah Outlet", anchor="center", font=("default", 28, "bold"))
+    self.canvas.create_text(480, 50, text="Tambah Paket", anchor="center", font=("default", 28, "bold"))
     self.canvas.create_text(420, 100, text="Outlet", font=("default", 14))
     self.canvas.create_text(420, 125, text="Jenis Paket", font=("default", 14))
     self.canvas.create_text(420, 150, text="Nama Paket", font=("default", 14))
@@ -93,13 +93,13 @@ def edit_paket(self):
     self.canvas.create_image(0, 0, image=self.image, anchor="nw")
     model.database(self)
 
-    self.canvas.create_text(480, 50, text="Edit Outlet", anchor="center", font=("default", 28, "bold"))
+    self.canvas.create_text(480, 50, text="Edit Paket", anchor="center", font=("default", 28, "bold"))
     self.canvas.create_text(420, 100, text="Outlet", font=("default", 14))
     self.canvas.create_text(420, 125, text="Jenis Paket", font=("default", 14))
     self.canvas.create_text(420, 150, text="Nama Paket", font=("default", 14))
     self.canvas.create_text(420, 175, text="Harga", font=("default", 14))
 
-    outlet = model.create_edit_dropdown(self, self.edit, x = 545, y = 100, index=1, treeview=self.treeview, procid="paketselectbyid", procdrop="dropdownoutlet")
+    outlet = model.create_edit_dropdown(self, self.edit, x = 545, y = 100, index=1, target_index=1, treeview=self.treeview, procid="paketselectbyid", procdrop="dropdownoutlet")
     jenis = model.create_edit_enumdropdown(self, self.edit, x = 545, y = 125, index=2, treeview=self.treeview, procid="paketselectbyid", procenum="paketjenis")
     nama = model.create_edit_entry(self, self.edit, x = 545, y = 150, index=3, treeview=self.treeview, procid="paketselectbyid")
     harga = model.create_edit_entry(self, self.edit, x = 545, y = 175, index=4, treeview=self.treeview, procid="paketselectbyid")

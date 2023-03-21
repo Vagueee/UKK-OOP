@@ -89,16 +89,24 @@ def create_crud_button(
     y: int,
     text: str,
     command: callable,
+    disabled:bool =False,
     font_size: int = 14,
     font_weight: str = 'bold',
     ):
-    button = tk.Button(
+    self.button = tk.Button(
         frame,
         text=text,
         command=command,
         font=font.Font(size=font_size, weight=font_weight)
     )
-    self.canvas.create_window(x, y, window=button, anchor='center')
+    self.button["state"] = "disabled" if disabled else "normal"
+    self.canvas.create_window(x, y, window=self.button, anchor='center')
+
+    return self.button
+
+def switch(buttons: list, selection: Tuple):
+    for button in buttons:
+        button["state"] = "normal" if button["state"] == "disabled" else "normal"
 
 def create_treeview(
     self,
@@ -118,6 +126,7 @@ def create_treeview(
         self.treeview.column(each, anchor='center', width=width, minwidth=minwidth)
 
     self.treeview.heading("#0", text="", anchor="center")
+    
     for heading, text in zip(headings, texts):
         self.treeview.heading(heading, text=text, anchor='center')
 
@@ -208,6 +217,7 @@ def create_edit_dropdown(
     x: int,
     y: int,
     index: int,
+    target_index: int,
     treeview: ttk.Treeview,
     procid: str,
     procdrop: str,
@@ -219,7 +229,7 @@ def create_edit_dropdown(
 
     data = None
     for each in result:
-        data = each.fetchall()[0]
+        data = each.fetchone()
 
     self.cursor.callproc(procdrop)
     drop = self.cursor.stored_results()
@@ -227,16 +237,16 @@ def create_edit_dropdown(
     for values in drop:
         values = values.fetchall()
 
-
-    i = None
+    selected = None
     for each in values:
-        if data[index] == each[index]:
-            i = each
+        print(each, data)
+        if data[index] == each[target_index]:
+            selected = each
             break
 
     dropdown = ttk.Combobox(frame, values=values, state="readonly")
     dropdown.configure(width=17)
-    dropdown.current(values.index(i))
+    dropdown.current(values.index(selected))
     dropdown.pack()
     self.canvas.create_window(x, y, window=dropdown)
     return dropdown
@@ -278,7 +288,7 @@ def create_edit_enumdropdown(
 
     data = None
     for each in result:
-        data = each.fetchall()[0]
+        data = each.fetchone()
 
     self.cursor.callproc(procenum)
     drop = self.cursor.stored_results()
@@ -304,7 +314,7 @@ def create_submit_button(
     font_size: int = 10,
     font_weight: str = 'bold',
     ):
-    self.button = tk.Button(frame, text=text, command=command, font=font.Font(size=font_size, weight=font_weight))
+    self.button = tk.Button(frame, text=text, command=command ,font=font.Font(size=font_size, weight=font_weight))
     self.canvas.create_window(x, y, window=self.button, anchor="center")
 
 def validate_number(
