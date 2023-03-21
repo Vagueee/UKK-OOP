@@ -22,17 +22,19 @@ def start_paket(self):
 
     self.canvas.create_text(480, 50, text="Data Paket", anchor="center", font=("default", 28, "bold"))
 
-    model.create_crud_button(self, frame=self.paket, x=355, y=110, text="Tambah Data", command=lambda: tambah_paket(self))
-    model.create_crud_button(self, frame=self.paket, x=480, y=110, text="Edit Data", command=lambda: edit_paket(self))
-    model.create_crud_button(self, frame=self.paket, x=600, y=110, text="Delete Data", command=lambda: delete_paket(self))
-
-    model.create_treeview(
+    treeview = model.create_treeview(
         self, 
         frame=self.paket, 
         proc='paketselect', 
         columns=('id', 'outlet', 'jenis', 'nama', 'harga'), 
         headings=('id', 'outlet', 'jenis', 'nama', 'harga'), 
         texts=('ID', 'Outlet', 'Jenis Paket', 'Nama Paket', 'Harga'))
+
+    tambah_button = model.create_crud_button(self, frame=self.paket, x=355, y=110, text="Tambah Data", command=lambda: tambah_paket(self))
+    edit_button = model.create_crud_button(self, frame=self.paket, x=480, y=110, disabled=len(treeview.selection()) == 0, text="Edit Data", command=lambda: edit_paket(self))
+    delete_button = model.create_crud_button(self, frame=self.paket, x=600, y=110 , disabled=len(treeview.selection()) == 0, text="Delete Data", command=lambda: delete_paket(self))
+
+    treeview.bind("<ButtonRelease-1>", lambda event: model.switch([edit_button, delete_button], selection=treeview.selection()))
 
 def tambah_paket(self):
     self.tambah = tk.Toplevel()

@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import PhotoImage, messagebox, Canvas, font, ttk
+from tkcalendar import DateEntry
 from typing import Tuple
 from dotenv import load_dotenv
 import os
@@ -123,7 +124,7 @@ def create_treeview(
     self.treeview['columns'] = columns
     self.treeview.column("#0", width=0,  stretch=False)
     for each in columns:
-        self.treeview.column(each, anchor='center', width=width, minwidth=minwidth)
+        self.treeview.column(each, anchor='center', width=width, minwidth=minwidth, stretch=True)
 
     self.treeview.heading("#0", text="", anchor="center")
     
@@ -303,6 +304,51 @@ def create_edit_enumdropdown(
     dropdown.pack()
     self.canvas.create_window(x, y, window=dropdown)
     return dropdown
+
+def create_tambah_date(
+    self,
+    frame: tk.Frame,
+    x: int,
+    y: int,
+    width: int = 12,
+    background: str = 'darkblue',
+    foreground: str = 'white',
+    borderwidth: int = 2,
+    ):
+    tanggal = DateEntry(frame, width=width, background=background, foreground=foreground, borderwidth=borderwidth)
+    tanggal.configure(width=17)
+    tanggal.pack()
+    self.canvas.create_window(x, y, window=tanggal)
+    return tanggal
+
+def create_edit_date(
+    self,
+    frame: tk.Frame,
+    x: int,
+    y: int,
+    index: int,
+    treeview: ttk.Treeview,
+    procid: str,
+    width: int = 12,
+    background: str = 'darkblue',
+    foreground: str = 'white',
+    borderwidth: int = 2,
+    ):
+    editing = treeview.selection()[0]
+    values = treeview.item(editing, 'values')
+    self.cursor.callproc(procid, (values[0],))
+    result = self.cursor.stored_results()
+
+    data = None
+    for each in result:
+        data = each.fetchone()
+
+    tanggal = DateEntry(frame, width=width, background=background, foreground=foreground, borderwidth=borderwidth)
+    tanggal.configure(width=17, state='disabled')
+    tanggal.set_date(data[index])
+    tanggal.pack()
+    self.canvas.create_window(x, y, window=tanggal)
+    return tanggal
 
 def create_submit_button(
     self,
