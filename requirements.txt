@@ -1,4 +1,4 @@
-dotenv
-tkinter
-tkcalendar
+python-dotenv==1.0.0
 mysql.connector
+tk
+tkcalendar
