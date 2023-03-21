@@ -23,6 +23,7 @@ class Main(tk.Frame):
         self.canvas.pack(fill="both", expand=True)
 
         model.backgroundimg(self)
+        self.canvas.create_image(0, 0, image=self.image, anchor="nw")
         model.btnimg(self)
 
         self.canvas.create_text(480, 50, text="Laundrive", anchor="center", font=("default", 28, "bold"))

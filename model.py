@@ -11,7 +11,6 @@ def backgroundimg(self):
     bg = os.getenv("bg_path")
     bg = f"{bg}"
     self.image = PhotoImage(file=bg)
-    self.canvas.create_image(0, 0, image=self.image, anchor="nw")
 
 def btnimg(self):
     ot = os.getenv("ic_outlet")
@@ -175,13 +174,125 @@ def create_edit_entry(
 
     data = None
     for each in result:
-        data = each.fetchall()[0]
+        print(each)
+        data = each.fetchone()
     
     entry = tk.Entry(frame)
     entry.insert(0, data[index])
     entry.pack()
     self.canvas.create_window(x, y, window=entry)
     return entry
+
+def create_tambah_dropdown(
+    self,
+    frame: tk.Frame,
+    x: int,
+    y: int,
+    procdrop: str,
+    ):
+    self.cursor.callproc(procdrop)
+    result = self.cursor.stored_results()
+
+    for values in result:
+        values = values.fetchall()
+
+    dropdown = ttk.Combobox(frame, values=values, state="readonly")
+    dropdown.configure(width=17)
+    dropdown.pack()
+    self.canvas.create_window(x, y, window=dropdown)
+    return dropdown
+
+def create_edit_dropdown(
+    self,
+    frame: tk.Frame,
+    x: int,
+    y: int,
+    index: int,
+    treeview: ttk.Treeview,
+    procid: str,
+    procdrop: str,
+    ):
+    editing = treeview.selection()[0]
+    values = treeview.item(editing, 'values')
+    self.cursor.callproc(procid, (values[0],))
+    result = self.cursor.stored_results()
+
+    data = None
+    for each in result:
+        data = each.fetchall()[0]
+
+    self.cursor.callproc(procdrop)
+    drop = self.cursor.stored_results()
+
+    for values in drop:
+        values = values.fetchall()
+
+
+    i = None
+    for each in values:
+        if data[index] == each[index]:
+            i = each
+            break
+
+    dropdown = ttk.Combobox(frame, values=values, state="readonly")
+    dropdown.configure(width=17)
+    dropdown.current(values.index(i))
+    dropdown.pack()
+    self.canvas.create_window(x, y, window=dropdown)
+    return dropdown
+
+def create_tambah_enumdropdown(
+    self,
+    frame: tk.Frame,
+    x: int,
+    y: int,
+    procenum: str,
+    ):
+    self.cursor.callproc(procenum)
+    result = self.cursor.stored_results()
+
+    for value in result:
+        values = value.fetchone()[1][5:-1].split(',')
+        values = [i.replace("'", "") for i in values]
+
+    dropdown = ttk.Combobox(frame, values=values, state="readonly")
+    dropdown.configure(width=17)
+    dropdown.pack()
+    self.canvas.create_window(x, y, window=dropdown)
+    return dropdown
+
+def create_edit_enumdropdown(
+    self,
+    frame: tk.Frame,
+    x: int,
+    y: int,
+    index: int,
+    treeview: ttk.Treeview,
+    procid: str,
+    procenum: str,
+    ):
+    editing = treeview.selection()[0]
+    values = treeview.item(editing, 'values')
+    self.cursor.callproc(procid, (values[0],))
+    result = self.cursor.stored_results()
+
+    data = None
+    for each in result:
+        data = each.fetchall()[0]
+
+    self.cursor.callproc(procenum)
+    drop = self.cursor.stored_results()
+
+    for value in drop:
+        values = value.fetchone()[1][5:-1].split(',')
+        values = [i.replace("'", "") for i in values]
+
+    dropdown = ttk.Combobox(frame, values=values, state="readonly")
+    dropdown.configure(width=17)
+    dropdown.current(values.index(data[index]))
+    dropdown.pack()
+    self.canvas.create_window(x, y, window=dropdown)
+    return dropdown
 
 def create_submit_button(
     self,

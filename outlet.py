@@ -17,6 +17,7 @@ def start_outlet(self):
     self.canvas.pack(fill="both", expand=True)
 
     model.backgroundimg(self)
+    self.canvas.create_image(0, 0, image=self.image, anchor="nw")
     model.database(self)
 
     self.canvas.create_text(480, 50, text="Data Outlet", anchor="center", font=("default", 28, "bold"))
@@ -44,6 +45,7 @@ def tambah_outlet(self):
     self.canvas.pack(fill="both", expand=True)
 
     model.backgroundimg(self)
+    self.canvas.create_image(0, 0, image=self.image, anchor="nw")
     model.database(self)
 
     self.canvas.create_text(480, 50, text="Tambah Outlet", anchor="center", font=("default", 28, "bold"))
@@ -85,6 +87,7 @@ def edit_outlet(self):
     self.canvas.pack(fill="both", expand=True)
 
     model.backgroundimg(self)
+    self.canvas.create_image(0, 0, image=self.image, anchor="nw")
     model.database(self)
 
     self.canvas.create_text(480, 50, text="Edit Outlet", anchor="center", font=("default", 28, "bold"))
