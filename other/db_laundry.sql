@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 17, 2023 at 02:53 AM
+-- Generation Time: Mar 21, 2023 at 08:57 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.0.19
 
@@ -26,7 +26,7 @@ DELIMITER $$
 -- Procedures
 --
 CREATE DEFINER=`root`@`localhost` PROCEDURE `detailselectbyid` (IN `id_tr` INT)   BEGIN
-SELECT tb_detail_transaksi.id_paket, tb_detail_transaksi.qty, tb_detail_transaksi.keterangan, (harga) * qty AS total FROM tb_detail_transaksi JOIN tb_paket ON tb_detail_transaksi.id_paket=tb_paket.id_paket WHERE tb_detail_transaksi.id_transaksi=id_tr;
+SELECT tb_detail_transaksi.id_paket, tb_detail_transaksi.qty, tb_detail_transaksi.keterangan, (((tb_paket.harga * tb_detail_transaksi.qty) - ((tb_paket.harga * tb_detail_transaksi.qty) * tb_transaksi.diskon / 100)) + tb_transaksi.biaya_tambahan) AS total FROM tb_detail_transaksi JOIN tb_paket ON tb_detail_transaksi.id_paket=tb_paket.id_paket JOIN tb_transaksi ON tb_detail_transaksi.id_transaksi=tb_transaksi.id_transaksi WHERE tb_detail_transaksi.id_transaksi=id_tr;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `detailtambah` (IN `id_tr` INT, IN `id_pk` INT, IN `qty_tr` VARCHAR(255), IN `ket_tr` VARCHAR(255))   BEGIN
@@ -100,6 +100,33 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `outlettambah` (IN `nama_out` VARCHAR(255), IN `alamat_out` TEXT, IN `tlp_out` VARCHAR(15))   BEGIN 
 INSERT INTO tb_outlet(nama, alamat, tlp) VALUES(nama_out, alamat_out, tlp_out);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `paketdelete` (IN `id_pk` INT)   BEGIN
+DELETE FROM tb_paket WHERE id_paket=id_pk;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `paketedit` (IN `id_pk` INT, IN `id_out` INT, IN `jenis_pk` ENUM('kiloan','selimut','bed_cover','kaos','lain'), IN `nama_pk` VARCHAR(255), IN `harga_pk` INT)   BEGIN
+UPDATE tb_paket SET id_outlet=id_out, jenis=jenis_pk, nama_paket=nama_pk, harga=harga_pk
+WHERE id_paket=id_pk; 
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `paketjenis` ()   BEGIN
+SHOW COLUMNS FROM tb_paket WHERE FIELD='jenis';
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `paketselect` ()   BEGIN
+SELECT tb_paket.id_paket, tb_outlet.nama, tb_paket.jenis, tb_paket.nama_paket, tb_paket.harga
+FROM tb_paket JOIN tb_outlet ON tb_paket.id_outlet=tb_outlet.id_outlet; 
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `paketselectbyid` (IN `id_pk` INT)   BEGIN
+SELECT tb_paket.id_paket, tb_outlet.nama, tb_paket.jenis, tb_paket.nama_paket, tb_paket.harga
+FROM tb_paket JOIN tb_outlet ON tb_paket.id_outlet=tb_outlet.id_outlet WHERE id_paket=id_pk; 
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pakettambah` (IN `id_out` INT, IN `jenis_pk` ENUM('kiloan','selimut','bed_cover','kaos','lain'), IN `nama_pk` VARCHAR(255), IN `harga_pk` INT)   BEGIN
+INSERT INTO tb_paket(id_outlet, jenis, nama_paket, harga) VALUES(id_out, jenis_pk, nama_pk, harga_pk);
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `pelanggandelete` (`id_pel` INT)   BEGIN
@@ -222,7 +249,20 @@ INSERT INTO `log_transaksi` (`id_aksi`, `id_transaksi`, `aksi`, `waktu_aksi`) VA
 (32, 17, 'Tambah Data Transaksi', '2023-03-16 14:28:15'),
 (33, 16, 'Delete Data Transaksi', '2023-03-16 14:28:52'),
 (34, 18, 'Tambah Data Transaksi', '2023-03-17 08:27:16'),
-(35, 18, 'Update Data Transaksi', '2023-03-17 08:34:07');
+(35, 18, 'Update Data Transaksi', '2023-03-17 08:34:07'),
+(36, 17, 'Update Data Transaksi', '2023-03-20 11:05:09'),
+(37, 17, 'Update Data Transaksi', '2023-03-20 11:08:36'),
+(38, 19, 'Tambah Data Transaksi', '2023-03-21 14:37:08'),
+(39, 19, 'Delete Data Transaksi', '2023-03-21 14:38:43'),
+(40, 20, 'Tambah Data Transaksi', '2023-03-21 14:46:52'),
+(41, 20, 'Update Data Transaksi', '2023-03-21 14:47:55'),
+(42, 21, 'Tambah Data Transaksi', '2023-03-21 14:48:23'),
+(43, 18, 'Delete Data Transaksi', '2023-03-21 14:48:43'),
+(44, 21, 'Delete Data Transaksi', '2023-03-21 14:48:45'),
+(45, 1, 'Update Data Transaksi', '2023-03-21 14:49:15'),
+(46, 2, 'Update Data Transaksi', '2023-03-21 14:49:25'),
+(47, 16, 'Update Data Transaksi', '2023-03-21 14:49:31'),
+(48, 17, 'Delete Data Transaksi', '2023-03-21 14:49:42');
 
 -- --------------------------------------------------------
 
@@ -243,10 +283,8 @@ CREATE TABLE `tb_detail_transaksi` (
 --
 
 INSERT INTO `tb_detail_transaksi` (`id_det_transaksi`, `id_transaksi`, `id_paket`, `qty`, `keterangan`) VALUES
-(1, 1, 1, 1, 'Cuci bed cover'),
-(2, 2, 2, 3, 'kilos'),
-(3, 17, 3, 3, '2 Selimut Tebal, 1 Selimut Tipis'),
-(4, 18, 2, 2, '2 Kilo Seragam Sekolah');
+(1, 16, 1, 1, 'Cuci bed cover'),
+(2, 15, 2, 3, 'kilos');
 
 -- --------------------------------------------------------
 
@@ -291,7 +329,7 @@ CREATE TABLE `tb_outlet` (
 
 INSERT INTO `tb_outlet` (`id_outlet`, `nama`, `alamat`, `tlp`) VALUES
 (1, 'UKK', 'Jl. UKK.jpg', '081234567890'),
-(2, 'Hashimoto', 'Jl. Tokyo No.2', '081234567888'),
+(2, 'Hashimoto', 'Jl. Tokyowo', '081234567888'),
 (5, 'Radity', 'Jl. Kanana', '08987654321');
 
 -- --------------------------------------------------------
@@ -314,8 +352,9 @@ CREATE TABLE `tb_paket` (
 
 INSERT INTO `tb_paket` (`id_paket`, `id_outlet`, `jenis`, `nama_paket`, `harga`) VALUES
 (1, 1, 'bed_cover', 'Turu cover', 50000),
-(2, 1, 'kiloan', 'Kilos', 10000),
-(3, 1, 'selimut', 'Selimute', 49999);
+(2, 1, 'kiloan', 'Kilos', 10001),
+(3, 1, 'selimut', 'Selimute', 49999),
+(5, 2, 'selimut', 'Slim', 1000);
 
 -- --------------------------------------------------------
 
@@ -343,14 +382,18 @@ CREATE TABLE `tb_transaksi` (
 --
 
 INSERT INTO `tb_transaksi` (`id_transaksi`, `kode_invoice`, `id_outlet`, `id_user`, `id_member`, `tgl`, `batas_waktu`, `waktu_bayar`, `biaya_tambahan`, `diskon`, `status`, `dibayar`) VALUES
-(1, 'L000001', 1, 1, 1, '2023-02-21', '2023-02-21', '2023-02-21', 0, 0, 'selesai', 'dibayar'),
-(2, 'L000002', 1, 1, 2, '2023-02-21', '2023-02-21', '2023-02-21', 0, 0, 'selesai', 'belum_dibayar'),
-(17, 'L000011', 1, 7, 6, '2023-03-16', '2023-03-17', '2023-03-16', 0, 0, 'baru', 'belum_dibayar'),
-(18, 'L000012', 5, 4, 5, '2023-03-17', '2023-03-20', '2023-03-17', 0, 0, 'proses', 'belum_dibayar');
+(15, 'L000015', 1, 1, 2, '2023-02-21', '2023-02-21', '2023-02-21', 0, 0, 'selesai', 'belum_dibayar'),
+(16, 'L000016', 1, 1, 1, '2023-02-21', '2023-02-21', '2023-02-21', 0, 0, 'selesai', 'dibayar');
 
 --
 -- Triggers `tb_transaksi`
 --
+DELIMITER $$
+CREATE TRIGGER `kode_invoice` BEFORE INSERT ON `tb_transaksi` FOR EACH ROW BEGIN
+    SET NEW.kode_invoice = CONCAT('L-', (SELECT MAX(id_transaksi) + 1 FROM tb_transaksi), '-', DATE(now()));
+END
+$$
+DELIMITER ;
 DELIMITER $$
 CREATE TRIGGER `log_transaksi_delete` AFTER DELETE ON `tb_transaksi` FOR EACH ROW BEGIN
 INSERT INTO log_transaksi(id_transaksi, aksi, waktu_aksi) VALUES (old.id_transaksi, "Delete Data Transaksi" , NOW());
@@ -390,11 +433,10 @@ CREATE TABLE `tb_user` (
 --
 
 INSERT INTO `tb_user` (`id_user`, `id_outlet`, `nama`, `username`, `password`, `role`) VALUES
-(1, 1, 'kiko', 'kiko', 'kiko', 'admin'),
-(2, 1, 'mika', 'mika', 'mika', 'kasir'),
-(4, 1, 'kira', 'kira', 'kira', 'owner'),
+(1, 1, 'Rei', 'Rei', 'Rei', 'admin'),
+(2, 1, 'Mika', 'mika', 'mika', 'kasir'),
 (6, 1, 'Kena', 'Kenahaya', 'Kenahaya', 'owner'),
-(7, 2, 'VcV', 'tuyu', 'tuyu', 'admin');
+(7, 2, 'Tuyu', 'tuyu', 'tuyu', 'admin');
 
 --
 -- Indexes for dumped tables
@@ -457,7 +499,7 @@ ALTER TABLE `tb_user`
 -- AUTO_INCREMENT for table `log_transaksi`
 --
 ALTER TABLE `log_transaksi`
-  MODIFY `id_aksi` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id_aksi` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `tb_detail_transaksi`
@@ -475,19 +517,19 @@ ALTER TABLE `tb_member`
 -- AUTO_INCREMENT for table `tb_outlet`
 --
 ALTER TABLE `tb_outlet`
-  MODIFY `id_outlet` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_outlet` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `tb_paket`
 --
 ALTER TABLE `tb_paket`
-  MODIFY `id_paket` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_paket` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tb_transaksi`
 --
 ALTER TABLE `tb_transaksi`
-  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `tb_user`
