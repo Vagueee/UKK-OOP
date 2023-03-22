@@ -98,9 +98,9 @@ def edit_outlet(self):
     self.canvas.create_text(420, 125, text="Alamat", font=("default", 14))
     self.canvas.create_text(420, 150, text="No. Telp", font=("default", 14))
 
-    nama = model.create_edit_entry(self, self.edit, x = 540, y = 100, index=1, treeview=self.treeview, procid="outletselectbyid")
-    alamat = model.create_edit_entry(self, self.edit, x = 540, y = 125, index=2, treeview=self.treeview, procid="outletselectbyid")
-    telp = model.create_edit_entry(self, self.edit, x = 540, y = 150, index=3, treeview=self.treeview, procid="outletselectbyid")
+    nama = model.create_edit_entry(self, self.edit, x = 540, y = 100, index=1, state='normal', treeview=self.treeview, procid="outletselectbyid")
+    alamat = model.create_edit_entry(self, self.edit, x = 540, y = 125, index=2, state='normal', treeview=self.treeview, procid="outletselectbyid")
+    telp = model.create_edit_entry(self, self.edit, x = 540, y = 150, index=3, state='normal', treeview=self.treeview, procid="outletselectbyid")
 
     def edit():
         id_val = model.get_id(self, treeview=self.treeview, procid="outletselectbyid")

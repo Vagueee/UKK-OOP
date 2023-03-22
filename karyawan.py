@@ -102,11 +102,11 @@ def edit_karyawan(self):
     self.canvas.create_text(420, 175, text="Password", font=("default", 14))
     self.canvas.create_text(420, 200, text="Role", font=("default", 14))
 
-    outlet = model.create_edit_dropdown(self, self.edit, x = 545, y = 100, index=1, target_index=0, treeview=self.treeview, procid="karyawanselectbyid", procdrop="dropdownoutlet")
-    nama = model.create_edit_entry(self, self.edit, x = 545, y = 125, index=2, treeview=self.treeview, procid="karyawanselectbyid")
-    username = model.create_edit_entry(self, self.edit, x = 545, y = 150, index=3, treeview=self.treeview, procid="karyawanselectbyid")
-    password = model.create_edit_entry(self, self.edit, x = 545, y = 175, index=4, treeview=self.treeview, procid="karyawanselectbyid")
-    role = model.create_edit_enumdropdown(self, self.edit, x = 545, y = 200, index=5, treeview=self.treeview, procid="karyawanselectbyid", procenum="karyawanrole")
+    outlet = model.create_edit_dropdown(self, self.edit, x = 545, y = 100, index=1, target_index=0, state='normal', treeview=self.treeview, procid="karyawanselectbyid", procdrop="dropdownoutlet")
+    nama = model.create_edit_entry(self, self.edit, x = 545, y = 125, index=2, state='normal', treeview=self.treeview, procid="karyawanselectbyid")
+    username = model.create_edit_entry(self, self.edit, x = 545, y = 150, index=3, state='normal', treeview=self.treeview, procid="karyawanselectbyid")
+    password = model.create_edit_entry(self, self.edit, x = 545, y = 175, index=4, state='normal', treeview=self.treeview, procid="karyawanselectbyid")
+    role = model.create_edit_enumdropdown(self, self.edit, x = 545, y = 200, index=5, state='normal', treeview=self.treeview, procid="karyawanselectbyid", procenum="karyawanrole")
 
     def edit():
         id_val = model.get_id(self, treeview=self.treeview, procid="karyawanselectbyid")

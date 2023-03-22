@@ -173,6 +173,7 @@ def create_edit_entry(
     x: int,
     y: int,
     index: int,
+    state: str,
     treeview: ttk.Treeview,
     procid: str,
     ):
@@ -184,10 +185,10 @@ def create_edit_entry(
 
     data = None
     for each in result:
-        print(each)
+        # print(each)
         data = each.fetchone()
     
-    entry = tk.Entry(frame)
+    entry = tk.Entry(frame, state=state)
     entry.insert(0, data[index])
     entry.pack()
     self.canvas.create_window(x, y, window=entry)
@@ -219,6 +220,7 @@ def create_edit_dropdown(
     y: int,
     index: int,
     target_index: int,
+    state: str,
     treeview: ttk.Treeview,
     procid: str,
     procdrop: str,
@@ -240,13 +242,13 @@ def create_edit_dropdown(
 
     selected = None
     for each in values:
-        print(each, data)
+        # print(each, data)
         if data[index] == each[target_index]:
             selected = each
             break
 
     dropdown = ttk.Combobox(frame, values=values, state="readonly")
-    dropdown.configure(width=17)
+    dropdown.configure(width=17, state=state)
     dropdown.current(values.index(selected))
     dropdown.pack()
     self.canvas.create_window(x, y, window=dropdown)
@@ -278,6 +280,7 @@ def create_edit_enumdropdown(
     x: int,
     y: int,
     index: int,
+    state: str,
     treeview: ttk.Treeview,
     procid: str,
     procenum: str,
@@ -299,7 +302,7 @@ def create_edit_enumdropdown(
         values = [i.replace("'", "") for i in values]
 
     dropdown = ttk.Combobox(frame, values=values, state="readonly")
-    dropdown.configure(width=17)
+    dropdown.configure(width=17, state=state)
     dropdown.current(values.index(data[index]))
     dropdown.pack()
     self.canvas.create_window(x, y, window=dropdown)
@@ -327,6 +330,7 @@ def create_edit_date(
     x: int,
     y: int,
     index: int,
+    state: str,
     treeview: ttk.Treeview,
     procid: str,
     width: int = 12,
@@ -344,7 +348,7 @@ def create_edit_date(
         data = each.fetchone()
 
     tanggal = DateEntry(frame, width=width, background=background, foreground=foreground, borderwidth=borderwidth)
-    tanggal.configure(width=17, state='disabled')
+    tanggal.configure(width=17, state=state)
     tanggal.set_date(data[index])
     tanggal.pack()
     self.canvas.create_window(x, y, window=tanggal)

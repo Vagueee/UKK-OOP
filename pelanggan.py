@@ -100,10 +100,10 @@ def edit_pelanggan(self):
     self.canvas.create_text(420, 125, text="Jenis Kelamin", font=("default", 14))
     self.canvas.create_text(420, 175, text="No. Telp", font=("default", 14))
 
-    nama = model.create_edit_entry(self, self.edit, x = 545, y = 100, index=1, treeview=self.treeview, procid="pelangganselectbyid")
-    alamat = model.create_edit_entry(self, self.edit, x = 545, y = 125, index=2, treeview=self.treeview, procid="pelangganselectbyid")
-    jenis_kelamin = model.create_edit_enumdropdown(self, self.edit, x = 545, y = 150, index=3, treeview=self.treeview, procid="pelangganselectbyid", procenum="pelangganjk")
-    telp = model.create_edit_entry(self, self.edit, x = 545, y = 175, index=4, treeview=self.treeview, procid="pelangganselectbyid")
+    nama = model.create_edit_entry(self, self.edit, x = 545, y = 100, index=1, state='normal', treeview=self.treeview, procid="pelangganselectbyid")
+    alamat = model.create_edit_entry(self, self.edit, x = 545, y = 125, index=2, state='normal', treeview=self.treeview, procid="pelangganselectbyid")
+    jenis_kelamin = model.create_edit_enumdropdown(self, self.edit, x = 545, y = 150, index=3, state='normal', treeview=self.treeview, procid="pelangganselectbyid", procenum="pelangganjk")
+    telp = model.create_edit_entry(self, self.edit, x = 545, y = 175, index=4, state='normal', treeview=self.treeview, procid="pelangganselectbyid")
 
     def edit():
         id_val = model.get_id(self, treeview=self.treeview, procid="pelangganselectbyid")
