@@ -190,4 +190,30 @@ def edit_transaksi(self):
     model.create_submit_button(self, x = 480, y = 375, frame=self.edit, command=edit)
 
 def detail_transaksi(self):
-    pass
+    self.detail = tk.Toplevel()
+    self.detail.title("Laundrive")
+    self.detail.geometry("960x540+180+80")
+    self.detail.resizable(False, False)
+    self.frame = tk.Frame(self.detail)
+    self.frame.pack(fill="both", expand=False)
+    self.canvas = tk.Canvas(self.detail, width=960, height=540)
+    self.canvas.pack(fill="both", expand=True)
+
+    model.backgroundimg(self)
+    self.canvas.create_image(0, 0, image=self.image, anchor="nw")
+    model.database(self)
+
+    detail = self.treeview.selection()[0]
+    values = self.treeview.item(detail, 'values')
+    proc = "detailselectbyid"
+    self.cursor.callproc(proc, (values[0],))
+    result = self.cursor.stored_results()
+
+    data = None
+    for rows in result:
+        data = rows.fetchall()[0]
+    
+    self.canvas.create_text(200, 100, text=f"Id Paket : {data[0]}", anchor="center", font=("default", 12))
+    self.canvas.create_text(200, 125, text=f"Kuantitas : {data[1]}", anchor="center", font=("default", 12))
+    self.canvas.create_text(200, 150, text=f"Keterangan : {data[2]}", anchor="center", font=("default", 12))
+    self.canvas.create_text(200, 175, text=f"Total Harga : {data[3]}", anchor="center", font=("default", 12))

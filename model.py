@@ -404,6 +404,7 @@ def tambah(
     values = entries
     self.cursor.callproc(proc, values)
     self.db.commit()
+    self.cursor.close()
     frame.destroy()
     destroy.destroy()
     redirect()
