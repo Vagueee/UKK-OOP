@@ -64,7 +64,7 @@ def tambah_outlet(self):
     alamat = create_tambah_entry(self, self.tambah, x = 540, y = 140)
     telp = create_tambah_entry(self, self.tambah, x = 540, y = 180)
 
-    def tambah():
+    def tambahdata():
         nama_val = nama.get()
         alamat_val = alamat.get()
         telp_val = telp.get()
@@ -81,7 +81,7 @@ def tambah_outlet(self):
         else:
             messagebox.showerror("Error", "Please enter a valid entry")
 
-    create_submit_button(self, x = 480, y = 220, frame=self.tambah, command=tambah)
+    create_submit_button(self, x = 480, y = 220, frame=self.tambah, command=tambahdata)
 
 def edit_outlet(self):
     self.edit = tk.Toplevel()
@@ -104,7 +104,7 @@ def edit_outlet(self):
     alamat = create_edit_entry(self, self.edit, x = 540, y = 140, index=2, state='normal', treeview=self.treeview, procid="outletselectbyid")
     telp = create_edit_entry(self, self.edit, x = 540, y = 180, index=3, state='normal', treeview=self.treeview, procid="outletselectbyid")
 
-    def edit():
+    def editdata():
         id_val = get_id(self, treeview=self.treeview, procid="outletselectbyid")
         nama_val = nama.get()
         alamat_val = alamat.get()
@@ -122,7 +122,7 @@ def edit_outlet(self):
         else:
             messagebox.showerror("Error", "Please enter a valid entry")
 
-    create_submit_button(self, x = 480, y = 220, frame=self.edit, command=edit)
+    create_submit_button(self, x = 480, y = 220, frame=self.edit, command=editdata)
 
 def delete_outlet(self):
     delete(

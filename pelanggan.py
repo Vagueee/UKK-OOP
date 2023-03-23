@@ -66,7 +66,7 @@ def tambah_pelanggan(self):
     jenis_kelamin = create_tambah_enumdropdown(self, self.tambah, x = 545, y = 180, procenum="pelangganjk")
     telp = create_tambah_entry(self, self.tambah, x = 545, y = 220)
 
-    def tambah():
+    def tambahdata():
         nama_val = nama.get()
         alamat_val = alamat.get()
         jenis_kelamin_val = jenis_kelamin.get()
@@ -84,7 +84,7 @@ def tambah_pelanggan(self):
         else:
             messagebox.showerror("Error", "Please enter a valid entry")
 
-    create_submit_button(self, x = 480, y = 265, frame=self.tambah, command=tambah)
+    create_submit_button(self, x = 480, y = 265, frame=self.tambah, command=tambahdata)
 
 def edit_pelanggan(self):
     self.edit = tk.Toplevel()
@@ -109,7 +109,7 @@ def edit_pelanggan(self):
     jenis_kelamin = create_edit_enumdropdown(self, self.edit, x = 545, y = 180, index=3, state='normal', treeview=self.treeview, procid="pelangganselectbyid", procenum="pelangganjk")
     telp = create_edit_entry(self, self.edit, x = 545, y = 220, index=4, state='normal', treeview=self.treeview, procid="pelangganselectbyid")
 
-    def edit():
+    def editdata():
         id_val = get_id(self, treeview=self.treeview, procid="pelangganselectbyid")
         nama_val = nama.get()
         alamat_val = alamat.get()
@@ -128,7 +128,7 @@ def edit_pelanggan(self):
         else:
             messagebox.showerror("Error", "Please enter a valid entry")
 
-    create_submit_button(self, x = 480, y = 265, frame=self.edit, command=edit)
+    create_submit_button(self, x = 480, y = 265, frame=self.edit, command=editdata)
 
 def delete_pelanggan(self):
     delete(

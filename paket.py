@@ -66,7 +66,7 @@ def tambah_paket(self):
     nama = create_tambah_entry(self, self.tambah, x = 545, y = 180)
     harga = create_tambah_entry(self, self.tambah, x = 545, y = 220)
 
-    def tambah():
+    def tambahdata():
         outlet_val = outlet.get()
         jenis_val = jenis.get()
         nama_val = nama.get()
@@ -84,7 +84,7 @@ def tambah_paket(self):
         else:
             messagebox.showerror("Error", "Please enter a valid entry")
 
-    create_submit_button(self, x = 480, y = 265, frame=self.tambah, command=tambah)
+    create_submit_button(self, x = 480, y = 265, frame=self.tambah, command=tambahdata)
 
 def edit_paket(self):
     self.edit = tk.Toplevel()
@@ -109,7 +109,7 @@ def edit_paket(self):
     nama = create_edit_entry(self, self.edit, x = 545, y = 180, index=3, state='normal', treeview=self.treeview, procid="paketselectbyid")
     harga = create_edit_entry(self, self.edit, x = 545, y = 220, index=4, state='normal', treeview=self.treeview, procid="paketselectbyid")
 
-    def edit():
+    def editdata():
         id_val = get_id(self, treeview=self.treeview, procid="paketselectbyid")
         outlet_val = outlet.get()
         jenis_val = jenis.get()
@@ -128,7 +128,7 @@ def edit_paket(self):
         else:
             messagebox.showerror("Error", "Please enter a valid entry")
 
-    create_submit_button(self, x = 480, y = 265, frame=self.edit, command=edit)
+    create_submit_button(self, x = 480, y = 265, frame=self.edit, command=editdata)
 
 
 def delete_paket(self):

@@ -69,7 +69,7 @@ def tambah_karyawan(self):
     password = create_tambah_entry(self, self.tambah, x = 545, y = 220)
     role = create_tambah_enumdropdown(self, self.tambah, x = 545, y = 260, procenum="karyawanrole")
 
-    def tambah():
+    def tambahdata():
         outlet_val = outlet.get()
         nama_val = nama.get()
         username_val = username.get()
@@ -84,7 +84,7 @@ def tambah_karyawan(self):
             entries=(outlet_val, nama_val, username_val, password_val, role_val), 
             proc="karyawantambah")
 
-    create_submit_button(self, x = 480, y = 300, frame=self.tambah, command=tambah)
+    create_submit_button(self, x = 480, y = 300, frame=self.tambah, command=tambahdata)
 
 def edit_karyawan(self):
     self.edit = tk.Toplevel()
@@ -111,7 +111,7 @@ def edit_karyawan(self):
     password = create_edit_entry(self, self.edit, x = 545, y = 220, index=4, state='normal', treeview=self.treeview, procid="karyawanselectbyid")
     role = create_edit_enumdropdown(self, self.edit, x = 545, y = 260, index=5, state='normal', treeview=self.treeview, procid="karyawanselectbyid", procenum="karyawanrole")
 
-    def edit():
+    def editdata():
         id_val = get_id(self, treeview=self.treeview, procid="karyawanselectbyid")
         outlet_val = outlet.get()
         nama_val = nama.get()
@@ -127,7 +127,7 @@ def edit_karyawan(self):
             entries=(id_val, outlet_val, nama_val, username_val, password_val, role_val),
             procedit="karyawanedit")
 
-    create_submit_button(self, x = 480, y = 300, frame=self.edit, command=edit)
+    create_submit_button(self, x = 480, y = 300, frame=self.edit, command=editdata)
 
 
 def delete_karyawan(self):

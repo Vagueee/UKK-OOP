@@ -95,6 +95,10 @@ def create_crud_button(
     self.canvas.create_window(x, y, window=self.button, anchor='center')
     return self.button
 
+def switch(buttons: list, selection: Tuple):
+    for button in buttons:
+        button["state"] = "normal" if button["state"] == "disabled" else "normal"
+
 def create_laporan_button(
     self,
     frame: ttk.Frame,
@@ -113,10 +117,6 @@ def create_laporan_button(
 
     self.canvas.create_window(x, y, window=self.button, anchor='center')
     return self.button
-
-def switch(buttons: list, selection: Tuple):
-    for button in buttons:
-        button["state"] = "normal" if button["state"] == "disabled" else "normal"
 
 def create_treeview(
     self,
@@ -233,7 +233,7 @@ def create_edit_dropdown(
 
     self.cursor.callproc(procdrop)
     drop = self.cursor.stored_results()
-
+    
     for values in drop:
         values = values.fetchall()
 

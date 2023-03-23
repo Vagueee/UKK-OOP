@@ -78,7 +78,7 @@ def tambah_transaksi(self):
     status = create_tambah_enumdropdown(self, self.tambah, x = 550, y = 420, procenum="transaksistatus")
     dibayar = create_tambah_enumdropdown(self, self.tambah, x = 550, y = 460, procenum="transaksidibayar")
 
-    def tambah():
+    def tambahdata():
         outlet_val = outlet.get()
         karyawan_val = karyawan.get()
         pelanggan_val = pelanggan.get()
@@ -98,7 +98,7 @@ def tambah_transaksi(self):
             entries=(outlet_val, karyawan_val, pelanggan_val, tanggal_val, batas_waktu_val, waktu_bayar_val, biaya_tambahan_val, diskon_val, status_val, dibayar_val), 
             proc="transaksitambah")
 
-    create_submit_button(self, x = 480, y = 500, frame=self.tambah, command=tambah)
+    create_submit_button(self, x = 480, y = 500, frame=self.tambah, command=tambahdata)
 
 def tambah_detail_transaksi(self):
     self.tambah = tk.Toplevel()
@@ -121,7 +121,7 @@ def tambah_detail_transaksi(self):
     keterangan = create_tambah_entry(self, self.tambah, x = 545, y = 140)
     qty = create_tambah_entry(self, self.tambah, x = 545, y = 180)
 
-    def tambah():
+    def tambahdata():
         self.cursor.execute('call detailidtransaksi();')
         id_val = self.cursor.fetchone()
 
@@ -137,7 +137,7 @@ def tambah_detail_transaksi(self):
             entries=(id_val[0], paket_val, keterangan_val, qty_val), 
             proc="detailtambah")
 
-    create_submit_button(self, x = 480, y = 220, frame=self.tambah, command=tambah)
+    create_submit_button(self, x = 480, y = 220, frame=self.tambah, command=tambahdata)
 
 
 def edit_transaksi(self):
@@ -175,7 +175,7 @@ def edit_transaksi(self):
     status = create_edit_enumdropdown(self, self.edit, x = 550, y = 420, index=10, state='normal', treeview=self.treeview, procid="transaksiselectbyid", procenum="transaksistatus")
     dibayar = create_edit_enumdropdown(self, self.edit, x = 550, y = 460, index=11, state='normal', treeview=self.treeview, procid="transaksiselectbyid", procenum="transaksidibayar")
 
-    def edit():
+    def editdata():
         id_val = get_id(self, treeview=self.treeview, procid="transaksiselectbyid")
         status_val = status.get()
         dibayar_val = dibayar.get()
@@ -188,7 +188,7 @@ def edit_transaksi(self):
             entries=(id_val, status_val, dibayar_val),
             procedit="transaksiedit")
 
-    create_submit_button(self, x = 480, y = 500, frame=self.edit, command=edit)
+    create_submit_button(self, x = 480, y = 500, frame=self.edit, command=editdata)
 
 def detail_transaksi(self):
     self.detail = tk.Toplevel()
@@ -210,9 +210,10 @@ def detail_transaksi(self):
 
     data = None
     for rows in result:
-        data = rows.fetchall()[0]
+        data = rows.fetchone()
     
-    self.canvas.create_text(200, 100, text=f"Id Paket : {data[0]}", anchor="center", font=("Verdana", 12))
-    self.canvas.create_text(200, 140, text=f"Kuantitas : {data[1]}", anchor="center", font=("Verdana", 12))
-    self.canvas.create_text(200, 180, text=f"Keterangan : {data[2]}", anchor="center", font=("Verdana", 12))
-    self.canvas.create_text(200, 220, text=f"Total Harga : {data[3]}", anchor="center", font=("Verdana", 12))
+    self.canvas.create_text(200, 100, text=f"{data[0]}", anchor="center", font=("Verdana", 28, "bold"), fill="#b5b3b3")
+    self.canvas.create_text(200, 140, text=f"Id Paket : {data[1]}", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
+    self.canvas.create_text(200, 160, text=f"Kuantitas : {data[2]}", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
+    self.canvas.create_text(200, 180, text=f"Keterangan : {data[3]}", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
+    self.canvas.create_text(200, 200, text=f"Total Harga : Rp. {int(data[4])}", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
