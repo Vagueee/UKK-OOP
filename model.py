@@ -1,8 +1,9 @@
 import tkinter as tk
-from tkinter import PhotoImage, messagebox, Canvas, font, ttk
+from tkinter import PhotoImage, messagebox, Canvas, font, ttk, filedialog
 from tkcalendar import DateEntry
 from typing import Tuple
 from dotenv import load_dotenv
+import csv
 import os
 import mysql.connector
 load_dotenv()
@@ -47,45 +48,35 @@ def create_card(
     y: int,
     width: int = 150,
     height: int = 200,
-    ) -> tk.Frame:
-        card_frame = tk.Frame(
+    ) -> ttk.Frame:
+        card_frame = ttk.Frame(
             self.main,
             width=width,
             height=height,
-            bd=2,
-            relief="groove",
-            highlightthickness=2,
-            highlightbackground="black"
+            relief="groove"
         )
         self.canvas.create_window(x, y, anchor='n', window=card_frame)
         return card_frame
 
 def create_button(
     self,
-    frame: tk.Frame,
+    frame: ttk.Frame,
     image: PhotoImage,
     text: str,
     command: callable,
-    font_size: int = 10,
-    font_weight: str = 'bold',
-    width: int = 20,
-    height: int = 2,
     ):
-    label = tk.Label(frame, image=image)
-    button = tk.Button(
+    label = ttk.Label(frame, image=image)
+    button = ttk.Button(
         frame,
         text=text,
         command=command,
-        font=font.Font(size=font_size, weight=font_weight),
-        width=width,
-        height=height,
     )
     label.pack()
     button.pack()
 
 def create_crud_button(
     self,
-    frame: tk.Frame,
+    frame: ttk.Frame,
     x: int,
     y: int,
     text: str,
@@ -94,15 +85,33 @@ def create_crud_button(
     font_size: int = 14,
     font_weight: str = 'bold',
     ):
-    self.button = tk.Button(
+    self.button = ttk.Button(
         frame,
         text=text,
         command=command,
-        font=font.Font(size=font_size, weight=font_weight)
     )
     self.button["state"] = "disabled" if disabled else "normal"
+    
     self.canvas.create_window(x, y, window=self.button, anchor='center')
+    return self.button
 
+def create_laporan_button(
+    self,
+    frame: ttk.Frame,
+    x: int,
+    y: int,
+    text: str,
+    command: callable,
+    font_size: int = 10,
+    font_weight: str = 'bold',
+    ):
+    self.button = ttk.Button(
+        frame,
+        text=text,
+        command=command,
+    )
+
+    self.canvas.create_window(x, y, window=self.button, anchor='center')
     return self.button
 
 def switch(buttons: list, selection: Tuple):
@@ -111,7 +120,9 @@ def switch(buttons: list, selection: Tuple):
 
 def create_treeview(
     self,
-    frame: tk.Frame,
+    frame: ttk.Frame,
+    x: int,
+    y: int,
     proc: str,
     columns: tuple,
     headings: tuple,
@@ -120,7 +131,7 @@ def create_treeview(
     minwidth: int = 90,
     ):
     self.treeview = ttk.Treeview(frame)
-    self.treeview.pack()
+    self.treeview.pack(padx=20, pady=20)
     self.treeview['columns'] = columns
     self.treeview.column("#0", width=0,  stretch=False)
     for each in columns:
@@ -139,37 +150,23 @@ def create_treeview(
         for row in i:
             self.treeview.insert(parent='', index='end', values=row)
 
-    self.canvas.create_window(480, 140, anchor='n', window=self.treeview)
+    self.canvas.create_window(x, y, anchor='n', window=self.treeview)
     return self.treeview
     
-# def create_toplevel(
-#     title: str,
-#     ) -> tk.Frame:
-#     toplevel = tk.Toplevel()
-#     toplevel.title(title)
-#     toplevel.geometry("960x540+180+80")
-#     toplevel.resizable(False, False)
-#     frame = tk.Frame(toplevel)
-#     frame.pack(fill="both", expand=False)
-#     canvas = tk.Canvas(toplevel, width=960, height=540)
-#     canvas.pack(fill="both", expand=True)
-
-#     return frame
-
 def create_tambah_entry(
     self,
-    frame: tk.Frame,
+    frame: ttk.Frame,
     x: int,
     y: int,
     ):
-    entry = tk.Entry(frame)
+    entry = ttk.Entry(frame)
     entry.pack()
     self.canvas.create_window(x, y, window=entry)
     return entry
 
 def create_edit_entry(
     self,
-    frame: tk.Frame,
+    frame: ttk.Frame,
     x: int,
     y: int,
     index: int,
@@ -188,7 +185,7 @@ def create_edit_entry(
         # print(each)
         data = each.fetchone()
     
-    entry = tk.Entry(frame, state=state)
+    entry = ttk.Entry(frame, state=state)
     entry.insert(0, data[index])
     entry.pack()
     self.canvas.create_window(x, y, window=entry)
@@ -196,7 +193,7 @@ def create_edit_entry(
 
 def create_tambah_dropdown(
     self,
-    frame: tk.Frame,
+    frame: ttk.Frame,
     x: int,
     y: int,
     procdrop: str,
@@ -215,7 +212,7 @@ def create_tambah_dropdown(
 
 def create_edit_dropdown(
     self,
-    frame: tk.Frame,
+    frame: ttk.Frame,
     x: int,
     y: int,
     index: int,
@@ -256,7 +253,7 @@ def create_edit_dropdown(
 
 def create_tambah_enumdropdown(
     self,
-    frame: tk.Frame,
+    frame: ttk.Frame,
     x: int,
     y: int,
     procenum: str,
@@ -276,7 +273,7 @@ def create_tambah_enumdropdown(
 
 def create_edit_enumdropdown(
     self,
-    frame: tk.Frame,
+    frame: ttk.Frame,
     x: int,
     y: int,
     index: int,
@@ -310,7 +307,7 @@ def create_edit_enumdropdown(
 
 def create_tambah_date(
     self,
-    frame: tk.Frame,
+    frame: ttk.Frame,
     x: int,
     y: int,
     width: int = 12,
@@ -326,7 +323,7 @@ def create_tambah_date(
 
 def create_edit_date(
     self,
-    frame: tk.Frame,
+    frame: ttk.Frame,
     x: int,
     y: int,
     index: int,
@@ -356,7 +353,7 @@ def create_edit_date(
 
 def create_submit_button(
     self,
-    frame: tk.Frame,
+    frame: ttk.Frame,
     x: int,
     y: int,
     command: callable,
@@ -364,7 +361,7 @@ def create_submit_button(
     font_size: int = 10,
     font_weight: str = 'bold',
     ):
-    self.button = tk.Button(frame, text=text, command=command ,font=font.Font(size=font_size, weight=font_weight))
+    self.button = ttk.Button(frame, text=text, command=command)
     self.canvas.create_window(x, y, window=self.button, anchor="center")
 
 def validate_number(
@@ -395,7 +392,7 @@ def get_id(
 
 def tambah(
     self,
-    frame: tk.Frame,
+    frame: ttk.Frame,
     destroy: tk.Toplevel,
     redirect: callable,
     entries: Tuple,
@@ -411,7 +408,7 @@ def tambah(
 
 def edit(
     self,
-    frame: tk.Frame,
+    frame: ttk.Frame,
     destroy: tk.Toplevel,
     redirect: callable,
     entries: Tuple,
@@ -435,3 +432,21 @@ def delete(
     self.cursor.callproc(proc, (values[0],))
     self.db.commit()
     treeview.delete(deleting)
+
+def importcsv(
+    filename: str,
+    treeview: ttk.Treeview,
+    ):
+    with open(filename, 'w', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        # Write header row
+        header = []
+        for col in treeview["columns"]:
+            header.append(treeview.heading(col)["text"])
+        writer.writerow(header)
+        # Write data rows
+        for item in treeview.get_children():
+            row = []
+            for col in treeview["columns"]:
+                row.append(treeview.set(item, col))
+            writer.writerow(row)

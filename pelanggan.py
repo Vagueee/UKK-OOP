@@ -1,64 +1,70 @@
-import tkinter as tk
-from tkinter import PhotoImage, messagebox, Canvas, font, ttk
-from dotenv import load_dotenv
-import os
-import mysql.connector
-import model
-load_dotenv()
+from model import *
 
 def start_pelanggan(self):
     self.pelanggan = tk.Toplevel()
     self.pelanggan.title("Laundrive")
     self.pelanggan.geometry("960x540+180+80")
     self.pelanggan.resizable(False, False)
-    self.frame = tk.Frame(self.pelanggan)
+    self.frame = ttk.Frame(self.pelanggan)
     self.frame.pack(fill="both", expand=False)
     self.canvas = tk.Canvas(self.pelanggan, width=960, height=540)
     self.canvas.pack(fill="both", expand=True)
 
-    model.backgroundimg(self)
-    model.database(self)
+    database(self)
 
-    self.canvas.create_text(480, 50, text="Data Pelanggan", anchor="center", font=("default", 28, "bold"))
+    self.canvas.create_text(480, 50, text="Data Pelanggan", anchor="center", font=("Verdana", 28, "bold"), fill="#b5b3b3")
 
-    treeview = model.create_treeview(
+    treeview = create_treeview(
         self, 
         frame=self.pelanggan, 
+        x= 480,
+        y= 150,
         proc='pelangganselect', 
         columns=('id', 'nama', 'alamat', 'jenis_kelamin', 'tlp'), 
         headings=('id', 'nama', 'alamat', 'jenis_kelamin', 'tlp'), 
         texts=('ID', 'Nama', 'Alamat', 'Jenis Kelamin', 'No. Telp'))
 
-    tambah_button = model.create_crud_button(self, frame=self.pelanggan, x=355, y=110, text="Tambah Data", command=lambda: tambah_pelanggan(self))
-    edit_button = model.create_crud_button(self, frame=self.pelanggan, x=480, y=110, disabled=len(treeview.selection()) == 0, text="Edit Data", command=lambda: edit_pelanggan(self))
-    delete_button = model.create_crud_button(self, frame=self.pelanggan, x=600, y=110, disabled=len(treeview.selection()) == 0, text="Delete Data", command=lambda: delete_pelanggan(self))
+    csv_button = create_laporan_button(self, frame=self.pelanggan, x=100, y=110 ,text="Export as CSV", command=lambda: csv_pelanggan(self))
 
-    treeview.bind("<ButtonRelease-1>", lambda event: model.switch([edit_button, delete_button], selection=treeview.selection()))
+    tambah_button = create_crud_button(self, frame=self.pelanggan, x=355, y=110, text="Tambah Data", command=lambda: tambah_pelanggan(self))
+    edit_button = create_crud_button(self, frame=self.pelanggan, x=480, y=110, disabled=len(treeview.selection()) == 0, text="Edit Data", command=lambda: edit_pelanggan(self))
+    delete_button = create_crud_button(self, frame=self.pelanggan, x=600, y=110, disabled=len(treeview.selection()) == 0, text="Delete Data", command=lambda: delete_pelanggan(self))
+
+    treeview.bind("<ButtonRelease-1>", lambda event: switch([edit_button, delete_button], selection=treeview.selection()))
+
+def csv_pelanggan(self):
+    Verdana_filename = 'data.csv'
+    initial_dir = '.'
+    filetypes = [('CSV files', '*.csv')]
+    # Prompt the user to choose a filename and location
+    filename = filedialog.asksaveasfilename(Verdanaextension='.csv', initialfile=Verdana_filename, initialdir=initial_dir, filetypes=filetypes)
+    if filename:
+        importcsv(
+        filename=filename,
+        treeview=self.treeview)
 
 def tambah_pelanggan(self):
     self.tambah = tk.Toplevel()
     self.tambah.title("Laundrive")
     self.tambah.geometry("960x540+180+80")
     self.tambah.resizable(False, False)
-    self.frame = tk.Frame(self.tambah)
+    self.frame = ttk.Frame(self.tambah)
     self.frame.pack(fill="both", expand=False)
     self.canvas = tk.Canvas(self.tambah, width=960, height=540)
     self.canvas.pack(fill="both", expand=True)
 
-    model.backgroundimg(self)
-    self.canvas.create_image(0, 0, image=self.image, anchor="nw")
-    model.database(self)
+    database(self)
 
-    self.canvas.create_text(480, 50, text="Tambah Pelanggan", anchor="center", font=("default", 28, "bold"))
-    self.canvas.create_text(420, 100, text="Nama", font=("default", 14))
-    self.canvas.create_text(420, 125, text="Alamat", font=("default", 14))
-    self.canvas.create_text(420, 150, text="Jenis Kelamin", font=("default", 14))
-    self.canvas.create_text(420, 175, text="No. Telp", font=("default", 14))
+    self.canvas.create_text(480, 50, text="Tambah Pelanggan", anchor="center", font=("Verdana", 28, "bold"), fill="#b5b3b3")
+    self.canvas.create_text(420, 100, text="Nama", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(420, 140, text="Alamat", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(420, 180, text="Jenis Kelamin", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(420, 220, text="No. Telp", font=("Verdana", 14), fill="#b5b3b3")
 
-    nama = model.create_tambah_entry(self, self.tambah, x = 545, y = 100)
-    alamat = model.create_tambah_entry(self, self.tambah, x = 545, y = 125)
-    jenis_kelamin = model.create_tambah_enumdropdown(self, self.tambah, x = 545, y = 150, procenum="pelangganjk")
-    telp = model.create_tambah_entry(self, self.tambah, x = 545, y = 175)
+    nama = create_tambah_entry(self, self.tambah, x = 545, y = 100)
+    alamat = create_tambah_entry(self, self.tambah, x = 545, y = 140)
+    jenis_kelamin = create_tambah_enumdropdown(self, self.tambah, x = 545, y = 180, procenum="pelangganjk")
+    telp = create_tambah_entry(self, self.tambah, x = 545, y = 220)
 
     def tambah():
         nama_val = nama.get()
@@ -66,9 +72,9 @@ def tambah_pelanggan(self):
         jenis_kelamin_val = jenis_kelamin.get()
         telp_val = telp.get()
 
-        validate = model.validate_number(values=(telp_val))
+        validate = validate_number(values=(telp_val))
         if validate == True:
-            model.tambah(
+            tambah(
                 self, 
                 frame=self.tambah,
                 destroy=self.pelanggan, 
@@ -78,43 +84,41 @@ def tambah_pelanggan(self):
         else:
             messagebox.showerror("Error", "Please enter a valid entry")
 
-    model.create_submit_button(self, x = 480, y = 225, frame=self.tambah, command=tambah)
+    create_submit_button(self, x = 480, y = 265, frame=self.tambah, command=tambah)
 
 def edit_pelanggan(self):
     self.edit = tk.Toplevel()
     self.edit.title("Laundrive")
     self.edit.geometry("960x540+180+80")
     self.edit.resizable(False, False)
-    self.frame = tk.Frame(self.edit)
+    self.frame = ttk.Frame(self.edit)
     self.frame.pack(fill="both", expand=False)
     self.canvas = tk.Canvas(self.edit, width=960, height=540)
     self.canvas.pack(fill="both", expand=True)
 
-    model.backgroundimg(self)
-    self.canvas.create_image(0, 0, image=self.image, anchor="nw")
-    model.database(self)
+    database(self)
 
-    self.canvas.create_text(480, 50, text="Edit Pelanggan", anchor="center", font=("default", 28, "bold"))
-    self.canvas.create_text(420, 150, text="Nama", font=("default", 14))
-    self.canvas.create_text(420, 100, text="Alamat", font=("default", 14))
-    self.canvas.create_text(420, 125, text="Jenis Kelamin", font=("default", 14))
-    self.canvas.create_text(420, 175, text="No. Telp", font=("default", 14))
+    self.canvas.create_text(480, 50, text="Edit Pelanggan", anchor="center", font=("Verdana", 28, "bold"), fill="#b5b3b3")
+    self.canvas.create_text(420, 180, text="Nama", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(420, 100, text="Alamat", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(420, 140, text="Jenis Kelamin", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(420, 220, text="No. Telp", font=("Verdana", 14), fill="#b5b3b3")
 
-    nama = model.create_edit_entry(self, self.edit, x = 545, y = 100, index=1, state='normal', treeview=self.treeview, procid="pelangganselectbyid")
-    alamat = model.create_edit_entry(self, self.edit, x = 545, y = 125, index=2, state='normal', treeview=self.treeview, procid="pelangganselectbyid")
-    jenis_kelamin = model.create_edit_enumdropdown(self, self.edit, x = 545, y = 150, index=3, state='normal', treeview=self.treeview, procid="pelangganselectbyid", procenum="pelangganjk")
-    telp = model.create_edit_entry(self, self.edit, x = 545, y = 175, index=4, state='normal', treeview=self.treeview, procid="pelangganselectbyid")
+    nama = create_edit_entry(self, self.edit, x = 545, y = 100, index=1, state='normal', treeview=self.treeview, procid="pelangganselectbyid")
+    alamat = create_edit_entry(self, self.edit, x = 545, y = 140, index=2, state='normal', treeview=self.treeview, procid="pelangganselectbyid")
+    jenis_kelamin = create_edit_enumdropdown(self, self.edit, x = 545, y = 180, index=3, state='normal', treeview=self.treeview, procid="pelangganselectbyid", procenum="pelangganjk")
+    telp = create_edit_entry(self, self.edit, x = 545, y = 220, index=4, state='normal', treeview=self.treeview, procid="pelangganselectbyid")
 
     def edit():
-        id_val = model.get_id(self, treeview=self.treeview, procid="pelangganselectbyid")
+        id_val = get_id(self, treeview=self.treeview, procid="pelangganselectbyid")
         nama_val = nama.get()
         alamat_val = alamat.get()
         jenis_kelamin_val = jenis_kelamin.get()
         telp_val = telp.get()
 
-        validate = model.validate_number(values=(telp_val))
+        validate = validate_number(values=(telp_val))
         if validate == True:
-            model.edit(
+            edit(
                 self,
                 frame=self.edit,
                 destroy=self.paket,
@@ -124,10 +128,10 @@ def edit_pelanggan(self):
         else:
             messagebox.showerror("Error", "Please enter a valid entry")
 
-    model.create_submit_button(self, x = 480, y = 225, frame=self.edit, command=edit)
+    create_submit_button(self, x = 480, y = 265, frame=self.edit, command=edit)
 
 def delete_pelanggan(self):
-    model.delete(
+    delete(
         self, 
         treeview=self.treeview, 
         proc="pelanggandelete")

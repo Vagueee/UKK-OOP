@@ -1,68 +1,73 @@
-import tkinter as tk
-from tkinter import PhotoImage, messagebox, Canvas, font, ttk
-from dotenv import load_dotenv
-import os
-import mysql.connector
-import model
-load_dotenv()
+from model import *
 
 def start_karyawan(self):
     self.karyawan = tk.Toplevel()
     self.karyawan.title("Laundrive")
     self.karyawan.geometry("960x540+180+80")
     self.karyawan.resizable(False, False)
-    self.frame = tk.Frame(self.karyawan)
+    self.frame = ttk.Frame(self.karyawan)
     self.frame.pack(fill="both", expand=False)
     self.canvas = tk.Canvas(self.karyawan, width=960, height=540)
     self.canvas.pack(fill="both", expand=True)
 
-    model.backgroundimg(self)
-    self.canvas.create_image(0, 0, image=self.image, anchor="nw")
-    model.database(self)
+    database(self)
 
-    self.canvas.create_text(480, 50, text="Data Karyawan", anchor="center", font=("default", 28, "bold"))
+    self.canvas.create_text(480, 50, text="Data Karyawan", anchor="center", font=("Verdana", 28, "bold"), fill="#b5b3b3")
 
-    treeview = model.create_treeview(
+    treeview = create_treeview(
         self, 
         frame=self.karyawan, 
+        x= 480,
+        y= 150,
         proc='karyawanselect', 
         columns=('id', 'outlet', 'nama', 'username', 'role'), 
         headings=('id', 'outlet', 'nama', 'username', 'role'), 
         texts=('ID', 'Outlet', 'Nama', 'Username', 'Role')
     )
 
-    tambah_button = model.create_crud_button(self, frame=self.karyawan, x=355, y=110 , text="Tambah Data", command=lambda: tambah_karyawan(self))
-    edit_button = model.create_crud_button(self, frame=self.karyawan, x=480, y=110 , disabled=len(treeview.selection()) == 0, text="Edit Data", command=lambda: edit_karyawan(self))
-    delete_button = model.create_crud_button(self, frame=self.karyawan, x=600, y=110 , disabled=len(treeview.selection()) == 0, text="Delete Data", command=lambda: delete_karyawan(self))
+    csv_button = create_laporan_button(self, frame=self.karyawan, x=100, y=110 ,text="Export as CSV", command=lambda: csv_karyawan(self))
 
-    treeview.bind("<ButtonRelease-1>", lambda event: model.switch([edit_button, delete_button], selection=treeview.selection()))
+    tambah_button = create_crud_button(self, frame=self.karyawan, x=355, y=110 , text="Tambah Data", command=lambda: tambah_karyawan(self))
+    edit_button = create_crud_button(self, frame=self.karyawan, x=480, y=110 , disabled=len(treeview.selection()) == 0, text="Edit Data", command=lambda: edit_karyawan(self))
+    delete_button = create_crud_button(self, frame=self.karyawan, x=600, y=110 , disabled=len(treeview.selection()) == 0, text="Delete Data", command=lambda: delete_karyawan(self))
+
+    treeview.bind("<ButtonRelease-1>", lambda event: switch([edit_button, delete_button], selection=treeview.selection()))
+
+def csv_karyawan(self):
+    Verdana_filename = 'data.csv'
+    initial_dir = '.'
+    filetypes = [('CSV files', '*.csv')]
+    # Prompt the user to choose a filename and location
+    filename = filedialog.asksaveasfilename(Verdanaextension='.csv', initialfile=Verdana_filename, initialdir=initial_dir, filetypes=filetypes)
+    if filename:
+        importcsv(
+        filename=filename,
+        treeview=self.treeview)
 
 def tambah_karyawan(self):
     self.tambah = tk.Toplevel()
     self.tambah.title("Laundrive")
     self.tambah.geometry("960x540+180+80")
     self.tambah.resizable(False, False)
-    self.frame = tk.Frame(self.tambah)
+    self.frame = ttk.Frame(self.tambah)
     self.frame.pack(fill="both", expand=False)
     self.canvas = tk.Canvas(self.tambah, width=960, height=540)
     self.canvas.pack(fill="both", expand=True)
 
-    model.backgroundimg(self)
-    self.canvas.create_image(0, 0, image=self.image, anchor="nw")
-    model.database(self)
+    database(self)
 
-    self.canvas.create_text(480, 50, text="Tambah Karyawan", anchor="center", font=("default", 28, "bold"))
-    self.canvas.create_text(420, 100, text="Outlet", font=("default", 14))
-    self.canvas.create_text(420, 125, text="Nama", font=("default", 14))
-    self.canvas.create_text(420, 150, text="Username", font=("default", 14))
-    self.canvas.create_text(420, 175, text="Password", font=("default", 14))
-    self.canvas.create_text(420, 200, text="Role", font=("default", 14))
+    self.canvas.create_text(480, 50, text="Tambah Karyawan", anchor="center", font=("Verdana", 28, "bold"), fill="#b5b3b3")
+    self.canvas.create_text(420, 100, text="Outlet", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(420, 140, text="Nama", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(420, 180, text="Username", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(420, 220, text="Password", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(420, 260, text="Role", font=("Verdana", 14), fill="#b5b3b3")
 
-    outlet = model.create_tambah_dropdown(self, self.tambah, x = 545, y = 100, procdrop="dropdownoutlet")
-    nama = model.create_tambah_entry(self, self.tambah, x = 545, y = 125)
-    username = model.create_tambah_entry(self, self.tambah, x = 545, y = 150)
-    password = model.create_tambah_entry(self, self.tambah, x = 545, y = 175)
-    role = model.create_tambah_enumdropdown(self, self.tambah, x = 545, y = 200, procenum="karyawanrole")
+    outlet = create_tambah_dropdown(self, self.tambah, x = 545, y = 100, procdrop="dropdownoutlet")
+    nama = create_tambah_entry(self, self.tambah, x = 545, y = 140)
+    username = create_tambah_entry(self, self.tambah, x = 545, y = 180)
+    password = create_tambah_entry(self, self.tambah, x = 545, y = 220)
+    role = create_tambah_enumdropdown(self, self.tambah, x = 545, y = 260, procenum="karyawanrole")
 
     def tambah():
         outlet_val = outlet.get()
@@ -71,7 +76,7 @@ def tambah_karyawan(self):
         password_val = password.get()
         role_val = role.get()
 
-        model.tambah(
+        tambah(
             self, 
             frame=self.tambah,
             destroy=self.karyawan, 
@@ -79,44 +84,42 @@ def tambah_karyawan(self):
             entries=(outlet_val, nama_val, username_val, password_val, role_val), 
             proc="karyawantambah")
 
-    model.create_submit_button(self, x = 480, y = 250, frame=self.tambah, command=tambah)
+    create_submit_button(self, x = 480, y = 300, frame=self.tambah, command=tambah)
 
 def edit_karyawan(self):
     self.edit = tk.Toplevel()
     self.edit.title("Laundrive")
     self.edit.geometry("960x540+180+80")
     self.edit.resizable(False, False)
-    self.frame = tk.Frame(self.edit)
+    self.frame = ttk.Frame(self.edit)
     self.frame.pack(fill="both", expand=False)
     self.canvas = tk.Canvas(self.edit, width=960, height=540)
     self.canvas.pack(fill="both", expand=True)
 
-    model.backgroundimg(self)
-    self.canvas.create_image(0, 0, image=self.image, anchor="nw")
-    model.database(self)
+    database(self)
 
-    self.canvas.create_text(480, 50, text="Edit Karyawan", anchor="center", font=("default", 28, "bold"))
-    self.canvas.create_text(420, 100, text="Outlet", font=("default", 14))
-    self.canvas.create_text(420, 125, text="Nama", font=("default", 14))
-    self.canvas.create_text(420, 150, text="Username", font=("default", 14))
-    self.canvas.create_text(420, 175, text="Password", font=("default", 14))
-    self.canvas.create_text(420, 200, text="Role", font=("default", 14))
+    self.canvas.create_text(480, 50, text="Edit Karyawan", anchor="center", font=("Verdana", 28, "bold"), fill="#b5b3b3")
+    self.canvas.create_text(420, 100, text="Outlet", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(420, 140, text="Nama", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(420, 180, text="Username", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(420, 220, text="Password", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(420, 260, text="Role", font=("Verdana", 14), fill="#b5b3b3")
 
-    outlet = model.create_edit_dropdown(self, self.edit, x = 545, y = 100, index=1, target_index=0, state='normal', treeview=self.treeview, procid="karyawanselectbyid", procdrop="dropdownoutlet")
-    nama = model.create_edit_entry(self, self.edit, x = 545, y = 125, index=2, state='normal', treeview=self.treeview, procid="karyawanselectbyid")
-    username = model.create_edit_entry(self, self.edit, x = 545, y = 150, index=3, state='normal', treeview=self.treeview, procid="karyawanselectbyid")
-    password = model.create_edit_entry(self, self.edit, x = 545, y = 175, index=4, state='normal', treeview=self.treeview, procid="karyawanselectbyid")
-    role = model.create_edit_enumdropdown(self, self.edit, x = 545, y = 200, index=5, state='normal', treeview=self.treeview, procid="karyawanselectbyid", procenum="karyawanrole")
+    outlet = create_edit_dropdown(self, self.edit, x = 545, y = 100, index=1, target_index=0, state='normal', treeview=self.treeview, procid="karyawanselectbyid", procdrop="dropdownoutlet")
+    nama = create_edit_entry(self, self.edit, x = 545, y = 140, index=2, state='normal', treeview=self.treeview, procid="karyawanselectbyid")
+    username = create_edit_entry(self, self.edit, x = 545, y = 180, index=3, state='normal', treeview=self.treeview, procid="karyawanselectbyid")
+    password = create_edit_entry(self, self.edit, x = 545, y = 220, index=4, state='normal', treeview=self.treeview, procid="karyawanselectbyid")
+    role = create_edit_enumdropdown(self, self.edit, x = 545, y = 260, index=5, state='normal', treeview=self.treeview, procid="karyawanselectbyid", procenum="karyawanrole")
 
     def edit():
-        id_val = model.get_id(self, treeview=self.treeview, procid="karyawanselectbyid")
+        id_val = get_id(self, treeview=self.treeview, procid="karyawanselectbyid")
         outlet_val = outlet.get()
         nama_val = nama.get()
         username_val = username.get()
         password_val = password.get()
         role_val = role.get()
 
-        model.edit(
+        edit(
             self,
             frame=self.edit,
             destroy=self.karyawan,
@@ -124,11 +127,11 @@ def edit_karyawan(self):
             entries=(id_val, outlet_val, nama_val, username_val, password_val, role_val),
             procedit="karyawanedit")
 
-    model.create_submit_button(self, x = 480, y = 250, frame=self.edit, command=edit)
+    create_submit_button(self, x = 480, y = 300, frame=self.edit, command=edit)
 
 
 def delete_karyawan(self):
-    model.delete(
+    delete(
         self, 
         treeview=self.treeview, 
         proc="karyawandelete")

@@ -1,65 +1,70 @@
-import tkinter as tk
-from tkinter import PhotoImage, messagebox, Canvas, font, ttk
-from dotenv import load_dotenv
-import os
-import mysql.connector
-import model
-load_dotenv()
+from model import *
 
 def start_paket(self):
     self.paket = tk.Toplevel()
     self.paket.title("Laundrive")
     self.paket.geometry("960x540+180+80")
     self.paket.resizable(False, False)
-    self.frame = tk.Frame(self.paket)
+    self.frame = ttk.Frame(self.paket)
     self.frame.pack(fill="both", expand=False)
     self.canvas = tk.Canvas(self.paket, width=960, height=540)
     self.canvas.pack(fill="both", expand=True)
 
-    model.backgroundimg(self)
-    self.canvas.create_image(0, 0, image=self.image, anchor="nw")
-    model.database(self)
+    database(self)
 
-    self.canvas.create_text(480, 50, text="Data Paket", anchor="center", font=("default", 28, "bold"))
+    self.canvas.create_text(480, 50, text="Data Paket", anchor="center", font=("Verdana", 28, "bold"), fill="#b5b3b3")
 
-    treeview = model.create_treeview(
+    treeview = create_treeview(
         self, 
         frame=self.paket, 
+        x= 480,
+        y= 150,
         proc='paketselect', 
         columns=('id', 'outlet', 'jenis', 'nama', 'harga'), 
         headings=('id', 'outlet', 'jenis', 'nama', 'harga'), 
         texts=('ID', 'Outlet', 'Jenis Paket', 'Nama Paket', 'Harga'))
 
-    tambah_button = model.create_crud_button(self, frame=self.paket, x=355, y=110, text="Tambah Data", command=lambda: tambah_paket(self))
-    edit_button = model.create_crud_button(self, frame=self.paket, x=480, y=110, disabled=len(treeview.selection()) == 0, text="Edit Data", command=lambda: edit_paket(self))
-    delete_button = model.create_crud_button(self, frame=self.paket, x=600, y=110 , disabled=len(treeview.selection()) == 0, text="Delete Data", command=lambda: delete_paket(self))
+    csv_button = create_laporan_button(self, frame=self.paket, x=100, y=110 ,text="Export as CSV", command=lambda: csv_paket(self))
 
-    treeview.bind("<ButtonRelease-1>", lambda event: model.switch([edit_button, delete_button], selection=treeview.selection()))
+    tambah_button = create_crud_button(self, frame=self.paket, x=355, y=110, text="Tambah Data", command=lambda: tambah_paket(self))
+    edit_button = create_crud_button(self, frame=self.paket, x=480, y=110, disabled=len(treeview.selection()) == 0, text="Edit Data", command=lambda: edit_paket(self))
+    delete_button = create_crud_button(self, frame=self.paket, x=600, y=110 , disabled=len(treeview.selection()) == 0, text="Delete Data", command=lambda: delete_paket(self))
+
+    treeview.bind("<ButtonRelease-1>", lambda event: switch([edit_button, delete_button], selection=treeview.selection()))
+
+def csv_paket(self):
+    Verdana_filename = 'data.csv'
+    initial_dir = '.'
+    filetypes = [('CSV files', '*.csv')]
+    # Prompt the user to choose a filename and location
+    filename = filedialog.asksaveasfilename(Verdanaextension='.csv', initialfile=Verdana_filename, initialdir=initial_dir, filetypes=filetypes)
+    if filename:
+        importcsv(
+        filename=filename,
+        treeview=self.treeview)
 
 def tambah_paket(self):
     self.tambah = tk.Toplevel()
     self.tambah.title("Laundrive")
     self.tambah.geometry("960x540+180+80")
     self.tambah.resizable(False, False)
-    self.frame = tk.Frame(self.tambah)
+    self.frame = ttk.Frame(self.tambah)
     self.frame.pack(fill="both", expand=False)
     self.canvas = tk.Canvas(self.tambah, width=960, height=540)
     self.canvas.pack(fill="both", expand=True)
 
-    model.backgroundimg(self)
-    self.canvas.create_image(0, 0, image=self.image, anchor="nw")
-    model.database(self)
+    database(self)
 
-    self.canvas.create_text(480, 50, text="Tambah Paket", anchor="center", font=("default", 28, "bold"))
-    self.canvas.create_text(420, 100, text="Outlet", font=("default", 14))
-    self.canvas.create_text(420, 125, text="Jenis Paket", font=("default", 14))
-    self.canvas.create_text(420, 150, text="Nama Paket", font=("default", 14))
-    self.canvas.create_text(420, 175, text="Harga", font=("default", 14))
+    self.canvas.create_text(480, 50, text="Tambah Paket", anchor="center", font=("Verdana", 28, "bold"), fill="#b5b3b3")
+    self.canvas.create_text(420, 100, text="Outlet", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(420, 140, text="Jenis Paket", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(420, 180, text="Nama Paket", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(420, 220, text="Harga", font=("Verdana", 14), fill="#b5b3b3")
 
-    outlet = model.create_tambah_dropdown(self, self.tambah, x = 545, y = 100, procdrop="dropdownoutlet")
-    jenis = model.create_tambah_enumdropdown(self, self.tambah, x = 545, y = 125, procenum="paketjenis")
-    nama = model.create_tambah_entry(self, self.tambah, x = 545, y = 150)
-    harga = model.create_tambah_entry(self, self.tambah, x = 545, y = 175)
+    outlet = create_tambah_dropdown(self, self.tambah, x = 545, y = 100, procdrop="dropdownoutlet")
+    jenis = create_tambah_enumdropdown(self, self.tambah, x = 545, y = 140, procenum="paketjenis")
+    nama = create_tambah_entry(self, self.tambah, x = 545, y = 180)
+    harga = create_tambah_entry(self, self.tambah, x = 545, y = 220)
 
     def tambah():
         outlet_val = outlet.get()
@@ -67,9 +72,9 @@ def tambah_paket(self):
         nama_val = nama.get()
         harga_val = harga.get()
 
-        validate = model.validate_number(values=(harga_val))
+        validate = validate_number(values=(harga_val))
         if validate == True:
-            model.tambah(
+            tambah(
                 self, 
                 frame=self.tambah,
                 destroy=self.paket, 
@@ -79,43 +84,41 @@ def tambah_paket(self):
         else:
             messagebox.showerror("Error", "Please enter a valid entry")
 
-    model.create_submit_button(self, x = 480, y = 225, frame=self.tambah, command=tambah)
+    create_submit_button(self, x = 480, y = 265, frame=self.tambah, command=tambah)
 
 def edit_paket(self):
     self.edit = tk.Toplevel()
     self.edit.title("Laundrive")
     self.edit.geometry("960x540+180+80")
     self.edit.resizable(False, False)
-    self.frame = tk.Frame(self.edit)
+    self.frame = ttk.Frame(self.edit)
     self.frame.pack(fill="both", expand=False)
     self.canvas = tk.Canvas(self.edit, width=960, height=540)
     self.canvas.pack(fill="both", expand=True)
 
-    model.backgroundimg(self)
-    self.canvas.create_image(0, 0, image=self.image, anchor="nw")
-    model.database(self)
+    database(self)
 
-    self.canvas.create_text(480, 50, text="Edit Paket", anchor="center", font=("default", 28, "bold"))
-    self.canvas.create_text(420, 100, text="Outlet", font=("default", 14))
-    self.canvas.create_text(420, 125, text="Jenis Paket", font=("default", 14))
-    self.canvas.create_text(420, 150, text="Nama Paket", font=("default", 14))
-    self.canvas.create_text(420, 175, text="Harga", font=("default", 14))
+    self.canvas.create_text(480, 50, text="Edit Paket", anchor="center", font=("Verdana", 28, "bold"), fill="#b5b3b3")
+    self.canvas.create_text(420, 100, text="Outlet", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(420, 140, text="Jenis Paket", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(420, 180, text="Nama Paket", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(420, 220, text="Harga", font=("Verdana", 14), fill="#b5b3b3")
 
-    outlet = model.create_edit_dropdown(self, self.edit, x = 545, y = 100, index=1, target_index=1, state='normal', treeview=self.treeview, procid="paketselectbyid", procdrop="dropdownoutlet")
-    jenis = model.create_edit_enumdropdown(self, self.edit, x = 545, y = 125, index=2, state='normal', treeview=self.treeview, procid="paketselectbyid", procenum="paketjenis")
-    nama = model.create_edit_entry(self, self.edit, x = 545, y = 150, index=3, state='normal', treeview=self.treeview, procid="paketselectbyid")
-    harga = model.create_edit_entry(self, self.edit, x = 545, y = 175, index=4, state='normal', treeview=self.treeview, procid="paketselectbyid")
+    outlet = create_edit_dropdown(self, self.edit, x = 545, y = 100, index=1, target_index=1, state='normal', treeview=self.treeview, procid="paketselectbyid", procdrop="dropdownoutlet")
+    jenis = create_edit_enumdropdown(self, self.edit, x = 545, y = 140, index=2, state='normal', treeview=self.treeview, procid="paketselectbyid", procenum="paketjenis")
+    nama = create_edit_entry(self, self.edit, x = 545, y = 180, index=3, state='normal', treeview=self.treeview, procid="paketselectbyid")
+    harga = create_edit_entry(self, self.edit, x = 545, y = 220, index=4, state='normal', treeview=self.treeview, procid="paketselectbyid")
 
     def edit():
-        id_val = model.get_id(self, treeview=self.treeview, procid="paketselectbyid")
+        id_val = get_id(self, treeview=self.treeview, procid="paketselectbyid")
         outlet_val = outlet.get()
         jenis_val = jenis.get()
         nama_val = nama.get()
         harga_val = harga.get()
 
-        validate = model.validate_number(values=(harga_val))
+        validate = validate_number(values=(harga_val))
         if validate == True:
-            model.edit(
+            edit(
                 self,
                 frame=self.edit,
                 destroy=self.paket,
@@ -125,11 +128,11 @@ def edit_paket(self):
         else:
             messagebox.showerror("Error", "Please enter a valid entry")
 
-    model.create_submit_button(self, x = 480, y = 225, frame=self.edit, command=edit)
+    create_submit_button(self, x = 480, y = 265, frame=self.edit, command=edit)
 
 
 def delete_paket(self):
-    model.delete(
+    delete(
         self, 
         treeview=self.treeview, 
         proc="paketdelete")
