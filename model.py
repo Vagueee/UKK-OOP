@@ -133,12 +133,12 @@ def create_treeview(
     self.treeview = ttk.Treeview(frame)
     self.treeview.pack(padx=20, pady=20)
     self.treeview['columns'] = columns
+
     self.treeview.column("#0", width=0,  stretch=False)
     for each in columns:
         self.treeview.column(each, anchor='center', width=width, minwidth=minwidth, stretch=True)
 
     self.treeview.heading("#0", text="", anchor="center")
-    
     for heading, text in zip(headings, texts):
         self.treeview.heading(heading, text=text, anchor='center')
 
