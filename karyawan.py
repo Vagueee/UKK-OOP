@@ -40,7 +40,7 @@ def csv_karyawan(self):
     # Prompt the user to choose a filename and location
     filename = filedialog.asksaveasfilename(defaultextension='.csv', initialfile=default_filename, initialdir=initial_dir, filetypes=filetypes)
     if filename:
-        importcsv(
+        exportcsv(
         filename=filename,
         treeview=self.treeview)
 

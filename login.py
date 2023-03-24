@@ -17,12 +17,12 @@ class Login(ttk.Frame):
         self.canvas.create_text(405, 270, text="Password", font=("Verdana", 18, "bold"), fill="#b5b3b3")
 
         self.username_entry = ttk.Entry(self.parent)
-        self.username_entry.insert(0, 'Username')
-        self.username_entry.bind("<FocusIn>", lambda args: self.username_entry.delete('0', 'end'))
+        # self.username_entry.insert(0, 'Username')
+        # self.username_entry.bind("<FocusIn>", lambda args: self.username_entry.delete('0', 'end'))
         self.username_entry.pack()
         self.password_entry = ttk.Entry(self.parent, show="*")
-        self.password_entry.insert(0, 'Password')
-        self.password_entry.bind("<FocusIn>", lambda args: self.password_entry.delete('0', 'end'))
+        # self.password_entry.insert(0, 'Password')
+        # self.password_entry.bind("<FocusIn>", lambda args: self.password_entry.delete('0', 'end'))
         self.password_entry.pack()
 
         self.canvas.create_window(555, 225, window=self.username_entry)

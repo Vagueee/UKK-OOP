@@ -4,6 +4,8 @@ from tkcalendar import DateEntry
 from typing import Tuple
 from dotenv import load_dotenv
 import csv
+import jinja2
+import pdfkit
 import os
 import mysql.connector
 load_dotenv()
@@ -140,7 +142,7 @@ def create_treeview(
     width = int(framewidth / len(columns))
 
     # Create column
-    self.treeview.column("#0", width=0,  stretch=False)
+    self.treeview.column("#0", width=0,  stretch=True)
     for each in columns:
         self.treeview.column(each, anchor='center', width=width, minwidth=width, stretch=True)
 
@@ -480,7 +482,7 @@ def delete(
     self.db.commit()
     treeview.delete(deleting)
 
-def importcsv(
+def exportcsv(
     filename: str,
     treeview: ttk.Treeview,
     ):
@@ -498,3 +500,49 @@ def importcsv(
             for col in treeview["columns"]:
                 row.append(treeview.set(item, col))
             writer.writerow(row)
+
+def exportpdf(
+    filename: str,
+    inv: str,
+    tgl: str,
+    namapel: str,
+    alamatpel: str,
+    telppel: str,
+    namaout: str,
+    alamatout: str,
+    telpout: str,
+    paket: str,
+    desk: str,
+    kuan: int,
+    harga: int,
+    pajak: int,
+    diskon: int,
+    total: int,
+    ):
+    context = {
+        'kodeinvoice': inv,
+        'tanggal': tgl,
+        'nama_pel': namapel,
+        'alamat_pel': alamatpel,
+        'telp_pel': telppel,
+        'nama_out': namaout,
+        'alamat_out': alamatout,
+        'telp_out': telpout,
+        'paket': paket,
+        'deskripsi': desk,
+        'kuantitas': kuan,
+        'harga': harga,
+        'pajak': pajak,
+        'diskon': diskon,
+        'total': int(total)
+    }
+
+    pdf_loader = jinja2.FileSystemLoader('./')
+    pdf_env = jinja2.Environment(loader=pdf_loader)
+
+    template = pdf_env.get_template('invoice_template.html')
+    output_text = template.render(context)
+
+    config = pdfkit.configuration(wkhtmltopdf='C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe')
+
+    pdfkit.from_string(output_text, filename, options={'enable-local-file-access': ''}, configuration=config, css=r'C:\Users\LENOVO\Documents\GitHub\UKK-OOP\css\bootstrap.css')

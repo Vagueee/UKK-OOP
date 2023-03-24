@@ -39,7 +39,7 @@ def csv_transaksi(self):
     # Prompt the user to choose a filename and location
     filename = filedialog.asksaveasfilename(defaultextension='.csv', initialfile=default_filename, initialdir=initial_dir, filetypes=filetypes)
     if filename:
-        importcsv(
+        exportcsv(
         filename=filename,
         treeview=self.treeview)
 
@@ -213,7 +213,43 @@ def detail_transaksi(self):
         data = rows.fetchone()
     
     self.canvas.create_text(200, 100, text=f"{data[0]}", anchor="center", font=("Verdana", 28, "bold"), fill="#b5b3b3")
-    self.canvas.create_text(200, 140, text=f"Id Paket : {data[1]}", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
-    self.canvas.create_text(200, 160, text=f"Kuantitas : {data[2]}", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
-    self.canvas.create_text(200, 180, text=f"Keterangan : {data[3]}", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
-    self.canvas.create_text(200, 200, text=f"Total Harga : Rp. {int(data[4])}", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
+    self.canvas.create_text(200, 160, text=f"Pelanggan : {data[2]}", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
+    self.canvas.create_text(200, 180, text=f"Alamat : {data[3]}", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
+    self.canvas.create_text(200, 200, text=f"No. Telp : {data[4]}", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
+    self.canvas.create_text(200, 230, text=f"-----------------------------", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
+    self.canvas.create_text(200, 260, text=f"Outlet : {data[5]}", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
+    self.canvas.create_text(200, 280, text=f"Alamat : {data[6]}", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
+    self.canvas.create_text(200, 300, text=f"No. Telp : {data[7]}", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
+    self.canvas.create_text(200, 330, text=f"-----------------------------", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
+    self.canvas.create_text(200, 360, text=f"Paket : {data[8]}", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
+    self.canvas.create_text(200, 380, text=f"Keterangan : {data[9]}", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
+    self.canvas.create_text(200, 400, text=f"Kuantitas : {data[10]}", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
+    self.canvas.create_text(200, 420, text=f"Total Harga : Rp. {int(data[14])}", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
+
+    def pdf_invoice(data):
+        default_filename = 'invoice.pdf'
+        initial_dir = '.'
+        filetypes = [('PDF', '*.pdf')]
+        # Prompt the user to choose a filename and location
+        filename = filedialog.asksaveasfilename(defaultextension='.pdf', initialfile=default_filename, initialdir=initial_dir, filetypes=filetypes)
+        if filename:
+            exportpdf(
+                filename=filename,
+                inv= data[0],
+                tgl= data[1],
+                namapel= data[2],
+                alamatpel= data[3],
+                telppel= data[4],
+                namaout= data[5],
+                alamatout= data[6],
+                telpout= data[7],
+                paket= data[8],
+                desk= data[9],
+                kuan= data[10],
+                harga= data[11],
+                pajak= data[12],
+                diskon= data[13],
+                total= data[14],
+                )
+
+    pdf_button = create_laporan_button(self, frame=self.detail, x=80, y=40 ,text="Export as PDF", command=lambda: pdf_invoice(data))
