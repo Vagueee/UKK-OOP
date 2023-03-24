@@ -15,6 +15,7 @@ def backgroundimg(self):
     self.image = PhotoImage(file=bg)
 
 def btnimg(self):
+    # Icon button
     ot = os.getenv("ic_outlet")
     self.otimg = PhotoImage(file=ot)
     pkt = os.getenv("ic_paket")
@@ -90,12 +91,14 @@ def create_crud_button(
         text=text,
         command=command,
     )
+    # Disabled if no id value
     self.button["state"] = "disabled" if disabled else "normal"
     
     self.canvas.create_window(x, y, window=self.button, anchor='center')
     return self.button
 
 def switch(buttons: list, selection: Tuple):
+    # Disable button logic
     for button in buttons:
         button["state"] = "normal" if button["state"] == "disabled" else "normal"
 
@@ -127,26 +130,32 @@ def create_treeview(
     columns: tuple,
     headings: tuple,
     texts: tuple,
-    width: int = 90,
-    minwidth: int = 90,
     ):
     self.treeview = ttk.Treeview(frame)
     self.treeview.pack(padx=20, pady=20)
     self.treeview['columns'] = columns
+    
+    # Width window (seharusnya pake winfo.width())
+    framewidth = 900 
+    width = int(framewidth / len(columns))
 
+    # Create column
     self.treeview.column("#0", width=0,  stretch=False)
     for each in columns:
-        self.treeview.column(each, anchor='center', width=width, minwidth=minwidth, stretch=True)
+        self.treeview.column(each, anchor='center', width=width, minwidth=width, stretch=True)
 
+    # Create header
     self.treeview.heading("#0", text="", anchor="center")
     for heading, text in zip(headings, texts):
         self.treeview.heading(heading, text=text, anchor='center')
 
+    # Get data from database
     self.cursor.callproc(proc)
     result = self.cursor.stored_results()
 
     for each in result:
         i = each.fetchall()
+        # Insert into treeview
         for row in i:
             self.treeview.insert(parent='', index='end', values=row)
 
@@ -174,15 +183,18 @@ def create_edit_entry(
     treeview: ttk.Treeview,
     procid: str,
     ):
+    # Get id from row
     editing = treeview.selection()[0]
+    # Get values in the same row
     values = treeview.item(editing, 'values')
     
+    # Get values by id
     self.cursor.callproc(procid, (values[0],))
     result = self.cursor.stored_results()
 
+    # Get values from stored procedure
     data = None
     for each in result:
-        # print(each)
         data = each.fetchone()
     
     entry = ttk.Entry(frame, state=state)
@@ -198,9 +210,11 @@ def create_tambah_dropdown(
     y: int,
     procdrop: str,
     ):
+    # Get values for dropdown
     self.cursor.callproc(procdrop)
     result = self.cursor.stored_results()
 
+    # Get values from stored procedure
     for values in result:
         values = values.fetchall()
 
@@ -222,21 +236,30 @@ def create_edit_dropdown(
     procid: str,
     procdrop: str,
     ):
+    # Get id from row
     editing = treeview.selection()[0]
+    # Get values in the same row
     values = treeview.item(editing, 'values')
+
+    # Get values by id
     self.cursor.callproc(procid, (values[0],))
     result = self.cursor.stored_results()
 
+    # Get values from stored procedure
     data = None
     for each in result:
         data = each.fetchone()
 
+    # Get values for dropdown
     self.cursor.callproc(procdrop)
     drop = self.cursor.stored_results()
     
-    for values in drop:
-        values = values.fetchall()
+    # Get values from stored procedure
+    values = None
+    for each in drop:
+        values = each.fetchall()
 
+    # Get selected value by id
     selected = None
     for each in values:
         # print(each, data)
@@ -258,9 +281,11 @@ def create_tambah_enumdropdown(
     y: int,
     procenum: str,
     ):
+    # Get enum values for dropdown
     self.cursor.callproc(procenum)
     result = self.cursor.stored_results()
 
+    # Split values by , and replace ' with space
     for value in result:
         values = value.fetchone()[1][5:-1].split(',')
         values = [i.replace("'", "") for i in values]
@@ -282,18 +307,25 @@ def create_edit_enumdropdown(
     procid: str,
     procenum: str,
     ):
+    # Get id from row
     editing = treeview.selection()[0]
+    # Get values in the same row
     values = treeview.item(editing, 'values')
+
+    # Get values by id
     self.cursor.callproc(procid, (values[0],))
     result = self.cursor.stored_results()
 
+    # Get values from stored procedure
     data = None
     for each in result:
         data = each.fetchone()
 
+    # Get enum values for dropdown
     self.cursor.callproc(procenum)
     drop = self.cursor.stored_results()
 
+    # Split values by , and replace ' with space
     for value in drop:
         values = value.fetchone()[1][5:-1].split(',')
         values = [i.replace("'", "") for i in values]
@@ -335,11 +367,16 @@ def create_edit_date(
     foreground: str = 'white',
     borderwidth: int = 2,
     ):
+    # Get id from row
     editing = treeview.selection()[0]
+    # Get values in the same row
     values = treeview.item(editing, 'values')
+
+    # Get values by id
     self.cursor.callproc(procid, (values[0],))
     result = self.cursor.stored_results()
 
+    # Get values from stored procedure
     data = None
     for each in result:
         data = each.fetchone()
@@ -367,6 +404,7 @@ def create_submit_button(
 def validate_number(
     values: Tuple,
     ) -> bool:
+    # Validation for numeric entry
     for each in values:
         if each.isdigit():
             return True
@@ -378,16 +416,21 @@ def get_id(
     treeview: ttk.Treeview,
     procid: str
     ):
+    # Get id from row
     selecting = treeview.selection()[0]
+    # Get values in the same row
     values = treeview.item(selecting, 'values')
     
+    # Get values by id
     self.cursor.callproc(procid, (values[0],))
     result = self.cursor.stored_results()
     
+    # Get values from stored procedure
     data = None
     for each in result:
         data = each.fetchall()[0]
     
+    # Return id
     return data[0]
 
 def tambah(
@@ -417,6 +460,7 @@ def edit(
     values = entries
     self.cursor.callproc(procedit, values)
     self.db.commit()
+    self.cursor.close()
     frame.destroy()
     destroy.destroy()
     redirect()
@@ -426,9 +470,12 @@ def delete(
     treeview: ttk.Treeview,
     proc: str,
     ):
+    # Get id from row
     deleting = treeview.selection()[0]
+    # Get values in the same row
     values = treeview.item(deleting, 'values')
 
+    # Delete values by id
     self.cursor.callproc(proc, (values[0],))
     self.db.commit()
     treeview.delete(deleting)
@@ -437,6 +484,7 @@ def importcsv(
     filename: str,
     treeview: ttk.Treeview,
     ):
+    # Write csv file
     with open(filename, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
         # Write header row

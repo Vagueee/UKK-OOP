@@ -33,11 +33,11 @@ def start_transaksi(self):
     treeview.bind("<ButtonRelease-1>", lambda event: switch([edit_button, detail_button], selection=treeview.selection()))
 
 def csv_transaksi(self):
-    Verdana_filename = 'data.csv'
+    default_filename = 'data.csv'
     initial_dir = '.'
     filetypes = [('CSV files', '*.csv')]
     # Prompt the user to choose a filename and location
-    filename = filedialog.asksaveasfilename(Verdanaextension='.csv', initialfile=Verdana_filename, initialdir=initial_dir, filetypes=filetypes)
+    filename = filedialog.asksaveasfilename(defaultextension='.csv', initialfile=default_filename, initialdir=initial_dir, filetypes=filetypes)
     if filename:
         importcsv(
         filename=filename,

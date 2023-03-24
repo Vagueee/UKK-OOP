@@ -1,0 +1,3 @@
+ID,Kode Invoice,Outlet,Karyawan,Pelanggan,Tanggal,Batas Waktu,Waktu Bayar,Status,Dibayar
+46,L-46-2023-03-22,UKK,Rei,Kita,2023-03-22,2023-03-22,2023-03-22,Baru,Dibayar
+48,L-47-2023-03-24,UKK,Rei,Kita,2023-03-24,2023-03-24,2023-03-24,Proses,Belum_Dibayar
