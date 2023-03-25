@@ -68,27 +68,27 @@ def tambah_transaksi(self):
     database(self)
 
     self.canvas.create_text(480, 50, text="Tambah Transaksi", anchor="center", font=("Verdana", 28, "bold"), fill="#b5b3b3")
-    self.canvas.create_text(415, 100, text="Outlet", font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(415, 140, text="Karyawan", font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(415, 180, text="Pelanggan", font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(415, 220, text="Tanggal", font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(415, 260, text="Batas Waktu", font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(415, 300, text="Waktu Bayar", font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(415, 340, text="Biaya Tambahan", font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(415, 380, text="Diskon", font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(415, 420, text="Status", font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(415, 460, text="Dibayar", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(400, 100, text="Outlet", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(400, 140, text="Karyawan", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(400, 180, text="Pelanggan", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(400, 220, text="Tanggal", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(400, 260, text="Batas Waktu", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(400, 300, text="Waktu Bayar", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(400, 340, text="Biaya Tambahan", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(400, 380, text="Diskon", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(400, 420, text="Status", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(400, 460, text="Dibayar", font=("Verdana", 14), fill="#b5b3b3")
 
-    outlet = create_tambah_dropdown(self, self.tambah, x = 550, y = 100, procdrop="dropdownoutlet")
-    karyawan = create_tambah_dropdown(self, self.tambah, x = 550, y = 140, procdrop="dropdownkasir")
-    pelanggan = create_tambah_dropdown(self, self.tambah, x = 550, y = 180, procdrop="dropdownpelanggan")
-    tanggal = create_tambah_date(self, self.tambah, x = 550, y = 220)
-    batas_waktu = create_tambah_date(self, self.tambah, x = 550, y = 260)
-    waktu_bayar = create_tambah_date(self, self.tambah, x = 550, y = 300)
-    biaya_tambahan = create_tambah_entry(self, self.tambah, x = 550, y = 340)
-    diskon = create_tambah_entry(self, self.tambah, x = 550, y = 380)
-    status = create_tambah_enumdropdown(self, self.tambah, x = 550, y = 420, procenum="transaksistatus")
-    dibayar = create_tambah_enumdropdown(self, self.tambah, x = 550, y = 460, procenum="transaksidibayar")
+    outlet = create_tambah_dropdown(self, self.tambah, x = 565, y = 100, procdrop="dropdownoutlet")
+    karyawan = create_tambah_dropdown(self, self.tambah, x = 565, y = 140, procdrop="dropdownkasir")
+    pelanggan = create_tambah_dropdown(self, self.tambah, x = 565, y = 180, procdrop="dropdownpelanggan")
+    tanggal = create_tambah_date(self, self.tambah, x = 565, y = 220)
+    batas_waktu = create_tambah_date(self, self.tambah, x = 565, y = 260)
+    waktu_bayar = create_tambah_date(self, self.tambah, x = 565, y = 300)
+    biaya_tambahan = create_tambah_entry(self, self.tambah, x = 565, y = 340)
+    diskon = create_tambah_entry(self, self.tambah, x = 565, y = 380)
+    status = create_tambah_enumdropdown(self, self.tambah, x = 565, y = 420, procenum="transaksistatus")
+    dibayar = create_tambah_enumdropdown(self, self.tambah, x = 565, y = 460, procenum="transaksidibayar")
 
     def tambahdata():
         outlet_val = outlet.get()
@@ -113,27 +113,28 @@ def tambah_transaksi(self):
     create_submit_button(self, x = 480, y = 500, frame=self.tambah, command=tambahdata)
 
 def tambah_detail_transaksi(self):
-    self.tambah = tk.Toplevel()
-    self.tambah.title("Laundrive")
-    self.tambah.geometry("960x540+180+80")
-    self.tambah.resizable(False, False)
-    self.frame = ttk.Frame(self.tambah)
+    self.tambahdet = tk.Toplevel()
+    self.tambahdet.title("Laundrive")
+    self.tambahdet.geometry("960x540+180+80")
+    self.tambahdet.resizable(False, False)
+    self.frame = ttk.Frame(self.tambahdet)
     self.frame.pack(fill="both", expand=False)
-    self.canvas = tk.Canvas(self.tambah, width=960, height=540)
+    self.canvas = tk.Canvas(self.tambahdet, width=960, height=540)
     self.canvas.pack(fill="both", expand=True)
 
     database(self)
 
     self.canvas.create_text(480, 50, text="Tambah Detail Transaksi", anchor="center", font=("Verdana", 28, "bold"), fill="#b5b3b3")
-    self.canvas.create_text(420, 100, text="Paket", font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(420, 140, text="Keterangan", font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(420, 180, text="Kuantitas", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(415, 100, text="Paket", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(415, 140, text="Keterangan", font=("Verdana", 14), fill="#b5b3b3")
+    self.canvas.create_text(415, 180, text="Kuantitas", font=("Verdana", 14), fill="#b5b3b3")
 
-    paket = create_tambah_dropdown(self, self.tambah, x = 545, y = 100, procdrop="dropdownpaket")
-    keterangan = create_tambah_entry(self, self.tambah, x = 545, y = 140)
-    qty = create_tambah_entry(self, self.tambah, x = 545, y = 180)
+    paket = create_tambah_dropdown(self, self.tambahdet, x = 555, y = 100, procdrop="dropdownpaket")
+    keterangan = create_tambah_entry(self, self.tambahdet, x = 555, y = 140)
+    qty = create_tambah_entry(self, self.tambahdet, x = 555, y = 180)
 
     def tambahdata():
+        self.cursor.nextset()
         self.cursor.execute('call detailidtransaksi();')
         id_val = self.cursor.fetchone()
 
@@ -143,14 +144,13 @@ def tambah_detail_transaksi(self):
 
         tambah(
             self, 
-            frame=self.tambah,
+            frame=self.tambahdet,
             destroy=self.transaksi, 
             redirect=lambda: start_transaksi(self), 
             entries=(id_val[0], paket_val, keterangan_val, qty_val), 
             proc="detailtambah")
 
-    create_submit_button(self, x = 480, y = 220, frame=self.tambah, command=tambahdata)
-
+    create_submit_button(self, x = 480, y = 220, frame=self.tambahdet, command=tambahdata)
 
 def edit_transaksi(self):
     self.edit = tk.Toplevel()
