@@ -24,9 +24,10 @@ def start_paket(self):
         headings=('id', 'outlet', 'jenis', 'nama', 'harga'), 
         texts=('ID', 'Outlet', 'Jenis Paket', 'Nama Paket', 'Harga'))
 
-    csv_button = create_laporan_button(self, frame=self.paket, x=100, y=110 ,text="Export as CSV", command=lambda: csv_paket(self))
+    csv_button = create_laporan_button(self, frame=self.paket, x=60, y=110 ,text="CSV", command=lambda: csv_paket(self))
+    xls_button = create_laporan_button(self, frame=self.paket, x=160, y=110 ,text="Excel", command=lambda: xls_paket(self))
 
-    tambah_button = create_crud_button(self, frame=self.paket, x=355, y=110, text="Tambah Data", command=lambda: tambah_paket(self))
+    tambah_button = create_crud_button(self, frame=self.paket, x=360, y=110, text="Tambah Data", command=lambda: tambah_paket(self))
     edit_button = create_crud_button(self, frame=self.paket, x=480, y=110, disabled=len(treeview.selection()) == 0, text="Edit Data", command=lambda: edit_paket(self))
     delete_button = create_crud_button(self, frame=self.paket, x=600, y=110 , disabled=len(treeview.selection()) == 0, text="Delete Data", command=lambda: delete_paket(self))
 
@@ -40,6 +41,17 @@ def csv_paket(self):
     filename = filedialog.asksaveasfilename(defaultextension='.csv', initialfile=default_filename, initialdir=initial_dir, filetypes=filetypes)
     if filename:
         exportcsv(
+        filename=filename,
+        treeview=self.treeview)
+
+def xls_paket(self):
+    default_filename = 'data.xlsx'
+    initial_dir = '.'
+    filetypes = [('Excel', '*.xslx')]
+    # Prompt the user to choose a filename and location
+    filename = filedialog.asksaveasfilename(defaultextension='.xslx', initialfile=default_filename, initialdir=initial_dir, filetypes=filetypes)
+    if filename:
+        exportxls(
         filename=filename,
         treeview=self.treeview)
 

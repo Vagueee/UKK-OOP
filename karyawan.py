@@ -25,9 +25,10 @@ def start_karyawan(self):
         texts=('ID', 'Outlet', 'Nama', 'Username', 'Role')
     )
 
-    csv_button = create_laporan_button(self, frame=self.karyawan, x=100, y=110 ,text="Export as CSV", command=lambda: csv_karyawan(self))
+    csv_button = create_laporan_button(self, frame=self.karyawan, x=100, y=110 ,text="CSV", command=lambda: csv_karyawan(self))
+    xls_button = create_laporan_button(self, frame=self.karyawan, x=100, y=110 ,text="Excel", command=lambda: xls_karyawan(self))
 
-    tambah_button = create_crud_button(self, frame=self.karyawan, x=355, y=110 , text="Tambah Data", command=lambda: tambah_karyawan(self))
+    tambah_button = create_crud_button(self, frame=self.karyawan, x=360, y=110 , text="Tambah Data", command=lambda: tambah_karyawan(self))
     edit_button = create_crud_button(self, frame=self.karyawan, x=480, y=110 , disabled=len(treeview.selection()) == 0, text="Edit Data", command=lambda: edit_karyawan(self))
     delete_button = create_crud_button(self, frame=self.karyawan, x=600, y=110 , disabled=len(treeview.selection()) == 0, text="Delete Data", command=lambda: delete_karyawan(self))
 
@@ -41,6 +42,17 @@ def csv_karyawan(self):
     filename = filedialog.asksaveasfilename(defaultextension='.csv', initialfile=default_filename, initialdir=initial_dir, filetypes=filetypes)
     if filename:
         exportcsv(
+        filename=filename,
+        treeview=self.treeview)
+
+def xls_karyawan(self):
+    default_filename = 'data.xlsx'
+    initial_dir = '.'
+    filetypes = [('Excel', '*.xslx')]
+    # Prompt the user to choose a filename and location
+    filename = filedialog.asksaveasfilename(defaultextension='.xslx', initialfile=default_filename, initialdir=initial_dir, filetypes=filetypes)
+    if filename:
+        exportxls(
         filename=filename,
         treeview=self.treeview)
 

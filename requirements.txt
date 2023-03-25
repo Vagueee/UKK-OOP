@@ -2,3 +2,7 @@ python-dotenv==1.0.0
 mysql.connector
 tk
 tkcalendar
+pandas
+openpyxl
+jinja2
+pdfkit

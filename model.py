@@ -3,6 +3,7 @@ from tkinter import PhotoImage, messagebox, Canvas, font, ttk, filedialog
 from tkcalendar import DateEntry
 from typing import Tuple
 from dotenv import load_dotenv
+import pandas as pd
 import csv
 import jinja2
 import pdfkit
@@ -500,6 +501,22 @@ def exportcsv(
             for col in treeview["columns"]:
                 row.append(treeview.set(item, col))
             writer.writerow(row)
+
+def exportxls(
+    filename: str,
+    treeview: ttk.Treeview,
+    ):
+    # Get the data from the Treeview
+    data = []
+    for item in treeview.get_children():
+        values = treeview.item(item, 'values')
+        data.append(values)
+
+    # Convert the data to a Pandas DataFrame
+    df = pd.DataFrame(data, columns=[col for col in treeview['columns']])
+
+    # Write the DataFrame to an Excel file
+    df.to_excel(filename, index=False)
 
 def exportpdf(
     filename: str,

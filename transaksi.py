@@ -24,9 +24,10 @@ def start_transaksi(self):
         headings=('id', 'kode_invoice', 'outlet', 'karyawan', 'pelanggan', 'tgl', 'batas_waktu', 'waktu_bayar', 'status', 'dibayar'), 
         texts=('ID', 'Kode Invoice', 'Outlet', 'Karyawan', 'Pelanggan', 'Tanggal', 'Batas Waktu', 'Waktu Bayar', 'Status', 'Dibayar'))
 
-    csv_button = create_laporan_button(self, frame=self.transaksi, x=100, y=110 ,text="Export as CSV", command=lambda: csv_transaksi(self))
+    csv_button = create_laporan_button(self, frame=self.transaksi, x=60, y=110 ,text="CSV", command=lambda: csv_transaksi(self))
+    xls_button = create_laporan_button(self, frame=self.transaksi, x=160, y=110 ,text="Excel", command=lambda: xls_transaksi(self))
 
-    tambah_button = create_crud_button(self, frame=self.transaksi, x=355, y=110, text="Tambah Data", command=lambda: tambah_transaksi(self))
+    tambah_button = create_crud_button(self, frame=self.transaksi, x=360, y=110, text="Tambah Data", command=lambda: tambah_transaksi(self))
     edit_button = create_crud_button(self, frame=self.transaksi, x=480, y=110, disabled=len(treeview.selection()) == 0, text="Edit Data", command=lambda: edit_transaksi(self))
     detail_button = create_crud_button(self, frame=self.transaksi, x=600, y=110, disabled=len(treeview.selection()) == 0, text="Detail Data", command=lambda: detail_transaksi(self))
 
@@ -40,6 +41,17 @@ def csv_transaksi(self):
     filename = filedialog.asksaveasfilename(defaultextension='.csv', initialfile=default_filename, initialdir=initial_dir, filetypes=filetypes)
     if filename:
         exportcsv(
+        filename=filename,
+        treeview=self.treeview)
+
+def xls_transaksi(self):
+    default_filename = 'data.xlsx'
+    initial_dir = '.'
+    filetypes = [('Excel', '*.xslx')]
+    # Prompt the user to choose a filename and location
+    filename = filedialog.asksaveasfilename(defaultextension='.xslx', initialfile=default_filename, initialdir=initial_dir, filetypes=filetypes)
+    if filename:
+        exportxls(
         filename=filename,
         treeview=self.treeview)
 
@@ -197,7 +209,7 @@ def detail_transaksi(self):
     self.detail.resizable(False, False)
     self.frame = ttk.Frame(self.detail)
     self.frame.pack(fill="both", expand=False)
-    self.canvas = tk.Canvas(self.detail, width=960, height=540)
+    self.canvas = tk.Canvas(self.detail, width=400, height=540)
     self.canvas.pack(fill="both", expand=True)
 
     database(self)
@@ -212,19 +224,20 @@ def detail_transaksi(self):
     for rows in result:
         data = rows.fetchone()
     
-    self.canvas.create_text(200, 100, text=f"{data[0]}", anchor="center", font=("Verdana", 28, "bold"), fill="#b5b3b3")
-    self.canvas.create_text(200, 160, text=f"Pelanggan : {data[2]}", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
-    self.canvas.create_text(200, 180, text=f"Alamat : {data[3]}", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
-    self.canvas.create_text(200, 200, text=f"No. Telp : {data[4]}", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
-    self.canvas.create_text(200, 230, text=f"-----------------------------", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
-    self.canvas.create_text(200, 260, text=f"Outlet : {data[5]}", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
-    self.canvas.create_text(200, 280, text=f"Alamat : {data[6]}", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
-    self.canvas.create_text(200, 300, text=f"No. Telp : {data[7]}", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
-    self.canvas.create_text(200, 330, text=f"-----------------------------", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
-    self.canvas.create_text(200, 360, text=f"Paket : {data[8]}", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
-    self.canvas.create_text(200, 380, text=f"Keterangan : {data[9]}", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
-    self.canvas.create_text(200, 400, text=f"Kuantitas : {data[10]}", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
-    self.canvas.create_text(200, 420, text=f"Total Harga : Rp. {int(data[14])}", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
+    self.canvas.create_text(120, 60, text="Laundrive", anchor="n", font=("Verdana", 28, "bold"), fill="#b5b3b3")
+    self.canvas.create_text(20, 140, text=f"Kode Invoice \n{data[0]}", anchor="w", font=("Verdana", 12), fill="#b5b3b3")
+
+    self.canvas.create_text(20, 220, text=f"Klien \n\n{data[2]}", anchor="w", font=("Verdana", 12), fill="#b5b3b3")
+    self.canvas.create_text(20, 260, text=f"{data[3]}", anchor="w", font=("Verdana", 12), fill="#b5b3b3")
+    self.canvas.create_text(20, 280, text=f"{data[4]}", anchor="w", font=("Verdana", 12), fill="#b5b3b3")
+    self.canvas.create_text(380, 220, text=f"Outlet\n\n{data[5]}", anchor="e", font=("Verdana", 12), fill="#b5b3b3", justify="right")
+    self.canvas.create_text(380, 260, text=f"{data[6]}", anchor="e", font=("Verdana", 12), fill="#b5b3b3")
+    self.canvas.create_text(380, 280, text=f"{data[7]}", anchor="e", font=("Verdana", 12), fill="#b5b3b3")
+
+    self.canvas.create_text(45, 420, text=f"Paket \n\n{data[8]}", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
+    self.canvas.create_text(130, 420, text=f"Keterangan \n\n{data[9]}", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
+    self.canvas.create_text(230, 420, text=f"Kuantitas \n\n{data[10]}", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
+    self.canvas.create_text(335, 420, text=f"Total Harga \n\nRp. {int(data[14])}", anchor="center", font=("Verdana", 12), fill="#b5b3b3")
 
     def pdf_invoice(data):
         default_filename = 'invoice.pdf'
@@ -252,4 +265,4 @@ def detail_transaksi(self):
                 total= data[14],
                 )
 
-    pdf_button = create_laporan_button(self, frame=self.detail, x=80, y=40 ,text="Export as PDF", command=lambda: pdf_invoice(data))
+    pdf_button = create_laporan_button(self, frame=self.detail, x=60, y=30 ,text="PDF", command=lambda: pdf_invoice(data))

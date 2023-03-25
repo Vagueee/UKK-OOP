@@ -24,9 +24,10 @@ def start_pelanggan(self):
         headings=('id', 'nama', 'alamat', 'jenis_kelamin', 'tlp'), 
         texts=('ID', 'Nama', 'Alamat', 'Jenis Kelamin', 'No. Telp'))
 
-    csv_button = create_laporan_button(self, frame=self.pelanggan, x=100, y=110 ,text="Export as CSV", command=lambda: csv_pelanggan(self))
+    csv_button = create_laporan_button(self, frame=self.pelanggan, x=60, y=110 ,text="CSV", command=lambda: csv_pelanggan(self))
+    xls_button = create_laporan_button(self, frame=self.pelanggan, x=160, y=110 ,text="Excel", command=lambda: xls_pelanggan(self))
 
-    tambah_button = create_crud_button(self, frame=self.pelanggan, x=355, y=110, text="Tambah Data", command=lambda: tambah_pelanggan(self))
+    tambah_button = create_crud_button(self, frame=self.pelanggan, x=360, y=110, text="Tambah Data", command=lambda: tambah_pelanggan(self))
     edit_button = create_crud_button(self, frame=self.pelanggan, x=480, y=110, disabled=len(treeview.selection()) == 0, text="Edit Data", command=lambda: edit_pelanggan(self))
     delete_button = create_crud_button(self, frame=self.pelanggan, x=600, y=110, disabled=len(treeview.selection()) == 0, text="Delete Data", command=lambda: delete_pelanggan(self))
 
@@ -40,6 +41,17 @@ def csv_pelanggan(self):
     filename = filedialog.asksaveasfilename(defaultextension='.csv', initialfile=default_filename, initialdir=initial_dir, filetypes=filetypes)
     if filename:
         exportcsv(
+        filename=filename,
+        treeview=self.treeview)
+
+def xls_pelanggan(self):
+    default_filename = 'data.xlsx'
+    initial_dir = '.'
+    filetypes = [('Excel', '*.xslx')]
+    # Prompt the user to choose a filename and location
+    filename = filedialog.asksaveasfilename(defaultextension='.xslx', initialfile=default_filename, initialdir=initial_dir, filetypes=filetypes)
+    if filename:
+        exportxls(
         filename=filename,
         treeview=self.treeview)
 
