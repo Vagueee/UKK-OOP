@@ -12,46 +12,38 @@
     <div class="row justify-content-center">
         <div class="col-lg-12 col-xl-7">
             <div class="card">
-                <h2 class="rounded float-left mt-5 mx-5"><strong>Laundrive</strong></h2>
+                <h2 class="rounded float-left mt-5 mx-5"><b>Laundrive</b></h2>
             <div class="card-body p-5">
                 <div class="border-top border-gray-200 pt-4">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="text-muted mb-2"><strong>Invoice Code</strong></div>
-                            <strong>{{kodeinvoice}}</strong>
-                            </div>
-                            <div class="col-md-6 text-end">
-                            <div class="text-muted mb-2"><strong>Payment Date</strong></div>
-                            <strong>{{tanggal}}</strong>
-                        </div>
-                    </div>
+                    <table class="table borderless mt-3">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col" class="fs-sm text-dark text-uppercase-bold-sm px-0"><b>Kode Invoice</b></th>
+                                <th scope="col" class="fs-sm text-dark text-uppercase-bold-sm px-0 text-end"><b>Tanggal</b></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="px-0">{{kodeinvoice}}</td>
+                                <td class="px-0 text-end">{{tanggal}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="border-top border-gray-200 mt-4 py-4">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="text-muted mb-2"><strong>Client</strong></div>
-                            <strong>
-                            {{nama_pel}}
-                            </strong>
-                            <p class="fs-sm">
-                            {{alamat_pel}}
-                            <br>
-                            {{telp_pel}}
-                            </p>
-                        </div>
-                        <div class="col-md-6 text-end">
-                            <div class="text-muted mb-2"><strong>Outlet</strong></div>
-                            <strong>
-                            {{nama_out}}
-                            </strong>
-                            <p class="fs-sm">
-                            {{alamat_out}}
-                            <br>
-                            {{telp_pel}}
-                            </p>
-                        </div>
-                    </div>
-                  </div>
+                    <table class="table borderless mt-3">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col" class="fs-sm text-dark text-uppercase-bold-sm px-0"><b>Client</b></th>
+                                <th scope="col" class="fs-sm text-dark text-uppercase-bold-sm px-0 text-end"><b>Outlet</b></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="px-0">{{nama_pel}} <br> {{alamat_pel}} <br> {{telp_pel}}</td>
+                                <td class="px-0 text-end">{{nama_out}} <br> {{alamat_out}} <br> {{telp_out}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
 
                     <table class="table border-bottom border-gray-200 mt-3">
                         <thead class="thead-light">
@@ -100,6 +92,6 @@
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script> -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript">
-</script>
+</script> -->
 </body>
 </html>

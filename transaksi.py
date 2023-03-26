@@ -134,8 +134,7 @@ def tambah_detail_transaksi(self):
     qty = create_tambah_entry(self, self.tambahdet, x = 555, y = 180)
 
     def tambahdata():
-        self.cursor.nextset()
-        self.cursor.execute('call detailidtransaksi();')
+        self.cursor.execute('SELECT id_transaksi FROM tb_transaksi ORDER BY id_transaksi DESC LIMIT 1;')
         id_val = self.cursor.fetchone()
 
         paket_val = paket.get()
