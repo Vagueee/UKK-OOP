@@ -1,6 +1,6 @@
 from model import *
 
-def start_paket(self):
+def start_paket(self, role):
     self.paket = tk.Toplevel()
     self.paket.title("Laundrive")
     self.paket.geometry("960x540+180+80")
@@ -11,6 +11,7 @@ def start_paket(self):
     self.canvas.pack(fill="both", expand=True)
 
     database(self)
+    self.role = role
 
     self.canvas.create_text(480, 50, text="Data Paket", anchor="center", font=("Verdana", 28, "bold"), fill="#b5b3b3")
 
@@ -27,11 +28,12 @@ def start_paket(self):
     csv_button = create_laporan_button(self, frame=self.paket, x=60, y=110 ,text="CSV", command=lambda: csv_paket(self))
     xls_button = create_laporan_button(self, frame=self.paket, x=160, y=110 ,text="Excel", command=lambda: xls_paket(self))
 
-    tambah_button = create_crud_button(self, frame=self.paket, x=360, y=110, text="Tambah Data", command=lambda: tambah_paket(self))
-    edit_button = create_crud_button(self, frame=self.paket, x=480, y=110, disabled=len(treeview.selection()) == 0, text="Edit Data", command=lambda: edit_paket(self))
-    delete_button = create_crud_button(self, frame=self.paket, x=600, y=110 , disabled=len(treeview.selection()) == 0, text="Delete Data", command=lambda: delete_paket(self))
+    if self.role == "Admin":
+        tambah_button = create_crud_button(self, frame=self.paket, x=360, y=110, text="Tambah Data", command=lambda: tambah_paket(self))
+        edit_button = create_crud_button(self, frame=self.paket, x=480, y=110, disabled=len(treeview.selection()) == 0, text="Edit Data", command=lambda: edit_paket(self))
+        delete_button = create_crud_button(self, frame=self.paket, x=600, y=110 , disabled=len(treeview.selection()) == 0, text="Delete Data", command=lambda: delete_paket(self))
 
-    treeview.bind("<ButtonRelease-1>", lambda event: switch([edit_button, delete_button], selection=treeview.selection()))
+        treeview.bind("<ButtonRelease-1>", lambda event: switch([edit_button, delete_button], selection=treeview.selection()))
 
 def csv_paket(self):
     default_filename = 'data.csv'

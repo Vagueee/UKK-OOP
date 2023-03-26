@@ -1,6 +1,6 @@
 from model import *
 
-def start_karyawan(self):
+def start_karyawan(self, role):
     self.karyawan = tk.Toplevel()
     self.karyawan.title("Laundrive")
     self.karyawan.geometry("960x540+180+80")
@@ -11,6 +11,7 @@ def start_karyawan(self):
     self.canvas.pack(fill="both", expand=True)
 
     database(self)
+    self.role = role
 
     self.canvas.create_text(480, 50, text="Data Karyawan", anchor="center", font=("Verdana", 28, "bold"), fill="#b5b3b3")
 
@@ -28,11 +29,12 @@ def start_karyawan(self):
     csv_button = create_laporan_button(self, frame=self.karyawan, x=100, y=110 ,text="CSV", command=lambda: csv_karyawan(self))
     xls_button = create_laporan_button(self, frame=self.karyawan, x=100, y=110 ,text="Excel", command=lambda: xls_karyawan(self))
 
-    tambah_button = create_crud_button(self, frame=self.karyawan, x=360, y=110 , text="Tambah Data", command=lambda: tambah_karyawan(self))
-    edit_button = create_crud_button(self, frame=self.karyawan, x=480, y=110 , disabled=len(treeview.selection()) == 0, text="Edit Data", command=lambda: edit_karyawan(self))
-    delete_button = create_crud_button(self, frame=self.karyawan, x=600, y=110 , disabled=len(treeview.selection()) == 0, text="Delete Data", command=lambda: delete_karyawan(self))
+    if self.role == "Admin":
+        tambah_button = create_crud_button(self, frame=self.karyawan, x=360, y=110 , text="Tambah Data", command=lambda: tambah_karyawan(self))
+        edit_button = create_crud_button(self, frame=self.karyawan, x=480, y=110 , disabled=len(treeview.selection()) == 0, text="Edit Data", command=lambda: edit_karyawan(self))
+        delete_button = create_crud_button(self, frame=self.karyawan, x=600, y=110 , disabled=len(treeview.selection()) == 0, text="Delete Data", command=lambda: delete_karyawan(self))
 
-    treeview.bind("<ButtonRelease-1>", lambda event: switch([edit_button, delete_button], selection=treeview.selection()))
+        treeview.bind("<ButtonRelease-1>", lambda event: switch([edit_button, delete_button], selection=treeview.selection()))
 
 def csv_karyawan(self):
     default_filename = 'data.csv'

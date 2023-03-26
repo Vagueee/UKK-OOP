@@ -52,11 +52,13 @@ class Login(ttk.Frame):
                 role = roles[0]
                 if role == "Admin":
                     self.parent.destroy()
-                    main.Main()
+                    main.Main(role=role)
                 elif role == "Kasir":
                     self.parent.destroy()
+                    main.Main(role=role)
                 elif role == "Owner":
                     self.parent.destroy()
+                    main.Main(role=role)
             else:
                 # If no role is found, show an error message
                 messagebox.showerror(title="Login Failed", message="No role found for user")

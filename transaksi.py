@@ -1,6 +1,6 @@
 from model import *
 
-def start_transaksi(self):
+def start_transaksi(self, role):
     self.transaksi = tk.Toplevel()
     self.transaksi.title("Laundrive")
     self.transaksi.geometry("960x540+180+80")
@@ -11,6 +11,7 @@ def start_transaksi(self):
     self.canvas.pack(fill="both", expand=True)
 
     database(self)
+    self.role = role
 
     self.canvas.create_text(480, 50, text="Data Transaksi", anchor="center", font=("Verdana", 28, "bold"), fill="#b5b3b3")
 
@@ -27,11 +28,12 @@ def start_transaksi(self):
     csv_button = create_laporan_button(self, frame=self.transaksi, x=60, y=110 ,text="CSV", command=lambda: csv_transaksi(self))
     xls_button = create_laporan_button(self, frame=self.transaksi, x=160, y=110 ,text="Excel", command=lambda: xls_transaksi(self))
 
-    tambah_button = create_crud_button(self, frame=self.transaksi, x=360, y=110, text="Tambah Data", command=lambda: tambah_transaksi(self))
-    edit_button = create_crud_button(self, frame=self.transaksi, x=480, y=110, disabled=len(treeview.selection()) == 0, text="Edit Data", command=lambda: edit_transaksi(self))
-    detail_button = create_crud_button(self, frame=self.transaksi, x=600, y=110, disabled=len(treeview.selection()) == 0, text="Detail Data", command=lambda: detail_transaksi(self))
+    if self.role != "Owner":
+        tambah_button = create_crud_button(self, frame=self.transaksi, x=360, y=110, text="Tambah Data", command=lambda: tambah_transaksi(self))
+        edit_button = create_crud_button(self, frame=self.transaksi, x=480, y=110, disabled=len(treeview.selection()) == 0, text="Edit Data", command=lambda: edit_transaksi(self))
+        detail_button = create_crud_button(self, frame=self.transaksi, x=600, y=110, disabled=len(treeview.selection()) == 0, text="Detail Data", command=lambda: detail_transaksi(self))
 
-    treeview.bind("<ButtonRelease-1>", lambda event: switch([edit_button, detail_button], selection=treeview.selection()))
+        treeview.bind("<ButtonRelease-1>", lambda event: switch([edit_button, detail_button], selection=treeview.selection()))
 
 def csv_transaksi(self):
     default_filename = 'data.csv'
