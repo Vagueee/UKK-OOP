@@ -1,35 +1,38 @@
 import tkinter as tk
-from tkinter import PhotoImage, messagebox, Canvas, font, ttk, filedialog
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.figure import Figure
+from dotenv import load_dotenv
+from tkinter import Menu, PhotoImage, messagebox, Canvas, font, ttk, filedialog
 from tkcalendar import DateEntry
 from typing import Tuple
-from dotenv import load_dotenv
 from weasyprint import HTML, CSS
-import pandas as pd
-import csv
 import jinja2
-import pdfkit
+import csv
 import os
 import mysql.connector
 load_dotenv()
 
-def backgroundimg(self):
-    # Image
-    bg = os.getenv("bg_path")
-    bg = f"{bg}"
-    self.image = PhotoImage(file=bg)
+# def backgroundimg(self):
+#     # Image
+#     bg = os.getenv("bg_path")
+#     bg = f"{bg}"
+#     self.image = PhotoImage(file=bg)
 
-def btnimg(self):
-    # Icon button
-    ot = os.getenv("ic_outlet")
-    self.otimg = PhotoImage(file=ot)
-    pkt = os.getenv("ic_paket")
-    self.pktimg = PhotoImage(file=pkt)
-    kar = os.getenv("ic_karyawan")
-    self.karimg = PhotoImage(file=kar)
-    tr = os.getenv("ic_transaksi")
-    self.trimg = PhotoImage(file=tr)
-    plg = os.getenv("ic_pelanggan")
-    self.plgimg = PhotoImage(file=plg)
+# def btnimg(self):
+#     # Icon button
+#     ot = os.getenv("ic_outlet")
+#     self.otimg = PhotoImage(file=ot)
+#     pkt = os.getenv("ic_paket")
+#     self.pktimg = PhotoImage(file=pkt)
+#     kar = os.getenv("ic_karyawan")
+#     self.karimg = PhotoImage(file=kar)
+#     tr = os.getenv("ic_transaksi")
+#     self.trimg = PhotoImage(file=tr)
+#     plg = os.getenv("ic_pelanggan")
+#     self.plgimg = PhotoImage(file=plg)
 
 def database(self):
     # Connect to the database
@@ -46,6 +49,33 @@ def database(self):
 
     # Create Cursor
     self.cursor = self.db.cursor()
+
+def graphic(
+    self,
+    proc,
+    ):
+    # Get values
+    self.cursor.callproc(proc, ())
+    result = self.cursor.stored_results()
+
+    # Get values from stored procedure
+    data = None
+    for each in result:
+        data = each.fetchall()
+
+    figure = plt.figure(figsize=(7, 4))
+    axes = figure.add_subplot(1, 1, 1)
+    axes.bar(
+        range(len(data)),
+        [datas[0] for datas in data],
+        tick_label=[datas[1] for datas in data]
+    )
+    axes.set_title("Pendapatan Laundry Harian")
+    axes.set_xlabel("Pendapatan")
+    axes.set_ylabel("Tanggal")
+
+    return figure
+
 
 def create_card(
     self,

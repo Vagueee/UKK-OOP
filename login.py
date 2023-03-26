@@ -7,6 +7,7 @@ class Login(ttk.Frame):
         self.parent = parent
         self.parent.call('source', 'azure.tcl')
         self.parent.call('set_theme', 'dark')
+        self.parent.resizable(False, False)
         self.canvas = tk.Canvas(self.parent, width=960, height=540)
         self.canvas.pack(fill="both", expand=True)
 
@@ -49,12 +50,12 @@ class Login(ttk.Frame):
                 # If the user's role is admin, allow access to all features
                 # Otherwise, limit access as appropriate for the user role
                 role = roles[0]
-                if role == "admin":
+                if role == "Admin":
                     self.parent.destroy()
                     main.Main()
-                elif role == "kasir":
+                elif role == "Kasir":
                     self.parent.destroy()
-                elif role == "owner":
+                elif role == "Owner":
                     self.parent.destroy()
             else:
                 # If no role is found, show an error message

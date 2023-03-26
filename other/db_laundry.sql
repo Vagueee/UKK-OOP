@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 21, 2023 at 09:34 AM
+-- Generation Time: Mar 26, 2023 at 04:30 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.0.19
 
@@ -25,8 +25,15 @@ DELIMITER $$
 --
 -- Procedures
 --
+CREATE DEFINER=`root`@`localhost` PROCEDURE `detailidtransaksi` ()   BEGIN
+SELECT id_transaksi FROM tb_transaksi ORDER BY id_transaksi DESC LIMIT 1;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `detailselectbyid` (IN `id_tr` INT)   BEGIN
-SELECT tb_detail_transaksi.id_paket, tb_detail_transaksi.qty, tb_detail_transaksi.keterangan, (((tb_paket.harga * tb_detail_transaksi.qty) - ((tb_paket.harga * tb_detail_transaksi.qty) * tb_transaksi.diskon / 100)) + tb_transaksi.biaya_tambahan) AS total FROM tb_detail_transaksi JOIN tb_paket ON tb_detail_transaksi.id_paket=tb_paket.id_paket JOIN tb_transaksi ON tb_detail_transaksi.id_transaksi=tb_transaksi.id_transaksi WHERE tb_detail_transaksi.id_transaksi=id_tr;
+SELECT tb_transaksi.kode_invoice, tb_transaksi.tgl, tb_member.nama AS nama_pel, tb_member.alamat AS alamat_pel, tb_member.tlp AS telp_pel, tb_outlet.nama AS nama_out, tb_outlet.alamat AS alamat_out, tb_outlet.tlp AS telp_out, tb_paket.nama_paket, tb_detail_transaksi.keterangan, tb_detail_transaksi.qty, (tb_detail_transaksi.qty * tb_paket.harga) AS harga, tb_transaksi.biaya_tambahan, tb_transaksi.diskon, (((tb_paket.harga * tb_detail_transaksi.qty) - ((tb_paket.harga * tb_detail_transaksi.qty) * tb_transaksi.diskon / 100)) + tb_transaksi.biaya_tambahan) AS total 
+FROM tb_detail_transaksi JOIN tb_paket ON tb_detail_transaksi.id_paket=tb_paket.id_paket JOIN tb_transaksi ON tb_detail_transaksi.id_transaksi=tb_transaksi.id_transaksi JOIN tb_member ON tb_transaksi.id_member=tb_member.id_member JOIN tb_outlet ON tb_transaksi.id_outlet=tb_outlet.id_outlet
+
+WHERE tb_detail_transaksi.id_transaksi=id_tr;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `detailtambah` (IN `id_tr` INT, IN `id_pk` INT, IN `qty_tr` VARCHAR(255), IN `ket_tr` VARCHAR(255))   BEGIN
@@ -64,7 +71,8 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `karyawanselect` ()   BEGIN
 SELECT tb_user.`id_user`, tb_outlet.nama, tb_user.`nama`, tb_user.`username`, tb_user.`role`
-FROM tb_user JOIN tb_outlet ON tb_user.id_outlet=tb_outlet.id_outlet;
+FROM tb_user JOIN tb_outlet ON tb_user.id_outlet=tb_outlet.id_outlet
+ORDER BY tb_user.id_user ASC;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `karyawanselectbyid` (IN `id_kar` INT)   BEGIN
@@ -91,7 +99,8 @@ WHERE id_outlet = id_out;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `outletselect` ()   BEGIN
-SELECT * FROM tb_outlet;
+SELECT * FROM tb_outlet
+ORDER BY tb_outlet.id_outlet ASC;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `outletselectbyid` (IN `id_out` INT)   BEGIN
@@ -117,7 +126,8 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `paketselect` ()   BEGIN
 SELECT tb_paket.id_paket, tb_outlet.nama, tb_paket.jenis, tb_paket.nama_paket, tb_paket.harga
-FROM tb_paket JOIN tb_outlet ON tb_paket.id_outlet=tb_outlet.id_outlet; 
+FROM tb_paket JOIN tb_outlet ON tb_paket.id_outlet=tb_outlet.id_outlet
+ORDER BY tb_paket.id_paket ASC; 
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `paketselectbyid` (IN `id_pk` INT)   BEGIN
@@ -143,7 +153,8 @@ SHOW COLUMNS FROM tb_member WHERE FIELD='jenis_kelamin';
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `pelangganselect` ()   BEGIN 
-SELECT * FROM tb_member;
+SELECT * FROM tb_member
+ORDER BY tb_member.id_member;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `pelangganselectbyid` (`id_pel` INT)   BEGIN
@@ -152,6 +163,11 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `pelanggantambah` (IN `nama_pel` VARCHAR(100), IN `alamat_pel` TEXT, IN `jeniskelamin_pel` ENUM('L','P'), IN `tlp_pel` VARCHAR(15))   BEGIN 
 INSERT INTO tb_member(nama, alamat, jenis_kelamin, tlp) VALUES(nama_pel, alamat_pel, jeniskelamin_pel, tlp_pel);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pendapatan` ()   BEGIN
+select sum(((tb_paket.harga * tb_detail_transaksi.qty) - ((tb_paket.harga * tb_detail_transaksi.qty) * tb_transaksi.diskon / 100)) + tb_transaksi.biaya_tambahan) as pendapatan, CAST(tb_transaksi.tgl AS DATE) as tanggal from tb_detail_transaksi JOIN tb_paket ON tb_detail_transaksi.id_paket=tb_paket.id_paket JOIN tb_transaksi on tb_detail_transaksi.id_transaksi=tb_transaksi.id_transaksi
+group by CAST(tb_transaksi.tgl AS DATE) limit 7;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `transaksidelete` (IN `id_tr` INT)   BEGIN
@@ -169,7 +185,8 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `transaksiselect` ()   BEGIN
 SELECT tb_transaksi.id_transaksi, tb_transaksi.kode_invoice, tb_outlet.nama, tb_user.nama, tb_member.nama, tb_transaksi.tgl, tb_transaksi.batas_waktu, tb_transaksi.waktu_bayar, tb_transaksi.status, tb_transaksi.dibayar
-FROM tb_transaksi JOIN tb_outlet ON tb_transaksi.id_outlet=tb_outlet.id_outlet JOIN tb_user ON tb_transaksi.id_user=tb_user.id_user JOIN tb_member ON tb_transaksi.id_member=tb_member.id_member;
+FROM tb_transaksi JOIN tb_outlet ON tb_transaksi.id_outlet=tb_outlet.id_outlet JOIN tb_user ON tb_transaksi.id_user=tb_user.id_user JOIN tb_member ON tb_transaksi.id_member=tb_member.id_member
+ORDER BY tb_transaksi.id_transaksi ASC;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `transaksiselectbyid` (IN `id_tr` INT)   BEGIN
@@ -180,9 +197,9 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `transaksistatus` ()   BEGIN
 SHOW COLUMNS FROM tb_transaksi WHERE FIELD='status';
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `transaksitambah` (IN `invoice_tr` VARCHAR(255), IN `id_out_tr` INT, IN `id_user_tr` INT, IN `id_member_tr` INT, IN `tgl_tr` DATE, IN `batas_waktu_tr` DATE, IN `waktu_bayar_tr` DATE, IN `biaya_tambahan_tr` VARCHAR(255), IN `diskon_tr` VARCHAR(255), IN `status_tr` ENUM('baru','proses','selesai','diambil'), IN `dibayar_tr` ENUM('dibayar','belum_dibayar'))   BEGIN
-INSERT INTO tb_transaksi(kode_invoice, id_outlet, id_user, id_member, tgl, batas_waktu, waktu_bayar, biaya_tambahan, diskon, status, dibayar)
-VALUES(invoice_tr, id_out_tr, id_user_tr, id_member_tr, tgl_tr, batas_waktu_tr, waktu_bayar_tr, biaya_tambahan_tr, diskon_tr, status_tr, dibayar_tr);
+CREATE DEFINER=`root`@`localhost` PROCEDURE `transaksitambah` (IN `id_out_tr` INT, IN `id_user_tr` INT, IN `id_member_tr` INT, IN `tgl_tr` DATE, IN `batas_waktu_tr` DATE, IN `waktu_bayar_tr` DATE, IN `biaya_tambahan_tr` VARCHAR(255), IN `diskon_tr` VARCHAR(255), IN `status_tr` ENUM('baru','proses','selesai','diambil'), IN `dibayar_tr` ENUM('dibayar','belum_dibayar'))   BEGIN
+INSERT INTO tb_transaksi(id_outlet, id_user, id_member, tgl, batas_waktu, waktu_bayar, biaya_tambahan, diskon, status, dibayar)
+VALUES(id_out_tr, id_user_tr, id_member_tr, tgl_tr, batas_waktu_tr, waktu_bayar_tr, biaya_tambahan_tr, diskon_tr, status_tr, dibayar_tr);
 END$$
 
 --
@@ -216,54 +233,6 @@ CREATE TABLE `log_transaksi` (
   `waktu_aksi` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `log_transaksi`
---
-
-INSERT INTO `log_transaksi` (`id_aksi`, `id_transaksi`, `aksi`, `waktu_aksi`) VALUES
-(7, 6, 'Tambah Data Transaksi', '2023-03-15 13:38:16'),
-(8, 6, 'Update Data Transaksi', '2023-03-15 13:40:26'),
-(9, 6, 'Delete Data Transaksi', '2023-03-15 13:40:55'),
-(10, 7, 'Tambah Data Transaksi', '2023-03-16 09:10:53'),
-(11, 7, 'Delete Data Transaksi', '2023-03-16 09:13:17'),
-(12, 8, 'Tambah Data Transaksi', '2023-03-16 11:40:14'),
-(13, 9, 'Tambah Data Transaksi', '2023-03-16 11:40:54'),
-(14, 8, 'Delete Data Transaksi', '2023-03-16 11:41:15'),
-(15, 9, 'Delete Data Transaksi', '2023-03-16 11:41:17'),
-(16, 1, 'Update Data Transaksi', '2023-03-16 11:42:51'),
-(17, 2, 'Update Data Transaksi', '2023-03-16 11:42:57'),
-(18, 2, 'Update Data Transaksi', '2023-03-16 13:30:27'),
-(19, 10, 'Tambah Data Transaksi', '2023-03-16 14:09:43'),
-(20, 11, 'Tambah Data Transaksi', '2023-03-16 14:12:41'),
-(21, 10, 'Delete Data Transaksi', '2023-03-16 14:15:32'),
-(22, 11, 'Delete Data Transaksi', '2023-03-16 14:15:33'),
-(23, 12, 'Tambah Data Transaksi', '2023-03-16 14:18:34'),
-(24, 13, 'Tambah Data Transaksi', '2023-03-16 14:20:11'),
-(25, 12, 'Delete Data Transaksi', '2023-03-16 14:20:51'),
-(26, 13, 'Delete Data Transaksi', '2023-03-16 14:20:53'),
-(27, 14, 'Tambah Data Transaksi', '2023-03-16 14:23:49'),
-(28, 15, 'Tambah Data Transaksi', '2023-03-16 14:25:31'),
-(29, 14, 'Delete Data Transaksi', '2023-03-16 14:26:51'),
-(30, 15, 'Delete Data Transaksi', '2023-03-16 14:26:53'),
-(31, 16, 'Tambah Data Transaksi', '2023-03-16 14:27:23'),
-(32, 17, 'Tambah Data Transaksi', '2023-03-16 14:28:15'),
-(33, 16, 'Delete Data Transaksi', '2023-03-16 14:28:52'),
-(34, 18, 'Tambah Data Transaksi', '2023-03-17 08:27:16'),
-(35, 18, 'Update Data Transaksi', '2023-03-17 08:34:07'),
-(36, 17, 'Update Data Transaksi', '2023-03-20 11:05:09'),
-(37, 17, 'Update Data Transaksi', '2023-03-20 11:08:36'),
-(38, 19, 'Tambah Data Transaksi', '2023-03-21 14:37:08'),
-(39, 19, 'Delete Data Transaksi', '2023-03-21 14:38:43'),
-(40, 20, 'Tambah Data Transaksi', '2023-03-21 14:46:52'),
-(41, 20, 'Update Data Transaksi', '2023-03-21 14:47:55'),
-(42, 21, 'Tambah Data Transaksi', '2023-03-21 14:48:23'),
-(43, 18, 'Delete Data Transaksi', '2023-03-21 14:48:43'),
-(44, 21, 'Delete Data Transaksi', '2023-03-21 14:48:45'),
-(45, 1, 'Update Data Transaksi', '2023-03-21 14:49:15'),
-(46, 2, 'Update Data Transaksi', '2023-03-21 14:49:25'),
-(47, 16, 'Update Data Transaksi', '2023-03-21 14:49:31'),
-(48, 17, 'Delete Data Transaksi', '2023-03-21 14:49:42');
-
 -- --------------------------------------------------------
 
 --
@@ -277,14 +246,6 @@ CREATE TABLE `tb_detail_transaksi` (
   `qty` int(11) DEFAULT NULL,
   `keterangan` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `tb_detail_transaksi`
---
-
-INSERT INTO `tb_detail_transaksi` (`id_det_transaksi`, `id_transaksi`, `id_paket`, `qty`, `keterangan`) VALUES
-(1, 16, 1, 1, 'Cuci bed cover'),
-(2, 15, 2, 3, 'kilos');
 
 -- --------------------------------------------------------
 
@@ -305,10 +266,7 @@ CREATE TABLE `tb_member` (
 --
 
 INSERT INTO `tb_member` (`id_member`, `nama`, `alamat`, `jenis_kelamin`, `tlp`) VALUES
-(1, 'Kita', 'Jl. Kitaaaan No.1', 'P', '081234567890'),
-(2, 'Ikuyo', 'Jl. Kitaaaan No.2', 'L', '081234567891'),
-(5, 'Kanaha', 'Kanayanser', 'L', '0812'),
-(6, 'TEsT', 'Jl. Tesaj', 'P', '08192837465');
+(1, 'Kita', 'Jl. Kitaaaan No.1', 'P', '081234567890');
 
 -- --------------------------------------------------------
 
@@ -328,9 +286,7 @@ CREATE TABLE `tb_outlet` (
 --
 
 INSERT INTO `tb_outlet` (`id_outlet`, `nama`, `alamat`, `tlp`) VALUES
-(1, 'UKK', 'Jl. UKK.jpg', '081234567890'),
-(2, 'Hashimoto', 'Jl. Tokyowo', '081234567888'),
-(5, 'Radity', 'Jl. Kanana', '08987654321');
+(1, 'UKK', 'Jl. UKK.jpg', '081234567890');
 
 -- --------------------------------------------------------
 
@@ -341,7 +297,7 @@ INSERT INTO `tb_outlet` (`id_outlet`, `nama`, `alamat`, `tlp`) VALUES
 CREATE TABLE `tb_paket` (
   `id_paket` int(11) NOT NULL,
   `id_outlet` int(11) DEFAULT NULL,
-  `jenis` enum('kiloan','selimut','bed_cover','kaos','lain') DEFAULT NULL,
+  `jenis` enum('Kiloan','Selimut','Bed Cover','Kaos','Lain') DEFAULT NULL,
   `nama_paket` varchar(100) DEFAULT NULL,
   `harga` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -351,10 +307,9 @@ CREATE TABLE `tb_paket` (
 --
 
 INSERT INTO `tb_paket` (`id_paket`, `id_outlet`, `jenis`, `nama_paket`, `harga`) VALUES
-(1, 1, 'bed_cover', 'Turu cover', 50000),
-(2, 1, 'kiloan', 'Kilos', 10001),
-(3, 1, 'selimut', 'Selimute', 49999),
-(5, 2, 'selimut', 'Slim', 1000);
+(1, 1, 'Bed Cover', 'Turu cover', 50000),
+(2, 1, 'Kiloan', 'Kilos', 10000),
+(3, 1, 'Selimut', 'Selimute', 20000);
 
 -- --------------------------------------------------------
 
@@ -373,17 +328,9 @@ CREATE TABLE `tb_transaksi` (
   `waktu_bayar` date DEFAULT NULL,
   `biaya_tambahan` int(11) DEFAULT NULL,
   `diskon` int(11) DEFAULT NULL,
-  `status` enum('baru','proses','selesai','diambil') DEFAULT NULL,
-  `dibayar` enum('dibayar','belum_dibayar') DEFAULT NULL
+  `status` enum('Baru','Proses','Selesai','Diambil') DEFAULT NULL,
+  `dibayar` enum('Dibayar','Belum_Dibayar') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `tb_transaksi`
---
-
-INSERT INTO `tb_transaksi` (`id_transaksi`, `kode_invoice`, `id_outlet`, `id_user`, `id_member`, `tgl`, `batas_waktu`, `waktu_bayar`, `biaya_tambahan`, `diskon`, `status`, `dibayar`) VALUES
-(15, 'L000015', 1, 1, 2, '2023-02-21', '2023-02-21', '2023-02-21', 0, 0, 'selesai', 'belum_dibayar'),
-(16, 'L000016', 1, 1, 1, '2023-02-21', '2023-02-21', '2023-02-21', 0, 0, 'selesai', 'dibayar');
 
 --
 -- Triggers `tb_transaksi`
@@ -425,7 +372,7 @@ CREATE TABLE `tb_user` (
   `nama` varchar(100) DEFAULT NULL,
   `username` varchar(30) DEFAULT NULL,
   `password` text DEFAULT NULL,
-  `role` enum('admin','kasir','owner') DEFAULT NULL
+  `role` enum('Admin','Kasir','Owner') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -433,10 +380,7 @@ CREATE TABLE `tb_user` (
 --
 
 INSERT INTO `tb_user` (`id_user`, `id_outlet`, `nama`, `username`, `password`, `role`) VALUES
-(1, 1, 'Rei', 'Rei', 'Rei', 'admin'),
-(2, 1, 'Mika', 'mika', 'mika', 'kasir'),
-(6, 1, 'Kena', 'Kenahaya', 'Kenahaya', 'owner'),
-(7, 2, 'Tuyu', 'tuyu', 'tuyu', 'admin');
+(1, 1, 'Rei', 'Rei', 'Rei', 'Admin');
 
 --
 -- Indexes for dumped tables
@@ -499,13 +443,13 @@ ALTER TABLE `tb_user`
 -- AUTO_INCREMENT for table `log_transaksi`
 --
 ALTER TABLE `log_transaksi`
-  MODIFY `id_aksi` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `id_aksi` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=132;
 
 --
 -- AUTO_INCREMENT for table `tb_detail_transaksi`
 --
 ALTER TABLE `tb_detail_transaksi`
-  MODIFY `id_det_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_det_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `tb_member`
@@ -517,7 +461,7 @@ ALTER TABLE `tb_member`
 -- AUTO_INCREMENT for table `tb_outlet`
 --
 ALTER TABLE `tb_outlet`
-  MODIFY `id_outlet` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id_outlet` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `tb_paket`
@@ -529,7 +473,7 @@ ALTER TABLE `tb_paket`
 -- AUTO_INCREMENT for table `tb_transaksi`
 --
 ALTER TABLE `tb_transaksi`
-  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT for table `tb_user`
