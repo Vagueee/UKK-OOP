@@ -92,3 +92,7 @@ tbody, td, tfoot, th, thead, tr {
 .borderless td, .borderless th {
     border: none;
  }
+
+th {
+    font-weight: bolder
+}

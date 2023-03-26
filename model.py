@@ -71,8 +71,8 @@ def graphic(
         tick_label=[datas[1] for datas in data]
     )
     axes.set_title("Pendapatan Laundry Harian")
-    axes.set_xlabel("Pendapatan")
-    axes.set_ylabel("Tanggal")
+    axes.set_xlabel("Tanggal")
+    axes.set_ylabel("Pendapatan")
 
     return figure
 
