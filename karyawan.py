@@ -26,8 +26,8 @@ def start_karyawan(self, role):
         texts=('ID', 'Outlet', 'Nama', 'Username', 'Role')
     )
 
-    csv_button = create_laporan_button(self, frame=self.karyawan, x=100, y=110 ,text="CSV", command=lambda: csv_karyawan(self))
-    xls_button = create_laporan_button(self, frame=self.karyawan, x=100, y=110 ,text="Excel", command=lambda: xls_karyawan(self))
+    csv_button = create_laporan_button(self, frame=self.karyawan, x=60, y=110 ,text="CSV", command=lambda: csv_karyawan(self))
+    xls_button = create_laporan_button(self, frame=self.karyawan, x=160, y=110 ,text="Excel", command=lambda: xls_karyawan(self))
 
     if self.role == "Admin":
         tambah_button = create_crud_button(self, frame=self.karyawan, x=360, y=110 , text="Tambah Data", command=lambda: tambah_karyawan(self))

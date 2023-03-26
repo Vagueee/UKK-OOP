@@ -41,7 +41,8 @@ class Login(ttk.Frame):
 
         if account != None:
             # If a match is found, get the user's role
-            user_id = account[0]
+            user_id = account[0] # ID
+            username = account[2] # Name
             query = f"SELECT role FROM tb_user WHERE id_user=%s"
             self.cursor.execute(query, (user_id,))
             roles = self.cursor.fetchone()
@@ -52,13 +53,13 @@ class Login(ttk.Frame):
                 role = roles[0]
                 if role == "Admin":
                     self.parent.destroy()
-                    main.Main(role=role)
+                    main.Main(role=role, username=username)
                 elif role == "Kasir":
                     self.parent.destroy()
-                    main.Main(role=role)
+                    main.Main(role=role, username=username)
                 elif role == "Owner":
                     self.parent.destroy()
-                    main.Main(role=role)
+                    main.Main(role=role, username=username)
             else:
                 # If no role is found, show an error message
                 messagebox.showerror(title="Login Failed", message="No role found for user")

@@ -6,7 +6,7 @@ import pelanggan
 import transaksi
 
 class Main(ttk.Frame):
-    def __init__(self, role):
+    def __init__(self, role, username):
         self.main = tk.Tk()
         self.main.title("Laundrive")
         self.main.geometry("960x540+180+50")
@@ -20,8 +20,10 @@ class Main(ttk.Frame):
 
         database(self)
         self.role = role
+        self.username = username
 
         self.canvas.create_text(480, 50, text="Laundrive", anchor="center", font=("Verdana", 28, "bold"), fill="#b5b3b3")
+        self.canvas.create_text(20, 20, text=self.username, anchor="w", font=("Verdana", 14), fill="#b5b3b3")
 
         menubar = tk.Menu(self.main)
         self.main.config(menu=menubar)
