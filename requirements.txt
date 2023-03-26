@@ -6,3 +6,4 @@ pandas
 openpyxl
 jinja2
 pdfkit
+weasyprint

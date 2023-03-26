@@ -4,23 +4,24 @@
 <meta charset="utf-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="css/bootstrap.css" rel="stylesheet">
+<link href="./css/bootstrap.css" rel="stylesheet">
+<link href="./css/style.css" rel="stylesheet">
 </head>
 <body>
-<div class="container mt-6 mb-7">
+<div class="container mt-4 mb-5">
     <div class="row justify-content-center">
         <div class="col-lg-12 col-xl-7">
             <div class="card">
-                <img class="rounded float-left mt-4 mx-4" width="300" height="100" src="file:images/Laundrive.jpg">
+                <h2 class="rounded float-left mt-5 mx-5"><strong>Laundrive</strong></h2>
             <div class="card-body p-5">
                 <div class="border-top border-gray-200 pt-4">
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="text-muted mb-2">Invoice Code</div>
+                            <div class="text-muted mb-2"><strong>Invoice Code</strong></div>
                             <strong>{{kodeinvoice}}</strong>
                             </div>
-                            <div class="col-md-6 text-md-end">
-                            <div class="text-muted mb-2">Payment Date</div>
+                            <div class="col-md-6 text-end">
+                            <div class="text-muted mb-2"><strong>Payment Date</strong></div>
                             <strong>{{tanggal}}</strong>
                         </div>
                     </div>
@@ -28,7 +29,7 @@
                 <div class="border-top border-gray-200 mt-4 py-4">
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="text-muted mb-2">Client</div>
+                            <div class="text-muted mb-2"><strong>Client</strong></div>
                             <strong>
                             {{nama_pel}}
                             </strong>
@@ -38,8 +39,8 @@
                             {{telp_pel}}
                             </p>
                         </div>
-                        <div class="col-md-6 text-md-end">
-                            <div class="text-muted mb-2">Outlet</div>
+                        <div class="col-md-6 text-end">
+                            <div class="text-muted mb-2"><strong>Outlet</strong></div>
                             <strong>
                             {{nama_out}}
                             </strong>
@@ -53,12 +54,12 @@
                   </div>
 
                     <table class="table border-bottom border-gray-200 mt-3">
-                        <thead>
+                        <thead class="thead-light">
                             <tr>
-                                <th scope="col" class="fs-sm text-dark text-uppercase-bold-sm px-0">Packet</th>
-                                <th scope="col" class="fs-sm text-dark text-uppercase-bold-sm px-0">Description</th>
-                                <th scope="col" class="fs-sm text-dark text-uppercase-bold-sm px-0">Qty</th>
-                                <th scope="col" class="fs-sm text-dark text-uppercase-bold-sm text-end px-0">Amount</th>
+                                <th scope="col" class="fs-sm text-dark text-uppercase-bold-sm px-0"><strong>Packet</strong></th>
+                                <th scope="col" class="fs-sm text-dark text-uppercase-bold-sm px-0"><strong>Description</strong></th>
+                                <th scope="col" class="fs-sm text-dark text-uppercase-bold-sm px-0"><strong>Qty</strong></th>
+                                <th scope="col" class="fs-sm text-dark text-uppercase-bold-sm text-end px-0"><strong>Amount</strong></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -72,16 +73,16 @@
                     </table>
                     <div class="mt-5">
                         <div class="d-flex justify-content-end">
-                            <p class="text-muted me-3">Tax :</p>
+                            <p class="text-muted me-3"><strong>Tax :</strong></p>
                             <span>Rp. {{pajak}}</span>
                         </div>
                         <div class="d-flex justify-content-end">
-                            <p class="text-muted me-3">Discount:</p>
+                            <p class="text-muted me-3"><strong>Discount :</strong></p>
                             <span>{{diskon}}%</span>
                         </div>
                         <div class="d-flex justify-content-end mt-3">
                             <h5 class="me-3">Total:</h5>
-                            <h5 class="text-success">Rp. {{total}}</h5>
+                            <h5 class="text-success"><strong>Rp. {{total}}</strong></h5>
                         </div>
                     </div>
                 </div>

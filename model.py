@@ -3,6 +3,7 @@ from tkinter import PhotoImage, messagebox, Canvas, font, ttk, filedialog
 from tkcalendar import DateEntry
 from typing import Tuple
 from dotenv import load_dotenv
+from weasyprint import HTML, CSS
 import pandas as pd
 import csv
 import jinja2
@@ -554,12 +555,22 @@ def exportpdf(
         'total': int(total)
     }
 
-    pdf_loader = jinja2.FileSystemLoader('./')
+    pdf_loader = jinja2.FileSystemLoader('.')
     pdf_env = jinja2.Environment(loader=pdf_loader)
 
-    template = pdf_env.get_template('invoice_template.html')
-    output_text = template.render(context)
+    html = pdf_env.get_template('invoice_template.html')
+    bootstrap = './css/bootstrap.css'
+    css = './css/style.css'
+    pdf = html.render(context)
 
-    config = pdfkit.configuration(wkhtmltopdf='C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe')
+    HTML(string=pdf).write_pdf(filename, stylesheets=[bootstrap, css])
 
-    pdfkit.from_string(output_text, filename, options={'enable-local-file-access': ''}, configuration=config, css=r'C:\Users\LENOVO\Documents\GitHub\UKK-OOP\css\bootstrap.css')
+    # config = pdfkit.configuration(wkhtmltopdf='C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe')
+    # options = {
+    # 'enable-local-file-access': True,
+    # 'encoding': 'UTF-8',
+    # 'quiet': '',
+    # 'debug-javascript': True
+    # }
+
+    # pdfkit.from_string(pdf, filename, options=options, configuration=config, css=css)
