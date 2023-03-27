@@ -1,6 +1,7 @@
 from model import *
 import main
 
+
 class Login(ttk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
@@ -13,9 +14,12 @@ class Login(ttk.Frame):
 
         database(self)
 
-        self.canvas.create_text(480, 175, text="Login", anchor="center", font=("Verdana", 28, "bold"), fill="#b5b3b3")
-        self.canvas.create_text(405, 225, text="Username", font=("Verdana", 18, "bold"), fill="#b5b3b3")
-        self.canvas.create_text(405, 270, text="Password", font=("Verdana", 18, "bold"), fill="#b5b3b3")
+        self.canvas.create_text(480, 175, text="Login", anchor="center", font=(
+            "Verdana", 28, "bold"), fill="#b5b3b3")
+        self.canvas.create_text(405, 225, text="Username", font=(
+            "Verdana", 18, "bold"), fill="#b5b3b3")
+        self.canvas.create_text(405, 270, text="Password", font=(
+            "Verdana", 18, "bold"), fill="#b5b3b3")
 
         self.username_entry = ttk.Entry(self.parent)
         # self.username_entry.insert(0, 'Username')
@@ -29,8 +33,10 @@ class Login(ttk.Frame):
         self.canvas.create_window(555, 225, window=self.username_entry)
         self.canvas.create_window(555, 270, window=self.password_entry)
 
-        self.login_button = ttk.Button(self.parent, text="Login", command=self.verify_login)
-        self.canvas.create_window(480, 320, window=self.login_button, anchor="center")
+        self.login_button = ttk.Button(
+            self.parent, text="Login", command=self.verify_login)
+        self.canvas.create_window(
+            480, 320, window=self.login_button, anchor="center")
 
     def verify_login(self):
         username = self.username_entry.get()
@@ -41,8 +47,8 @@ class Login(ttk.Frame):
 
         if account != None:
             # If a match is found, get the user's role
-            user_id = account[0] # ID
-            username = account[2] # Name
+            user_id = account[0]  # ID
+            name = account[2]  # Name
             query = f"SELECT role FROM tb_user WHERE id_user=%s"
             self.cursor.execute(query, (user_id,))
             roles = self.cursor.fetchone()
@@ -53,19 +59,22 @@ class Login(ttk.Frame):
                 role = roles[0]
                 if role == "Admin":
                     self.parent.destroy()
-                    main.Main(role=role, username=username)
+                    main.Main(role=role, name=name)
                 elif role == "Kasir":
                     self.parent.destroy()
-                    main.Main(role=role, username=username)
+                    main.Main(role=role, name=name)
                 elif role == "Owner":
                     self.parent.destroy()
-                    main.Main(role=role, username=username)
+                    main.Main(role=role, name=name)
             else:
                 # If no role is found, show an error message
-                messagebox.showerror(title="Login Failed", message="No role found for user")
+                messagebox.showerror(title="Login Failed",
+                                     message="No role found for user")
         else:
             # If no match is found, show an error message
-            messagebox.showerror(title="Login Failed", message="Wrong username or password")
+            messagebox.showerror(title="Login Failed",
+                                 message="Wrong username or password")
+
 
 if __name__ == '__main__':
     login = tk.Tk()

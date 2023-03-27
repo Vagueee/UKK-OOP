@@ -34,6 +34,7 @@ load_dotenv()
 #     plg = os.getenv("ic_pelanggan")
 #     self.plgimg = PhotoImage(file=plg)
 
+
 def database(self):
     # Connect to the database
     self.db_host = os.getenv("host")
@@ -50,10 +51,11 @@ def database(self):
     # Create Cursor
     self.cursor = self.db.cursor()
 
+
 def graphic(
     self,
     proc,
-    ):
+):
     # Get values
     self.cursor.callproc(proc, ())
     result = self.cursor.stored_results()
@@ -83,15 +85,16 @@ def create_card(
     y: int,
     width: int = 150,
     height: int = 200,
-    ) -> ttk.Frame:
-        card_frame = ttk.Frame(
-            self.main,
-            width=width,
-            height=height,
-            relief="groove"
-        )
-        self.canvas.create_window(x, y, anchor='n', window=card_frame)
-        return card_frame
+) -> ttk.Frame:
+    card_frame = ttk.Frame(
+        self.main,
+        width=width,
+        height=height,
+        relief="groove"
+    )
+    self.canvas.create_window(x, y, anchor='n', window=card_frame)
+    return card_frame
+
 
 def create_button(
     self,
@@ -99,7 +102,7 @@ def create_button(
     image: PhotoImage,
     text: str,
     command: callable,
-    ):
+):
     label = ttk.Label(frame, image=image)
     button = ttk.Button(
         frame,
@@ -109,6 +112,7 @@ def create_button(
     label.pack()
     button.pack()
 
+
 def create_crud_button(
     self,
     frame: ttk.Frame,
@@ -116,10 +120,10 @@ def create_crud_button(
     y: int,
     text: str,
     command: callable,
-    disabled:bool =False,
+    disabled: bool = False,
     font_size: int = 14,
     font_weight: str = 'bold',
-    ):
+):
     self.button = ttk.Button(
         frame,
         text=text,
@@ -127,14 +131,16 @@ def create_crud_button(
     )
     # Disabled if no id value
     self.button["state"] = "disabled" if disabled else "normal"
-    
+
     self.canvas.create_window(x, y, window=self.button, anchor='center')
     return self.button
+
 
 def switch(buttons: list, selection: Tuple):
     # Disable button logic
     for button in buttons:
         button["state"] = "normal" if button["state"] == "disabled" else "normal"
+
 
 def create_laporan_button(
     self,
@@ -145,7 +151,7 @@ def create_laporan_button(
     command: callable,
     font_size: int = 10,
     font_weight: str = 'bold',
-    ):
+):
     self.button = ttk.Button(
         frame,
         text=text,
@@ -154,6 +160,7 @@ def create_laporan_button(
 
     self.canvas.create_window(x, y, window=self.button, anchor='center')
     return self.button
+
 
 def create_treeview(
     self,
@@ -164,19 +171,20 @@ def create_treeview(
     columns: tuple,
     headings: tuple,
     texts: tuple,
-    ):
+):
     self.treeview = ttk.Treeview(frame)
     self.treeview.pack(padx=20, pady=20)
     self.treeview['columns'] = columns
-    
+
     # Width window (seharusnya pake winfo.width())
-    framewidth = 900 
+    framewidth = 900
     width = int(framewidth / len(columns))
 
     # Create column
     self.treeview.column("#0", width=0,  stretch=True)
     for each in columns:
-        self.treeview.column(each, anchor='center', width=width, minwidth=width, stretch=True)
+        self.treeview.column(each, anchor='center',
+                             width=width, minwidth=width, stretch=True)
 
     # Create header
     self.treeview.heading("#0", text="", anchor="center")
@@ -195,17 +203,19 @@ def create_treeview(
 
     self.canvas.create_window(x, y, anchor='n', window=self.treeview)
     return self.treeview
-    
+
+
 def create_tambah_entry(
     self,
     frame: ttk.Frame,
     x: int,
     y: int,
-    ):
+):
     entry = ttk.Entry(frame)
     entry.pack()
     self.canvas.create_window(x, y, window=entry)
     return entry
+
 
 def create_edit_entry(
     self,
@@ -216,12 +226,12 @@ def create_edit_entry(
     state: str,
     treeview: ttk.Treeview,
     procid: str,
-    ):
+):
     # Get id from row
     editing = treeview.selection()[0]
     # Get values in the same row
     values = treeview.item(editing, 'values')
-    
+
     # Get values by id
     self.cursor.callproc(procid, (values[0],))
     result = self.cursor.stored_results()
@@ -230,12 +240,13 @@ def create_edit_entry(
     data = None
     for each in result:
         data = each.fetchone()
-    
+
     entry = ttk.Entry(frame, state=state)
     entry.insert(0, data[index])
     entry.pack()
     self.canvas.create_window(x, y, window=entry)
     return entry
+
 
 def create_tambah_dropdown(
     self,
@@ -243,7 +254,7 @@ def create_tambah_dropdown(
     x: int,
     y: int,
     procdrop: str,
-    ):
+):
     # Get values for dropdown
     self.cursor.callproc(procdrop)
     result = self.cursor.stored_results()
@@ -258,6 +269,30 @@ def create_tambah_dropdown(
     self.canvas.create_window(x, y, window=dropdown)
     return dropdown
 
+
+def create_tambah_dropdown_sorted(
+    self,
+    frame: ttk.Frame,
+    x: int,
+    y: int,
+    procdrop: str,
+    sortby: str,
+):
+    # Get values for dropdown
+    self.cursor.callproc(procdrop, (sortby,))
+    result = self.cursor.stored_results()
+
+    # Get values from stored procedure
+    for values in result:
+        values = values.fetchall()
+
+    dropdown = ttk.Combobox(frame, values=values, state="readonly")
+    dropdown.configure(width=17)
+    dropdown.pack()
+    self.canvas.create_window(x, y, window=dropdown)
+    return dropdown
+
+
 def create_edit_dropdown(
     self,
     frame: ttk.Frame,
@@ -269,7 +304,7 @@ def create_edit_dropdown(
     treeview: ttk.Treeview,
     procid: str,
     procdrop: str,
-    ):
+):
     # Get id from row
     editing = treeview.selection()[0]
     # Get values in the same row
@@ -287,7 +322,7 @@ def create_edit_dropdown(
     # Get values for dropdown
     self.cursor.callproc(procdrop)
     drop = self.cursor.stored_results()
-    
+
     # Get values from stored procedure
     values = None
     for each in drop:
@@ -308,13 +343,14 @@ def create_edit_dropdown(
     self.canvas.create_window(x, y, window=dropdown)
     return dropdown
 
+
 def create_tambah_enumdropdown(
     self,
     frame: ttk.Frame,
     x: int,
     y: int,
     procenum: str,
-    ):
+):
     # Get enum values for dropdown
     self.cursor.callproc(procenum)
     result = self.cursor.stored_results()
@@ -330,6 +366,7 @@ def create_tambah_enumdropdown(
     self.canvas.create_window(x, y, window=dropdown)
     return dropdown
 
+
 def create_edit_enumdropdown(
     self,
     frame: ttk.Frame,
@@ -340,7 +377,7 @@ def create_edit_enumdropdown(
     treeview: ttk.Treeview,
     procid: str,
     procenum: str,
-    ):
+):
     # Get id from row
     editing = treeview.selection()[0]
     # Get values in the same row
@@ -371,6 +408,7 @@ def create_edit_enumdropdown(
     self.canvas.create_window(x, y, window=dropdown)
     return dropdown
 
+
 def create_tambah_date(
     self,
     frame: ttk.Frame,
@@ -380,12 +418,14 @@ def create_tambah_date(
     background: str = 'darkblue',
     foreground: str = 'white',
     borderwidth: int = 2,
-    ):
-    tanggal = DateEntry(frame, width=width, background=background, foreground=foreground, borderwidth=borderwidth)
+):
+    tanggal = DateEntry(frame, width=width, background=background,
+                        foreground=foreground, borderwidth=borderwidth)
     tanggal.configure(width=17)
     tanggal.pack()
     self.canvas.create_window(x, y, window=tanggal)
     return tanggal
+
 
 def create_edit_date(
     self,
@@ -400,7 +440,7 @@ def create_edit_date(
     background: str = 'darkblue',
     foreground: str = 'white',
     borderwidth: int = 2,
-    ):
+):
     # Get id from row
     editing = treeview.selection()[0]
     # Get values in the same row
@@ -415,12 +455,14 @@ def create_edit_date(
     for each in result:
         data = each.fetchone()
 
-    tanggal = DateEntry(frame, width=width, background=background, foreground=foreground, borderwidth=borderwidth)
+    tanggal = DateEntry(frame, width=width, background=background,
+                        foreground=foreground, borderwidth=borderwidth)
     tanggal.configure(width=17, state=state)
     tanggal.set_date(data[index])
     tanggal.pack()
     self.canvas.create_window(x, y, window=tanggal)
     return tanggal
+
 
 def create_submit_button(
     self,
@@ -431,13 +473,14 @@ def create_submit_button(
     text: str = 'Submit',
     font_size: int = 10,
     font_weight: str = 'bold',
-    ):
+):
     self.button = ttk.Button(frame, text=text, command=command)
     self.canvas.create_window(x, y, window=self.button, anchor="center")
 
+
 def validate_number(
     values: Tuple,
-    ) -> bool:
+) -> bool:
     # Validation for numeric entry
     for each in values:
         if each.isdigit():
@@ -445,27 +488,29 @@ def validate_number(
         else:
             return False
 
+
 def get_id(
     self,
     treeview: ttk.Treeview,
     procid: str
-    ):
+):
     # Get id from row
     selecting = treeview.selection()[0]
     # Get values in the same row
     values = treeview.item(selecting, 'values')
-    
+
     # Get values by id
     self.cursor.callproc(procid, (values[0],))
     result = self.cursor.stored_results()
-    
+
     # Get values from stored procedure
     data = None
     for each in result:
         data = each.fetchall()[0]
-    
+
     # Return id
     return data[0]
+
 
 def tambah(
     self,
@@ -474,7 +519,7 @@ def tambah(
     redirect: callable,
     entries: Tuple,
     proc: str,
-    ):
+):
     values = entries
     self.cursor.callproc(proc, values)
     self.db.commit()
@@ -483,6 +528,7 @@ def tambah(
     destroy.destroy()
     redirect()
 
+
 def edit(
     self,
     frame: ttk.Frame,
@@ -490,7 +536,7 @@ def edit(
     redirect: callable,
     entries: Tuple,
     procedit: str
-    ):
+):
     values = entries
     self.cursor.callproc(procedit, values)
     self.db.commit()
@@ -499,11 +545,12 @@ def edit(
     destroy.destroy()
     redirect()
 
+
 def delete(
     self,
     treeview: ttk.Treeview,
     proc: str,
-    ):
+):
     # Get id from row
     deleting = treeview.selection()[0]
     # Get values in the same row
@@ -514,10 +561,11 @@ def delete(
     self.db.commit()
     treeview.delete(deleting)
 
+
 def exportcsv(
     filename: str,
     treeview: ttk.Treeview,
-    ):
+):
     # Write csv file
     with open(filename, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
@@ -533,10 +581,11 @@ def exportcsv(
                 row.append(treeview.set(item, col))
             writer.writerow(row)
 
+
 def exportxls(
     filename: str,
     treeview: ttk.Treeview,
-    ):
+):
     # Get the data from the Treeview
     data = []
     for item in treeview.get_children():
@@ -548,6 +597,7 @@ def exportxls(
 
     # Write the DataFrame to an Excel file
     df.to_excel(filename, index=False)
+
 
 def exportpdf(
     filename: str,
@@ -566,7 +616,7 @@ def exportpdf(
     pajak: int,
     diskon: int,
     total: int,
-    ):
+):
     context = {
         'kodeinvoice': inv,
         'tanggal': tgl,
