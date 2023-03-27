@@ -6,6 +6,7 @@ def start_pelanggan(self, role):
     self.pelanggan.title("Laundrive")
     self.pelanggan.geometry("960x540+180+80")
     self.pelanggan.resizable(False, False)
+    self.pelanggan.protocol("WM_DELETE_WINDOW", lambda: on_closing(self))
     self.frame = ttk.Frame(self.pelanggan)
     self.frame.pack(fill="both", expand=False)
     self.canvas = tk.Canvas(self.pelanggan, width=960, height=540)
@@ -190,3 +191,8 @@ def delete_pelanggan(self):
         self,
         treeview=self.treeview,
         proc="pelanggandelete")
+
+
+def on_closing(self):
+    if messagebox.askokcancel("Quit", "Do you want to quit?"):
+        self.main.destroy()

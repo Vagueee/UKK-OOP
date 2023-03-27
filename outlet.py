@@ -7,6 +7,7 @@ def start_outlet(self, role):
     self.outlet.title("Laundrive")
     self.outlet.geometry("960x540+180+80")
     self.outlet.resizable(False, False)
+    self.outlet.protocol("WM_DELETE_WINDOW", lambda: on_closing(self))
     self.frame = ttk.Frame(self.outlet)
     self.frame.pack(fill="both", expand=False)
     self.canvas = tk.Canvas(self.outlet, width=960, height=540)
@@ -180,3 +181,8 @@ def delete_outlet(self):
         self,
         treeview=self.treeview,
         proc="outletdelete")
+
+
+def on_closing(self):
+    if messagebox.askokcancel("Quit", "Do you want to quit?"):
+        self.main.destroy()

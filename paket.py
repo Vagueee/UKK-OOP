@@ -6,6 +6,7 @@ def start_paket(self, role):
     self.paket.title("Laundrive")
     self.paket.geometry("960x540+180+80")
     self.paket.resizable(False, False)
+    self.paket.protocol("WM_DELETE_WINDOW", lambda: on_closing(self))
     self.frame = ttk.Frame(self.paket)
     self.frame.pack(fill="both", expand=False)
     self.canvas = tk.Canvas(self.paket, width=960, height=540)
@@ -189,3 +190,8 @@ def delete_paket(self):
         self,
         treeview=self.treeview,
         proc="paketdelete")
+
+
+def on_closing(self):
+    if messagebox.askokcancel("Quit", "Do you want to quit?"):
+        self.main.destroy()

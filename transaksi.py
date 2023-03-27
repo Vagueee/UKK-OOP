@@ -6,6 +6,7 @@ def start_transaksi(self, role):
     self.transaksi.title("Laundrive")
     self.transaksi.geometry("960x540+180+80")
     self.transaksi.resizable(False, False)
+    self.transaksi.protocol("WM_DELETE_WINDOW", lambda: on_closing(self))
     self.frame = ttk.Frame(self.transaksi)
     self.frame.pack(fill="both", expand=False)
     self.canvas = tk.Canvas(self.transaksi, width=960, height=540)
@@ -362,3 +363,8 @@ def detail_transaksi(self):
 
     pdf_button = create_laporan_button(
         self, frame=self.detail, x=60, y=30, text="PDF", command=lambda: pdf_invoice(data))
+
+
+def on_closing(self):
+    if messagebox.askokcancel("Quit", "Do you want to quit?"):
+        self.main.destroy()

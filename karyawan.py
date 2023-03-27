@@ -6,6 +6,7 @@ def start_karyawan(self, role):
     self.karyawan.title("Laundrive")
     self.karyawan.geometry("960x540+180+80")
     self.karyawan.resizable(False, False)
+    self.karyawan.protocol("WM_DELETE_WINDOW", lambda: on_closing(self))
     self.frame = ttk.Frame(self.karyawan)
     self.frame.pack(fill="both", expand=False)
     self.canvas = tk.Canvas(self.karyawan, width=960, height=540)
@@ -194,3 +195,8 @@ def delete_karyawan(self):
         self,
         treeview=self.treeview,
         proc="karyawandelete")
+
+
+def on_closing(self):
+    if messagebox.askokcancel("Quit", "Do you want to quit?"):
+        self.main.destroy()
