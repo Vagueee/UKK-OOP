@@ -53,6 +53,13 @@ def start_transaksi(self, role):
         treeview.bind("<ButtonRelease-1>", lambda event: switch(
             [edit_button, detail_button], selection=treeview.selection()))
 
+    else:
+        detail_button_owner = create_crud_button(self, frame=self.transaksi, x=480, y=110, disabled=len(
+            treeview.selection()) == 0, text="Detail Data", command=lambda: detail_transaksi(self))
+
+        treeview.bind("<ButtonRelease-1>", lambda event: switch(
+            [detail_button_owner], selection=treeview.selection()))
+
 
 def csv_transaksi(self):
     default_filename = 'data.csv'
