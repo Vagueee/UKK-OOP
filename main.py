@@ -24,11 +24,6 @@ class Main(ttk.Frame):
         roles = role
         names = name
 
-        self.canvas.create_text(480, 50, text="Laundrive", anchor="center", font=(
-            "Verdana", 28, "bold"), fill="#b5b3b3")
-        self.canvas.create_text(20, 20, text=names, anchor="w", font=(
-            "Verdana", 14), fill="#b5b3b3")
-
         menubar = tk.Menu(self.main)
         self.main.config(menu=menubar)
 
@@ -46,6 +41,11 @@ class Main(ttk.Frame):
             self, role=roles))
         menu.add_separator()
         menu.add_command(label="Log Out", command=lambda: logout(self))
+
+        self.canvas.create_text(480, 50, text="Laundrive", anchor="center", font=(
+            "Verdana", 28, "bold"), fill="#b5b3b3")
+        self.canvas.create_text(20, 20, text=names, anchor="w", font=(
+            "Verdana", 14), fill="#b5b3b3")
 
         graph = graphic(self, proc="pendapatan")
         canvas = FigureCanvasTkAgg(graph, self.main)

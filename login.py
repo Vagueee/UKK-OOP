@@ -14,6 +14,14 @@ class Login(ttk.Frame):
 
         database(self)
 
+        menubar = tk.Menu(self.parent)
+        self.parent.config(menu=menubar)
+
+        menu = tk.Menu(menubar, tearoff=0)
+        menubar.add_cascade(label="Menu", menu=menu)
+        menu.add_command(
+            label="Exit", command=self.parent.destroy)
+
         self.canvas.create_text(480, 175, text="Login", anchor="center", font=(
             "Verdana", 28, "bold"), fill="#b5b3b3")
         self.canvas.create_text(405, 225, text="Username", font=(

@@ -14,6 +14,14 @@ def start_transaksi(self, role):
     database(self)
     self.role = role
 
+    menubar = tk.Menu(self.transaksi)
+    self.transaksi.config(menu=menubar)
+
+    menu = tk.Menu(menubar, tearoff=0)
+    menubar.add_cascade(label="Menu", menu=menu)
+    menu.add_command(
+        label="Exit", command=self.transaksi.destroy)
+
     self.canvas.create_text(480, 50, text="Data Transaksi", anchor="center", font=(
         "Verdana", 28, "bold"), fill="#b5b3b3")
 
@@ -165,15 +173,15 @@ def tambah_detail_transaksi(self, outlet_val):
                             anchor="center", font=("Verdana", 28, "bold"), fill="#b5b3b3")
     self.canvas.create_text(415, 100, text="Paket",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(415, 140, text="Keterangan",
+    self.canvas.create_text(415, 140, text="Kuantitas",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(415, 180, text="Kuantitas",
+    self.canvas.create_text(415, 180, text="Keterangan",
                             font=("Verdana", 14), fill="#b5b3b3")
 
     paket = create_tambah_dropdown_sorted(
         self, self.tambahdet, x=555, y=100, procdrop="dropdownpaket", sortby=outlet_val)
-    keterangan = create_tambah_entry(self, self.tambahdet, x=555, y=140)
-    qty = create_tambah_entry(self, self.tambahdet, x=555, y=180)
+    qty = create_tambah_entry(self, self.tambahdet, x=555, y=140)
+    keterangan = create_tambah_entry(self, self.tambahdet, x=555, y=180)
 
     def tambahdata():
         self.cursor.execute(
@@ -181,15 +189,15 @@ def tambah_detail_transaksi(self, outlet_val):
         id_val = self.cursor.fetchone()
 
         paket_val = paket.get()
-        keterangan_val = keterangan.get()
         qty_val = qty.get()
+        keterangan_val = keterangan.get()
 
         tambah(
             self,
             frame=self.tambahdet,
             destroy=self.transaksi,
             redirect=lambda: start_transaksi(self, role=self.role),
-            entries=(id_val[0], paket_val, keterangan_val, qty_val),
+            entries=(id_val[0], paket_val, qty_val, keterangan_val),
             proc="detailtambah")
 
     create_submit_button(self, x=480, y=220,
