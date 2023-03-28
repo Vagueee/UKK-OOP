@@ -4,8 +4,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
+from matplotlib import style
 from dotenv import load_dotenv
-from tkinter import Menu, PhotoImage, messagebox, Canvas, font, ttk, filedialog
+from tkinter import Menu, PhotoImage, messagebox, Canvas, font, ttk, filedialog, StringVar
 from tkcalendar import DateEntry
 from typing import Tuple
 from weasyprint import HTML, CSS
@@ -52,9 +53,13 @@ def database(self):
     self.cursor = self.db.cursor()
 
 
-def graphic(
+def bargraph(
     self,
-    proc,
+    title: str,
+    x: str,
+    y: str,
+    style: str,
+    proc: str,
 ):
     # Get values
     self.cursor.callproc(proc, ())
@@ -66,15 +71,17 @@ def graphic(
         data = each.fetchall()
 
     figure = plt.figure(figsize=(7, 4))
+    plt.style.use(style)
     axes = figure.add_subplot(1, 1, 1)
     axes.bar(
         range(len(data)),
         [datas[0] for datas in data],
         tick_label=[datas[1] for datas in data]
     )
-    axes.set_title("Pendapatan Laundry Harian")
-    axes.set_xlabel("Tanggal")
-    axes.set_ylabel("Pendapatan")
+    axes.set_title(title)
+    axes.set_xlabel(x)
+    axes.set_ylabel(y)
+    plt.ion()
 
     return figure
 
@@ -160,6 +167,40 @@ def create_laporan_button(
 
     self.canvas.create_window(x, y, window=self.button, anchor='center')
     return self.button
+
+
+def search_entry(
+    self,
+    frame: ttk.Frame,
+    txtvar: str,
+    x: int,
+    y: int,
+):
+    entry = ttk.Entry(frame, textvariable=txtvar)
+    entry.pack()
+    self.canvas.create_window(x, y, window=entry)
+
+    return entry
+
+
+def search(
+    self,
+    proc: str,
+    search: str,
+    treeview: ttk.Treeview,
+):
+    self.cursor.callproc(proc, (search,))
+    result = self.cursor.stored_results()
+
+    for searched in result:
+        searched = searched.fetchall()
+
+    if len(searched) > 0:
+        treeview.delete(*treeview.get_children())
+        for i in searched:
+            treeview.insert(parent='', index='end', values=i)
+    else:
+        treeview.delete(*treeview.get_children())
 
 
 def create_treeview(

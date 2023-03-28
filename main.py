@@ -49,7 +49,8 @@ class Main(ttk.Frame):
         self.canvas.create_text(20, 20, text=names, anchor="w", font=(
             "Verdana", 14), fill="#b5b3b3")
 
-        graph = graphic(self, proc="pendapatan")
+        graph = bargraph(self, title="Pendapatan Laundry Harian",
+                         x="Tanggal", y="Pendapatan", style="bmh", proc="pendapatan")
         canvas = FigureCanvasTkAgg(graph, self.main)
         graph_canvas = canvas.get_tk_widget()
         self.canvas.create_window(480, 300, window=graph_canvas)
@@ -62,10 +63,12 @@ def logout(self):
         relog.geometry("960x540+180+50")
         self.role = None,
         self.name = None,
+        plt.close("all")
         self.main.destroy()
         login.Login(relog)
 
 
 def on_closing(self):
     if messagebox.askokcancel("Quit", "Do you want to quit?"):
+        plt.close("all")
         self.main.destroy()

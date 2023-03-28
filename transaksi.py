@@ -38,28 +38,34 @@ def start_transaksi(self, role):
                   'tgl', 'batas_waktu', 'waktu_bayar', 'status', 'dibayar'),
         texts=('ID', 'Kode Invoice', 'Outlet', 'Karyawan', 'Pelanggan', 'Tanggal', 'Batas Waktu', 'Waktu Bayar', 'Status', 'Dibayar'))
 
-    csv_button = create_laporan_button(
-        self, frame=self.transaksi, x=60, y=110, text="CSV", command=lambda: csv_transaksi(self))
-    xls_button = create_laporan_button(
-        self, frame=self.transaksi, x=160, y=110, text="Excel", command=lambda: xls_transaksi(self))
-
     if self.role != "Owner":
         tambah_button = create_crud_button(
-            self, frame=self.transaksi, x=360, y=110, text="Tambah Data", command=lambda: tambah_transaksi(self))
-        edit_button = create_crud_button(self, frame=self.transaksi, x=480, y=110, disabled=len(
+            self, frame=self.transaksi, x=60, y=110, text="Tambah Data", command=lambda: tambah_transaksi(self))
+        edit_button = create_crud_button(self, frame=self.transaksi, x=165, y=110, disabled=len(
             treeview.selection()) == 0, text="Edit Data", command=lambda: edit_transaksi(self))
-        detail_button = create_crud_button(self, frame=self.transaksi, x=600, y=110, disabled=len(
+        detail_button = create_crud_button(self, frame=self.transaksi, x=265, y=110, disabled=len(
             treeview.selection()) == 0, text="Detail Data", command=lambda: detail_transaksi(self))
 
         treeview.bind("<ButtonRelease-1>", lambda event: switch(
             [edit_button, detail_button], selection=treeview.selection()))
 
     else:
-        detail_button_owner = create_crud_button(self, frame=self.transaksi, x=480, y=110, disabled=len(
+        detail_button_owner = create_crud_button(self, frame=self.transaksi, x=60, y=110, disabled=len(
             treeview.selection()) == 0, text="Detail Data", command=lambda: detail_transaksi(self))
 
         treeview.bind("<ButtonRelease-1>", lambda event: switch(
             [detail_button_owner], selection=treeview.selection()))
+
+    var_search = StringVar()
+    search_bar = search_entry(
+        self, frame=self.transaksi, txtvar=var_search, x=480, y=110)
+    search_bar.bind("<Key>", lambda event: search(
+        self, proc="transaksisearch", search=var_search.get(), treeview=treeview))
+
+    csv_button = create_laporan_button(
+        self, frame=self.transaksi, x=800, y=110, text="CSV", command=lambda: csv_transaksi(self))
+    xls_button = create_laporan_button(
+        self, frame=self.transaksi, x=900, y=110, text="Excel", command=lambda: xls_transaksi(self))
 
 
 def csv_transaksi(self):

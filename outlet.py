@@ -3,7 +3,6 @@ from model import *
 
 def start_outlet(self, role):
     self.outlet = tk.Toplevel()
-    self.outlet.wm_attributes('-type', 'splash')
     self.outlet.title("Laundrive")
     self.outlet.geometry("960x540+180+80")
     self.outlet.resizable(False, False)
@@ -37,21 +36,27 @@ def start_outlet(self, role):
         headings=('id', 'nama', 'alamat', 'tlp'),
         texts=('ID', 'Nama', 'Alamat', 'No. Telp'))
 
-    csv_button = create_laporan_button(
-        self, frame=self.outlet, x=60, y=110, text="CSV", command=lambda: csv_outlet(self))
-    xls_button = create_laporan_button(
-        self, frame=self.outlet, x=160, y=110, text="Excel", command=lambda: xls_outlet(self))
-
     if self.role == "Admin":
         tambah_button = create_crud_button(
-            self, frame=self.outlet, x=360, y=110, text="Tambah Data", command=lambda: tambah_outlet(self))
-        edit_button = create_crud_button(self, frame=self.outlet, x=480, y=110, disabled=len(
+            self, frame=self.outlet, x=60, y=110, text="Tambah Data", command=lambda: tambah_outlet(self))
+        edit_button = create_crud_button(self, frame=self.outlet, x=165, y=110, disabled=len(
             treeview.selection()) == 0, text="Edit Data", command=lambda: edit_outlet(self))
-        delete_button = create_crud_button(self, frame=self.outlet, x=600, y=110, disabled=len(
+        delete_button = create_crud_button(self, frame=self.outlet, x=265, y=110, disabled=len(
             treeview.selection()) == 0, text="Delete Data", command=lambda: delete_outlet(self))
 
         treeview.bind("<ButtonRelease-1>", lambda event: switch(
             [edit_button, delete_button], selection=treeview.selection()))
+
+    var_search = StringVar()
+    search_bar = search_entry(
+        self, frame=self.outlet, txtvar=var_search, x=480, y=110)
+    search_bar.bind("<Key>", lambda event: search(
+        self, proc="outletsearch", search=var_search.get(), treeview=treeview))
+
+    csv_button = create_laporan_button(
+        self, frame=self.outlet, x=800, y=110, text="CSV", command=lambda: csv_outlet(self))
+    xls_button = create_laporan_button(
+        self, frame=self.outlet, x=900, y=110, text="Excel", command=lambda: xls_outlet(self))
 
 
 def csv_outlet(self):

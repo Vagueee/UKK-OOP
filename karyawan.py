@@ -37,21 +37,27 @@ def start_karyawan(self, role):
         texts=('ID', 'Outlet', 'Nama', 'Username', 'Role')
     )
 
-    csv_button = create_laporan_button(
-        self, frame=self.karyawan, x=60, y=110, text="CSV", command=lambda: csv_karyawan(self))
-    xls_button = create_laporan_button(
-        self, frame=self.karyawan, x=160, y=110, text="Excel", command=lambda: xls_karyawan(self))
-
     if self.role == "Admin":
         tambah_button = create_crud_button(
-            self, frame=self.karyawan, x=360, y=110, text="Tambah Data", command=lambda: tambah_karyawan(self))
-        edit_button = create_crud_button(self, frame=self.karyawan, x=480, y=110, disabled=len(
+            self, frame=self.karyawan, x=60, y=110, text="Tambah Data", command=lambda: tambah_karyawan(self))
+        edit_button = create_crud_button(self, frame=self.karyawan, x=165, y=110, disabled=len(
             treeview.selection()) == 0, text="Edit Data", command=lambda: edit_karyawan(self))
-        delete_button = create_crud_button(self, frame=self.karyawan, x=600, y=110, disabled=len(
+        delete_button = create_crud_button(self, frame=self.karyawan, x=265, y=110, disabled=len(
             treeview.selection()) == 0, text="Delete Data", command=lambda: delete_karyawan(self))
 
         treeview.bind("<ButtonRelease-1>", lambda event: switch(
             [edit_button, delete_button], selection=treeview.selection()))
+
+    var_search = StringVar()
+    search_bar = search_entry(
+        self, frame=self.outlet, txtvar=var_search, x=480, y=110)
+    search_bar.bind("<Key>", lambda event: search(
+        self, proc="karyawansearch", search=var_search.get(), treeview=treeview))
+
+    csv_button = create_laporan_button(
+        self, frame=self.karyawan, x=800, y=110, text="CSV", command=lambda: csv_karyawan(self))
+    xls_button = create_laporan_button(
+        self, frame=self.karyawan, x=900, y=110, text="Excel", command=lambda: xls_karyawan(self))
 
 
 def csv_karyawan(self):

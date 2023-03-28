@@ -36,21 +36,27 @@ def start_paket(self, role):
         headings=('id', 'outlet', 'jenis', 'nama', 'harga'),
         texts=('ID', 'Outlet', 'Jenis Paket', 'Nama Paket', 'Harga'))
 
-    csv_button = create_laporan_button(
-        self, frame=self.paket, x=60, y=110, text="CSV", command=lambda: csv_paket(self))
-    xls_button = create_laporan_button(
-        self, frame=self.paket, x=160, y=110, text="Excel", command=lambda: xls_paket(self))
-
     if self.role == "Admin":
         tambah_button = create_crud_button(
-            self, frame=self.paket, x=360, y=110, text="Tambah Data", command=lambda: tambah_paket(self))
-        edit_button = create_crud_button(self, frame=self.paket, x=480, y=110, disabled=len(
+            self, frame=self.paket, x=60, y=110, text="Tambah Data", command=lambda: tambah_paket(self))
+        edit_button = create_crud_button(self, frame=self.paket, x=165, y=110, disabled=len(
             treeview.selection()) == 0, text="Edit Data", command=lambda: edit_paket(self))
-        delete_button = create_crud_button(self, frame=self.paket, x=600, y=110, disabled=len(
+        delete_button = create_crud_button(self, frame=self.paket, x=265, y=110, disabled=len(
             treeview.selection()) == 0, text="Delete Data", command=lambda: delete_paket(self))
 
         treeview.bind("<ButtonRelease-1>", lambda event: switch(
             [edit_button, delete_button], selection=treeview.selection()))
+
+    var_search = StringVar()
+    search_bar = search_entry(
+        self, frame=self.paket, txtvar=var_search, x=480, y=110)
+    search_bar.bind("<Key>", lambda event: search(
+        self, proc="paketsearch", search=var_search.get(), treeview=treeview))
+
+    csv_button = create_laporan_button(
+        self, frame=self.paket, x=800, y=110, text="CSV", command=lambda: csv_paket(self))
+    xls_button = create_laporan_button(
+        self, frame=self.paket, x=900, y=110, text="Excel", command=lambda: xls_paket(self))
 
 
 def csv_paket(self):

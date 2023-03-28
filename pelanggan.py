@@ -36,21 +36,27 @@ def start_pelanggan(self, role):
         headings=('id', 'nama', 'alamat', 'jenis_kelamin', 'tlp'),
         texts=('ID', 'Nama', 'Alamat', 'Jenis Kelamin', 'No. Telp'))
 
-    csv_button = create_laporan_button(
-        self, frame=self.pelanggan, x=60, y=110, text="CSV", command=lambda: csv_pelanggan(self))
-    xls_button = create_laporan_button(
-        self, frame=self.pelanggan, x=160, y=110, text="Excel", command=lambda: xls_pelanggan(self))
-
     if self.role != "Owner":
         tambah_button = create_crud_button(
-            self, frame=self.pelanggan, x=360, y=110, text="Tambah Data", command=lambda: tambah_pelanggan(self))
-        edit_button = create_crud_button(self, frame=self.pelanggan, x=480, y=110, disabled=len(
+            self, frame=self.pelanggan, x=60, y=110, text="Tambah Data", command=lambda: tambah_pelanggan(self))
+        edit_button = create_crud_button(self, frame=self.pelanggan, x=165, y=110, disabled=len(
             treeview.selection()) == 0, text="Edit Data", command=lambda: edit_pelanggan(self))
-        delete_button = create_crud_button(self, frame=self.pelanggan, x=600, y=110, disabled=len(
+        delete_button = create_crud_button(self, frame=self.pelanggan, x=265, y=110, disabled=len(
             treeview.selection()) == 0, text="Delete Data", command=lambda: delete_pelanggan(self))
 
         treeview.bind("<ButtonRelease-1>", lambda event: switch(
             [edit_button, delete_button], selection=treeview.selection()))
+
+    var_search = StringVar()
+    search_bar = search_entry(
+        self, frame=self.pelanggan, txtvar=var_search, x=480, y=110)
+    search_bar.bind("<Key>", lambda event: search(
+        self, proc="pelanggansearch", search=var_search.get(), treeview=treeview))
+
+    csv_button = create_laporan_button(
+        self, frame=self.pelanggan, x=800, y=110, text="CSV", command=lambda: csv_pelanggan(self))
+    xls_button = create_laporan_button(
+        self, frame=self.pelanggan, x=900, y=110, text="Excel", command=lambda: xls_pelanggan(self))
 
 
 def csv_pelanggan(self):
