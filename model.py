@@ -62,7 +62,7 @@ def bargraph(
     proc: str,
 ):
     # Get values
-    self.cursor.callproc(proc, ())
+    self.cursor.callproc(proc)
     result = self.cursor.stored_results()
 
     # Get values from stored procedure
