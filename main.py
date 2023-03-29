@@ -49,8 +49,8 @@ class Main(ttk.Frame):
         self.canvas.create_text(20, 20, text=names, anchor="w", font=(
             "Verdana", 14), fill="#b5b3b3")
 
-        graph = bargraph(self, title="Pendapatan Laundry Harian",
-                         x="Tanggal", y="Pendapatan", style="bmh", proc="pendapatan")
+        graph = bargraph(self, title="Pendapatan Total Laundry",
+                         x="Waktu (Tanggal)", y="Pendapatan (Rp.)", style="bmh", proc="pendapatan")
         canvas = FigureCanvasTkAgg(graph, self.main)
         graph_canvas = canvas.get_tk_widget()
         self.canvas.create_window(480, 300, window=graph_canvas)

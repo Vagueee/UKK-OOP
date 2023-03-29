@@ -50,7 +50,7 @@ def start_karyawan(self, role):
 
     var_search = StringVar()
     search_bar = search_entry(
-        self, frame=self.outlet, txtvar=var_search, x=480, y=110)
+        self, frame=self.karyawan, txtvar=var_search, x=480, y=110)
     search_bar.bind("<Key>", lambda event: search(
         self, proc="karyawansearch", search=var_search.get(), treeview=treeview))
 
@@ -100,24 +100,24 @@ def tambah_karyawan(self):
 
     self.canvas.create_text(480, 50, text="Tambah Karyawan", anchor="center", font=(
         "Verdana", 28, "bold"), fill="#b5b3b3")
-    self.canvas.create_text(420, 100, text="Outlet",
+    self.canvas.create_text(415, 100, text="Outlet",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(420, 140, text="Nama",
+    self.canvas.create_text(415, 140, text="Nama",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(420, 180, text="Username",
+    self.canvas.create_text(415, 180, text="Username",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(420, 220, text="Password",
+    self.canvas.create_text(415, 220, text="Password",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(420, 260, text="Role",
+    self.canvas.create_text(415, 260, text="Role",
                             font=("Verdana", 14), fill="#b5b3b3")
 
     outlet = create_tambah_dropdown(
-        self, self.tambah, x=545, y=100, procdrop="dropdownoutlet")
-    nama = create_tambah_entry(self, self.tambah, x=545, y=140)
-    username = create_tambah_entry(self, self.tambah, x=545, y=180)
-    password = create_tambah_entry(self, self.tambah, x=545, y=220)
+        self, self.tambah, x=550, y=100, procdrop="dropdownoutlet")
+    nama = create_tambah_entry(self, self.tambah, x=550, y=140)
+    username = create_tambah_entry(self, self.tambah, x=550, y=180)
+    password = create_tambah_entry(self, self.tambah, x=550, y=220)
     role = create_tambah_enumdropdown(
-        self, self.tambah, x=545, y=260, procenum="karyawanrole")
+        self, self.tambah, x=550, y=260, procenum="karyawanrole")
 
     def tambahdata():
         outlet_val = outlet.get()
@@ -153,26 +153,26 @@ def edit_karyawan(self):
 
     self.canvas.create_text(480, 50, text="Edit Karyawan", anchor="center", font=(
         "Verdana", 28, "bold"), fill="#b5b3b3")
-    self.canvas.create_text(420, 100, text="Outlet",
+    self.canvas.create_text(415, 100, text="Outlet",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(420, 140, text="Nama",
+    self.canvas.create_text(415, 140, text="Nama",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(420, 180, text="Username",
+    self.canvas.create_text(415, 180, text="Username",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(420, 220, text="Password",
+    self.canvas.create_text(415, 220, text="Password",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(420, 260, text="Role",
+    self.canvas.create_text(415, 260, text="Role",
                             font=("Verdana", 14), fill="#b5b3b3")
 
-    outlet = create_edit_dropdown(self, self.edit, x=545, y=100, index=1, target_index=0, state='normal',
+    outlet = create_edit_dropdown(self, self.edit, x=550, y=100, index=1, target_index=0, state='normal',
                                   treeview=self.treeview, procid="karyawanselectbyid", procdrop="dropdownoutlet")
-    nama = create_edit_entry(self, self.edit, x=545, y=140, index=2,
+    nama = create_edit_entry(self, self.edit, x=550, y=140, index=2,
                              state='normal', treeview=self.treeview, procid="karyawanselectbyid")
-    username = create_edit_entry(self, self.edit, x=545, y=180, index=3,
+    username = create_edit_entry(self, self.edit, x=550, y=180, index=3,
                                  state='normal', treeview=self.treeview, procid="karyawanselectbyid")
-    password = create_edit_entry(self, self.edit, x=545, y=220, index=4,
+    password = create_edit_entry(self, self.edit, x=550, y=220, index=4,
                                  state='normal', treeview=self.treeview, procid="karyawanselectbyid")
-    role = create_edit_enumdropdown(self, self.edit, x=545, y=260, index=5, state='normal',
+    role = create_edit_enumdropdown(self, self.edit, x=550, y=260, index=5, state='normal',
                                     treeview=self.treeview, procid="karyawanselectbyid", procenum="karyawanrole")
 
     def editdata():

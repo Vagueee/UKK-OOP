@@ -6,7 +6,7 @@ def start_pelanggan(self, role):
     self.pelanggan.title("Laundrive")
     self.pelanggan.geometry("960x540+180+80")
     self.pelanggan.resizable(False, False)
-    self.pelanggan.protocol("WM_DELETE_WINDOW", lambda: on_closing(self))
+    # self.pelanggan.protocol("WM_DELETE_WINDOW", lambda: on_closing(self))
     self.frame = ttk.Frame(self.pelanggan)
     self.frame.pack(fill="both", expand=False)
     self.canvas = tk.Canvas(self.pelanggan, width=960, height=540)
@@ -99,20 +99,20 @@ def tambah_pelanggan(self):
 
     self.canvas.create_text(480, 50, text="Tambah Pelanggan", anchor="center", font=(
         "Verdana", 28, "bold"), fill="#b5b3b3")
-    self.canvas.create_text(420, 100, text="Nama",
+    self.canvas.create_text(415, 100, text="Nama",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(420, 140, text="Alamat",
+    self.canvas.create_text(415, 140, text="Alamat",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(420, 180, text="Jenis Kelamin",
+    self.canvas.create_text(415, 180, text="Jenis Kelamin",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(420, 220, text="No. Telp",
+    self.canvas.create_text(415, 220, text="No. Telp",
                             font=("Verdana", 14), fill="#b5b3b3")
 
-    nama = create_tambah_entry(self, self.tambah, x=545, y=100)
-    alamat = create_tambah_entry(self, self.tambah, x=545, y=140)
+    nama = create_tambah_entry(self, self.tambah, x=550, y=100)
+    alamat = create_tambah_entry(self, self.tambah, x=550, y=140)
     jenis_kelamin = create_tambah_enumdropdown(
-        self, self.tambah, x=545, y=180, procenum="pelangganjk")
-    telp = create_tambah_entry(self, self.tambah, x=545, y=220)
+        self, self.tambah, x=550, y=180, procenum="pelangganjk")
+    telp = create_tambah_entry(self, self.tambah, x=550, y=220)
 
     def tambahdata():
         nama_val = nama.get()
@@ -150,22 +150,22 @@ def edit_pelanggan(self):
 
     self.canvas.create_text(480, 50, text="Edit Pelanggan", anchor="center", font=(
         "Verdana", 28, "bold"), fill="#b5b3b3")
-    self.canvas.create_text(420, 180, text="Nama",
+    self.canvas.create_text(415, 180, text="Nama",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(420, 100, text="Alamat",
+    self.canvas.create_text(415, 100, text="Alamat",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(420, 140, text="Jenis Kelamin",
+    self.canvas.create_text(415, 140, text="Jenis Kelamin",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(420, 220, text="No. Telp",
+    self.canvas.create_text(415, 220, text="No. Telp",
                             font=("Verdana", 14), fill="#b5b3b3")
 
-    nama = create_edit_entry(self, self.edit, x=545, y=100, index=1,
+    nama = create_edit_entry(self, self.edit, x=550, y=100, index=1,
                              state='normal', treeview=self.treeview, procid="pelangganselectbyid")
-    alamat = create_edit_entry(self, self.edit, x=545, y=140, index=2,
+    alamat = create_edit_entry(self, self.edit, x=550, y=140, index=2,
                                state='normal', treeview=self.treeview, procid="pelangganselectbyid")
-    jenis_kelamin = create_edit_enumdropdown(self, self.edit, x=545, y=180, index=3, state='normal',
+    jenis_kelamin = create_edit_enumdropdown(self, self.edit, x=550, y=180, index=3, state='normal',
                                              treeview=self.treeview, procid="pelangganselectbyid", procenum="pelangganjk")
-    telp = create_edit_entry(self, self.edit, x=545, y=220, index=4,
+    telp = create_edit_entry(self, self.edit, x=550, y=220, index=4,
                              state='normal', treeview=self.treeview, procid="pelangganselectbyid")
 
     def editdata():

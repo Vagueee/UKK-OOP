@@ -305,7 +305,7 @@ def create_tambah_dropdown(
         values = values.fetchall()
 
     dropdown = ttk.Combobox(frame, values=values, state="readonly")
-    dropdown.configure(width=17)
+    dropdown.configure(width=20)
     dropdown.pack()
     self.canvas.create_window(x, y, window=dropdown)
     return dropdown
@@ -328,7 +328,7 @@ def create_tambah_dropdown_sorted(
         values = values.fetchall()
 
     dropdown = ttk.Combobox(frame, values=values, state="readonly")
-    dropdown.configure(width=17)
+    dropdown.configure(width=20)
     dropdown.pack()
     self.canvas.create_window(x, y, window=dropdown)
     return dropdown
@@ -378,7 +378,7 @@ def create_edit_dropdown(
             break
 
     dropdown = ttk.Combobox(frame, values=values, state="readonly")
-    dropdown.configure(width=17, state=state)
+    dropdown.configure(width=20, state=state)
     dropdown.current(values.index(selected))
     dropdown.pack()
     self.canvas.create_window(x, y, window=dropdown)
@@ -402,7 +402,7 @@ def create_tambah_enumdropdown(
         values = [i.replace("'", "") for i in values]
 
     dropdown = ttk.Combobox(frame, values=values, state="readonly")
-    dropdown.configure(width=17)
+    dropdown.configure(width=20)
     dropdown.pack()
     self.canvas.create_window(x, y, window=dropdown)
     return dropdown
@@ -443,7 +443,7 @@ def create_edit_enumdropdown(
         values = [i.replace("'", "") for i in values]
 
     dropdown = ttk.Combobox(frame, values=values, state="readonly")
-    dropdown.configure(width=17, state=state)
+    dropdown.configure(width=20, state=state)
     dropdown.current(values.index(data[index]))
     dropdown.pack()
     self.canvas.create_window(x, y, window=dropdown)
@@ -462,7 +462,7 @@ def create_tambah_date(
 ):
     tanggal = DateEntry(frame, width=width, background=background,
                         foreground=foreground, borderwidth=borderwidth)
-    tanggal.configure(width=17)
+    tanggal.configure(width=20)
     tanggal.pack()
     self.canvas.create_window(x, y, window=tanggal)
     return tanggal
@@ -498,7 +498,7 @@ def create_edit_date(
 
     tanggal = DateEntry(frame, width=width, background=background,
                         foreground=foreground, borderwidth=borderwidth)
-    tanggal.configure(width=17, state=state)
+    tanggal.configure(width=20, state=state)
     tanggal.set_date(data[index])
     tanggal.pack()
     self.canvas.create_window(x, y, window=tanggal)

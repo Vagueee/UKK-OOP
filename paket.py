@@ -6,7 +6,7 @@ def start_paket(self, role):
     self.paket.title("Laundrive")
     self.paket.geometry("960x540+180+80")
     self.paket.resizable(False, False)
-    self.paket.protocol("WM_DELETE_WINDOW", lambda: on_closing(self))
+    # self.paket.protocol("WM_DELETE_WINDOW", lambda: on_closing(self))
     self.frame = ttk.Frame(self.paket)
     self.frame.pack(fill="both", expand=False)
     self.canvas = tk.Canvas(self.paket, width=960, height=540)
@@ -99,21 +99,21 @@ def tambah_paket(self):
 
     self.canvas.create_text(480, 50, text="Tambah Paket", anchor="center", font=(
         "Verdana", 28, "bold"), fill="#b5b3b3")
-    self.canvas.create_text(420, 100, text="Outlet",
+    self.canvas.create_text(415, 100, text="Outlet",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(420, 140, text="Jenis Paket",
+    self.canvas.create_text(415, 140, text="Jenis Paket",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(420, 180, text="Nama Paket",
+    self.canvas.create_text(415, 180, text="Nama Paket",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(420, 220, text="Harga",
+    self.canvas.create_text(415, 220, text="Harga",
                             font=("Verdana", 14), fill="#b5b3b3")
 
     outlet = create_tambah_dropdown(
-        self, self.tambah, x=545, y=100, procdrop="dropdownoutlet")
+        self, self.tambah, x=550, y=100, procdrop="dropdownoutlet")
     jenis = create_tambah_enumdropdown(
-        self, self.tambah, x=545, y=140, procenum="paketjenis")
-    nama = create_tambah_entry(self, self.tambah, x=545, y=180)
-    harga = create_tambah_entry(self, self.tambah, x=545, y=220)
+        self, self.tambah, x=550, y=140, procenum="paketjenis")
+    nama = create_tambah_entry(self, self.tambah, x=550, y=180)
+    harga = create_tambah_entry(self, self.tambah, x=550, y=220)
 
     def tambahdata():
         outlet_val = outlet.get()
@@ -151,22 +151,22 @@ def edit_paket(self):
 
     self.canvas.create_text(480, 50, text="Edit Paket", anchor="center", font=(
         "Verdana", 28, "bold"), fill="#b5b3b3")
-    self.canvas.create_text(420, 100, text="Outlet",
+    self.canvas.create_text(415, 100, text="Outlet",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(420, 140, text="Jenis Paket",
+    self.canvas.create_text(415, 140, text="Jenis Paket",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(420, 180, text="Nama Paket",
+    self.canvas.create_text(415, 180, text="Nama Paket",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(420, 220, text="Harga",
+    self.canvas.create_text(415, 220, text="Harga",
                             font=("Verdana", 14), fill="#b5b3b3")
 
-    outlet = create_edit_dropdown(self, self.edit, x=545, y=100, index=1, target_index=1,
+    outlet = create_edit_dropdown(self, self.edit, x=550, y=100, index=1, target_index=1,
                                   state='normal', treeview=self.treeview, procid="paketselectbyid", procdrop="dropdownoutlet")
-    jenis = create_edit_enumdropdown(self, self.edit, x=545, y=140, index=2, state='normal',
+    jenis = create_edit_enumdropdown(self, self.edit, x=550, y=140, index=2, state='normal',
                                      treeview=self.treeview, procid="paketselectbyid", procenum="paketjenis")
-    nama = create_edit_entry(self, self.edit, x=545, y=180, index=3,
+    nama = create_edit_entry(self, self.edit, x=550, y=180, index=3,
                              state='normal', treeview=self.treeview, procid="paketselectbyid")
-    harga = create_edit_entry(self, self.edit, x=545, y=220, index=4,
+    harga = create_edit_entry(self, self.edit, x=550, y=220, index=4,
                               state='normal', treeview=self.treeview, procid="paketselectbyid")
 
     def editdata():
@@ -200,4 +200,4 @@ def delete_paket(self):
 
 def on_closing(self):
     if messagebox.askokcancel("Quit", "Do you want to quit?"):
-        self.main.destroy()
+        self.paket.destroy()

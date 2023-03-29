@@ -108,42 +108,42 @@ def tambah_transaksi(self):
 
     self.canvas.create_text(480, 50, text="Tambah Transaksi", anchor="center", font=(
         "Verdana", 28, "bold"), fill="#b5b3b3")
-    self.canvas.create_text(400, 100, text="Outlet",
+    self.canvas.create_text(410, 100, text="Outlet",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(400, 140, text="Karyawan",
+    self.canvas.create_text(410, 140, text="Karyawan",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(400, 180, text="Pelanggan",
+    self.canvas.create_text(410, 180, text="Pelanggan",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(400, 220, text="Tanggal",
+    self.canvas.create_text(410, 220, text="Tanggal",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(400, 260, text="Batas Waktu",
+    self.canvas.create_text(410, 260, text="Batas Waktu",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(400, 300, text="Waktu Bayar",
+    self.canvas.create_text(410, 300, text="Waktu Bayar",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(400, 340, text="Biaya Tambahan",
+    self.canvas.create_text(410, 340, text="Biaya Tambahan",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(400, 380, text="Diskon",
+    self.canvas.create_text(410, 380, text="Diskon",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(400, 420, text="Status",
+    self.canvas.create_text(410, 420, text="Status",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(400, 460, text="Dibayar",
+    self.canvas.create_text(410, 460, text="Dibayar",
                             font=("Verdana", 14), fill="#b5b3b3")
 
     outlet = create_tambah_dropdown(
-        self, self.tambah, x=565, y=100, procdrop="dropdownoutlet")
+        self, self.tambah, x=570, y=100, procdrop="dropdownoutlet")
     karyawan = create_tambah_dropdown(
-        self, self.tambah, x=565, y=140, procdrop="dropdownkasir")
+        self, self.tambah, x=570, y=140, procdrop="dropdownkasir")
     pelanggan = create_tambah_dropdown(
-        self, self.tambah, x=565, y=180, procdrop="dropdownpelanggan")
-    tanggal = create_tambah_date(self, self.tambah, x=565, y=220)
-    batas_waktu = create_tambah_date(self, self.tambah, x=565, y=260)
-    waktu_bayar = create_tambah_date(self, self.tambah, x=565, y=300)
-    biaya_tambahan = create_tambah_entry(self, self.tambah, x=565, y=340)
-    diskon = create_tambah_entry(self, self.tambah, x=565, y=380)
+        self, self.tambah, x=570, y=180, procdrop="dropdownpelanggan")
+    tanggal = create_tambah_date(self, self.tambah, x=570, y=220)
+    batas_waktu = create_tambah_date(self, self.tambah, x=570, y=260)
+    waktu_bayar = create_tambah_date(self, self.tambah, x=570, y=300)
+    biaya_tambahan = create_tambah_entry(self, self.tambah, x=570, y=340)
+    diskon = create_tambah_entry(self, self.tambah, x=570, y=380)
     status = create_tambah_enumdropdown(
-        self, self.tambah, x=565, y=420, procenum="transaksistatus")
+        self, self.tambah, x=570, y=420, procenum="transaksistatus")
     dibayar = create_tambah_enumdropdown(
-        self, self.tambah, x=565, y=460, procenum="transaksidibayar")
+        self, self.tambah, x=570, y=460, procenum="transaksidibayar")
 
     def tambahdata():
         outlet_val = outlet.get()
@@ -185,17 +185,17 @@ def tambah_detail_transaksi(self, outlet_val):
 
     self.canvas.create_text(480, 50, text="Tambah Detail Transaksi",
                             anchor="center", font=("Verdana", 28, "bold"), fill="#b5b3b3")
-    self.canvas.create_text(415, 100, text="Paket",
+    self.canvas.create_text(410, 100, text="Paket",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(415, 140, text="Kuantitas",
+    self.canvas.create_text(410, 140, text="Kuantitas",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(415, 180, text="Keterangan",
+    self.canvas.create_text(410, 180, text="Keterangan",
                             font=("Verdana", 14), fill="#b5b3b3")
 
     paket = create_tambah_dropdown_sorted(
-        self, self.tambahdet, x=555, y=100, procdrop="dropdownpaket", sortby=outlet_val)
-    qty = create_tambah_entry(self, self.tambahdet, x=555, y=140)
-    keterangan = create_tambah_entry(self, self.tambahdet, x=555, y=180)
+        self, self.tambahdet, x=570, y=100, procdrop="dropdownpaket", sortby=outlet_val)
+    qty = create_tambah_entry(self, self.tambahdet, x=570, y=140)
+    keterangan = create_tambah_entry(self, self.tambahdet, x=570, y=180)
 
     def tambahdata():
         self.cursor.execute(
@@ -232,46 +232,46 @@ def edit_transaksi(self):
 
     self.canvas.create_text(480, 50, text="Tambah Transaksi", anchor="center", font=(
         "Verdana", 28, "bold"), fill="#b5b3b3")
-    self.canvas.create_text(415, 100, text="Outlet",
+    self.canvas.create_text(410, 100, text="Outlet",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(415, 140, text="Karyawan",
+    self.canvas.create_text(410, 140, text="Karyawan",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(415, 180, text="Pelanggan",
+    self.canvas.create_text(410, 180, text="Pelanggan",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(415, 220, text="Tanggal",
+    self.canvas.create_text(410, 220, text="Tanggal",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(415, 260, text="Batas Waktu",
+    self.canvas.create_text(410, 260, text="Batas Waktu",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(415, 300, text="Waktu Bayar",
+    self.canvas.create_text(410, 300, text="Waktu Bayar",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(415, 340, text="Biaya Tambahan",
+    self.canvas.create_text(410, 340, text="Biaya Tambahan",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(415, 380, text="Diskon",
+    self.canvas.create_text(410, 380, text="Diskon",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(415, 420, text="Status",
+    self.canvas.create_text(410, 420, text="Status",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(415, 460, text="Dibayar",
+    self.canvas.create_text(410, 460, text="Dibayar",
                             font=("Verdana", 14), fill="#b5b3b3")
 
-    outlet = create_edit_dropdown(self, self.edit, x=550, y=100, index=2, target_index=0, state='disabled',
+    outlet = create_edit_dropdown(self, self.edit, x=570, y=100, index=2, target_index=0, state='disabled',
                                   treeview=self.treeview, procid="transaksiselectbyid", procdrop="dropdownoutlet")
-    karyawan = create_edit_dropdown(self, self.edit, x=550, y=140, index=3, target_index=0, state='disabled',
+    karyawan = create_edit_dropdown(self, self.edit, x=570, y=140, index=3, target_index=0, state='disabled',
                                     treeview=self.treeview, procid="transaksiselectbyid", procdrop="dropdownkasir")
-    pelanggan = create_edit_dropdown(self, self.edit, x=550, y=180, index=4, target_index=0, state='disabled',
+    pelanggan = create_edit_dropdown(self, self.edit, x=570, y=180, index=4, target_index=0, state='disabled',
                                      treeview=self.treeview, procid="transaksiselectbyid", procdrop="dropdownpelanggan")
-    tanggal = create_edit_date(self, self.edit, x=550, y=220, index=5,
+    tanggal = create_edit_date(self, self.edit, x=570, y=220, index=5,
                                state='disabled', treeview=self.treeview, procid="transaksiselectbyid")
-    batas_waktu = create_edit_date(self, self.edit, x=550, y=260, index=6,
+    batas_waktu = create_edit_date(self, self.edit, x=570, y=260, index=6,
                                    state='disabled', treeview=self.treeview, procid="transaksiselectbyid")
-    waktu_bayar = create_edit_date(self, self.edit, x=550, y=300, index=7,
+    waktu_bayar = create_edit_date(self, self.edit, x=570, y=300, index=7,
                                    state='disabled', treeview=self.treeview, procid="transaksiselectbyid")
-    biaya_tambahan = create_edit_entry(self, self.edit, x=550, y=340, index=8,
+    biaya_tambahan = create_edit_entry(self, self.edit, x=570, y=340, index=8,
                                        state='disabled', treeview=self.treeview, procid="transaksiselectbyid")
-    diskon = create_edit_entry(self, self.edit, x=550, y=380, index=9,
+    diskon = create_edit_entry(self, self.edit, x=570, y=380, index=9,
                                state='disabled', treeview=self.treeview, procid="transaksiselectbyid")
-    status = create_edit_enumdropdown(self, self.edit, x=550, y=420, index=10, state='normal',
+    status = create_edit_enumdropdown(self, self.edit, x=570, y=420, index=10, state='normal',
                                       treeview=self.treeview, procid="transaksiselectbyid", procenum="transaksistatus")
-    dibayar = create_edit_enumdropdown(self, self.edit, x=550, y=460, index=11, state='normal',
+    dibayar = create_edit_enumdropdown(self, self.edit, x=570, y=460, index=11, state='normal',
                                        treeview=self.treeview, procid="transaksiselectbyid", procenum="transaksidibayar")
 
     def editdata():

@@ -450,7 +450,7 @@ namespace eval ttk::theme::azure-dark {
             ] -border 5 -padding {2 6 6 6}
 
         ttk::style element create Combobox.arrow image $I(down) \
-            -width 15 -sticky e
+            -width 20 -sticky e
 
         # Spinbox
         ttk::style element create Spinbox.field \

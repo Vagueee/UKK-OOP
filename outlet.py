@@ -6,7 +6,7 @@ def start_outlet(self, role):
     self.outlet.title("Laundrive")
     self.outlet.geometry("960x540+180+80")
     self.outlet.resizable(False, False)
-    self.outlet.protocol("WM_DELETE_WINDOW", lambda: on_closing(self))
+    # self.outlet.protocol("WM_DELETE_WINDOW", lambda: on_closing(self))
     self.frame = ttk.Frame(self.outlet)
     self.frame.pack(fill="both", expand=False)
     self.canvas = tk.Canvas(self.outlet, width=960, height=540)
@@ -99,16 +99,16 @@ def tambah_outlet(self):
 
     self.canvas.create_text(480, 50, text="Tambah Outlet", anchor="center", font=(
         "Verdana", 28, "bold"), fill="#b5b3b3")
-    self.canvas.create_text(420, 100, text="Nama",
+    self.canvas.create_text(405, 100, text="Nama",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(420, 140, text="Alamat",
+    self.canvas.create_text(405, 140, text="Alamat",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(420, 180, text="No. Telp",
+    self.canvas.create_text(405, 180, text="No. Telp",
                             font=("Verdana", 14), fill="#b5b3b3")
 
-    nama = create_tambah_entry(self, self.tambah, x=540, y=100)
-    alamat = create_tambah_entry(self, self.tambah, x=540, y=140)
-    telp = create_tambah_entry(self, self.tambah, x=540, y=180)
+    nama = create_tambah_entry(self, self.tambah, x=545, y=100)
+    alamat = create_tambah_entry(self, self.tambah, x=545, y=140)
+    telp = create_tambah_entry(self, self.tambah, x=545, y=180)
 
     def tambahdata():
         nama_val = nama.get()
@@ -145,18 +145,18 @@ def edit_outlet(self):
 
     self.canvas.create_text(480, 50, text="Edit Outlet", anchor="center", font=(
         "Verdana", 28, "bold"), fill="#b5b3b3")
-    self.canvas.create_text(420, 100, text="Nama",
+    self.canvas.create_text(405, 100, text="Nama",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(420, 140, text="Alamat",
+    self.canvas.create_text(405, 140, text="Alamat",
                             font=("Verdana", 14), fill="#b5b3b3")
-    self.canvas.create_text(420, 180, text="No. Telp",
+    self.canvas.create_text(405, 180, text="No. Telp",
                             font=("Verdana", 14), fill="#b5b3b3")
 
-    nama = create_edit_entry(self, self.edit, x=540, y=100, index=1,
+    nama = create_edit_entry(self, self.edit, x=545, y=100, index=1,
                              state='normal', treeview=self.treeview, procid="outletselectbyid")
-    alamat = create_edit_entry(self, self.edit, x=540, y=140, index=2,
+    alamat = create_edit_entry(self, self.edit, x=545, y=140, index=2,
                                state='normal', treeview=self.treeview, procid="outletselectbyid")
-    telp = create_edit_entry(self, self.edit, x=540, y=180, index=3,
+    telp = create_edit_entry(self, self.edit, x=545, y=180, index=3,
                              state='normal', treeview=self.treeview, procid="outletselectbyid")
 
     def editdata():
@@ -190,4 +190,4 @@ def delete_outlet(self):
 
 def on_closing(self):
     if messagebox.askokcancel("Quit", "Do you want to quit?"):
-        self.main.destroy()
+        self.outlet.destroy()
