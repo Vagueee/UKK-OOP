@@ -7,3 +7,6 @@ Username, Password, Role
 kanna, kanna, Admin
 rizza, rizza, Kasir
 fajjri, fajjri, Owner
+
+Tambahan :
+Untuk versi saat ini grafik bar hanya menampilkan data selama 7 hari terakhir
