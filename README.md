@@ -15,5 +15,8 @@ Masukan folder lib dan bin ke PATH (Virtual Environment)
 XAMPP :
 https://www.apachefriends.org/download.html
 
-run di cmd :
+run in cmd :
+cd (relative path to file requirements.txt)
 pip install -r requirements.txt
+
+run login.py
