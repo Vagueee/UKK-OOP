@@ -1,9 +1,16 @@
 # UKK-OOP
 Rewriten ukk repos
 
-Install Req :
-pip install -r requirements.txt
+Install :
+Python :
+https://www.python.org/downloads/
+
+PIP : 
+https://pip.pypa.io/en/stable/installation/
 
 GTK :
 https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer/releases
-Masuk folder lib dan bin ke PATH (venv)
+Masukan folder lib dan bin ke PATH (Virtual Environment)
+
+run di cmd :
+pip install -r requirements.txt
