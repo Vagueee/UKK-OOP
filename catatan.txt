@@ -1,0 +1,6 @@
+Akun :
+Username, Password, Role
+
+kanna, kanna, Admin
+rizza, rizza, Kasir
+fajjri, fajjri, Owner

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 27, 2023 at 06:05 AM
+-- Generation Time: Mar 29, 2023 at 09:10 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.0.11
 
@@ -48,8 +48,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `dropdownoutlet` ()  BEGIN
 SELECT id_outlet, nama FROM tb_outlet;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `dropdownpaket` ()  BEGIN
-SELECT id_paket, nama_paket FROM tb_paket;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `dropdownpaket` (IN `id_out` INT)  BEGIN
+SELECT id_paket, nama_paket FROM tb_paket WHERE id_outlet=id_out;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `dropdownpelanggan` ()  BEGIN
@@ -67,6 +67,13 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `karyawanrole` ()  BEGIN
 SHOW COLUMNS FROM tb_user WHERE FIELD='role';
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `karyawansearch` (`search` VARCHAR(255))  BEGIN
+SELECT tb_user.`id_user`, tb_outlet.nama, tb_user.`nama`, tb_user.`username`, tb_user.`role`
+FROM tb_user JOIN tb_outlet ON tb_user.id_outlet=tb_outlet.id_outlet
+WHERE CONCAT(tb_outlet.nama, tb_user.nama, tb_user.username, tb_user.password, tb_user.role) LIKE CONCAT("%", search, "%")
+ORDER BY tb_user.id_user ASC;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `karyawanselect` ()  BEGIN
@@ -98,6 +105,12 @@ UPDATE tb_outlet SET nama = nama_out, alamat = alamat_out, tlp = tlp_out
 WHERE id_outlet = id_out;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `outletsearch` (`search` VARCHAR(255))  BEGIN
+SELECT * FROM tb_outlet
+WHERE CONCAT(nama, alamat, tlp) LIKE CONCAT("%", search, "%")
+ORDER BY tb_outlet.id_outlet ASC;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `outletselect` ()  BEGIN
 SELECT * FROM tb_outlet
 ORDER BY tb_outlet.id_outlet ASC;
@@ -122,6 +135,13 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `paketjenis` ()  BEGIN
 SHOW COLUMNS FROM tb_paket WHERE FIELD='jenis';
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `paketsearch` (`search` VARCHAR(255))  BEGIN
+SELECT tb_paket.id_paket, tb_outlet.nama, tb_paket.jenis, tb_paket.nama_paket, tb_paket.harga
+FROM tb_paket JOIN tb_outlet ON tb_paket.id_outlet=tb_outlet.id_outlet
+WHERE CONCAT(tb_outlet.nama, tb_paket.jenis, tb_paket.nama_paket, tb_paket.harga) LIKE CONCAT("%", search, "%")
+ORDER BY tb_paket.id_paket ASC; 
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `paketselect` ()  BEGIN
@@ -152,9 +172,15 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `pelangganjk` ()  BEGIN
 SHOW COLUMNS FROM tb_member WHERE FIELD='jenis_kelamin';
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pelanggansearch` (`search` VARCHAR(255))  BEGIN 
+SELECT * FROM tb_member
+WHERE CONCAT(nama, alamat, jeniskelamin, tlp) LIKE CONCAT("%", search, "%")
+ORDER BY tb_member.id_member ASC;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `pelangganselect` ()  BEGIN 
 SELECT * FROM tb_member
-ORDER BY tb_member.id_member;
+ORDER BY tb_member.id_member ASC;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `pelangganselectbyid` (`id_pel` INT)  BEGIN
@@ -181,6 +207,13 @@ END$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `transaksiedit` (`id_tr` INT, `status_tr` ENUM('baru','proses','selesai','belajar'), `dibayar_tr` ENUM('dibayar','belum_dibayar'))  BEGIN
 UPDATE tb_transaksi SET status = status_tr, dibayar = dibayar_tr
 WHERE id_transaksi = id_tr;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `transaksisearch` (`search` VARCHAR(255))  BEGIN
+SELECT tb_transaksi.id_transaksi, tb_transaksi.kode_invoice, tb_outlet.nama, tb_user.nama, tb_member.nama, tb_transaksi.tgl, tb_transaksi.batas_waktu, tb_transaksi.waktu_bayar, tb_transaksi.status, tb_transaksi.dibayar
+FROM tb_transaksi JOIN tb_outlet ON tb_transaksi.id_outlet=tb_outlet.id_outlet JOIN tb_user ON tb_transaksi.id_user=tb_user.id_user JOIN tb_member ON tb_transaksi.id_member=tb_member.id_member
+WHERE CONCAT(tb_transaksi.kode_invoice, tb_outlet.nama, tb_user.nama, tb_member.nama, tb_transaksi.tgl, tb_transaksi.batas_waktu, tb_transaksi.waktu_bayar, tb_transaksi.status, tb_transaksi.dibayar) LIKE CONCAT("%", search, "%")
+ORDER BY tb_transaksi.id_transaksi ASC;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `transaksiselect` ()  BEGIN
@@ -233,6 +266,20 @@ CREATE TABLE `log_transaksi` (
   `waktu_aksi` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `log_transaksi`
+--
+
+INSERT INTO `log_transaksi` (`id_aksi`, `id_transaksi`, `aksi`, `waktu_aksi`) VALUES
+(1, 1, 'Tambah Data Transaksi', '2023-03-27 11:15:58'),
+(2, 2, 'Tambah Data Transaksi', '2023-03-27 12:43:27'),
+(3, 3, 'Tambah Data Transaksi', '2023-03-28 09:14:59'),
+(4, 4, 'Tambah Data Transaksi', '2023-03-29 13:22:45'),
+(5, 5, 'Tambah Data Transaksi', '2023-03-29 13:26:15'),
+(6, 5, 'Update Data Transaksi', '2023-03-29 13:26:47'),
+(7, 4, 'Update Data Transaksi', '2023-03-29 13:37:24'),
+(8, 5, 'Update Data Transaksi', '2023-03-29 13:37:24');
+
 -- --------------------------------------------------------
 
 --
@@ -246,6 +293,17 @@ CREATE TABLE `tb_detail_transaksi` (
   `qty` int(11) DEFAULT NULL,
   `keterangan` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tb_detail_transaksi`
+--
+
+INSERT INTO `tb_detail_transaksi` (`id_det_transaksi`, `id_transaksi`, `id_paket`, `qty`, `keterangan`) VALUES
+(1, 1, 1, 2, 'Bed cover aja'),
+(2, 2, 4, 1, 'Lain'),
+(3, 3, 2, 3, 'Kiloan Baju'),
+(4, 4, 1, 1, 'asal'),
+(5, 5, 1, 5, '5');
 
 -- --------------------------------------------------------
 
@@ -340,15 +398,28 @@ CREATE TABLE `tb_transaksi` (
   `biaya_tambahan` int(11) DEFAULT NULL,
   `diskon` int(11) DEFAULT NULL,
   `status` enum('Baru','Proses','Selesai','Diambil') DEFAULT NULL,
-  `dibayar` enum('Dibayar','Belum Dibayar') DEFAULT NULL
+  `dibayar` enum('Belum','Dibayar') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tb_transaksi`
+--
+
+INSERT INTO `tb_transaksi` (`id_transaksi`, `kode_invoice`, `id_outlet`, `id_user`, `id_member`, `tgl`, `batas_waktu`, `waktu_bayar`, `biaya_tambahan`, `diskon`, `status`, `dibayar`) VALUES
+(1, 'L-1-2023-03-27', 1, 2, 1, '2023-03-27', '2023-03-27', '2023-03-27', 1000, 10, 'Baru', 'Dibayar'),
+(2, 'L-2-2023-03-27', 2, 2, 2, '2023-03-27', '2023-03-27', '2023-03-27', 1000, 5, 'Baru', 'Dibayar'),
+(3, 'L-3-2023-03-28', 1, 2, 2, '2023-03-28', '2023-03-28', '2023-03-28', 0, 0, 'Selesai', 'Dibayar'),
+(4, 'L-4-2023-03-29', 1, 2, 1, '2023-03-29', '2023-03-29', '2023-03-29', 1000, 10, 'Baru', 'Belum'),
+(5, 'L-5-2023-03-29', 1, 2, 1, '2023-03-29', '2023-03-29', '2023-03-29', 2000, 10, 'Baru', 'Belum');
 
 --
 -- Triggers `tb_transaksi`
 --
 DELIMITER $$
-CREATE TRIGGER `kode_invoice` BEFORE INSERT ON `tb_transaksi` FOR EACH ROW BEGIN
-    SET NEW.kode_invoice = CONCAT('L-', (SELECT MAX(id_transaksi) + 1 FROM tb_transaksi), '-', DATE(now()));
+CREATE TRIGGER `kode_invoice` BEFORE INSERT ON `tb_transaksi` FOR EACH ROW BEGIN 
+IF (NOT EXISTS(SELECT * FROM tb_transaksi)) THEN SET NEW.kode_invoice = CONCAT('L-1-',DATE(now())); 
+ELSE SET NEW.kode_invoice = CONCAT('L-', (SELECT MAX(id_transaksi) + 1 FROM tb_transaksi), '-', DATE(now())); 
+END IF; 
 END
 $$
 DELIMITER ;
@@ -458,13 +529,13 @@ ALTER TABLE `tb_user`
 -- AUTO_INCREMENT for table `log_transaksi`
 --
 ALTER TABLE `log_transaksi`
-  MODIFY `id_aksi` int(15) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_aksi` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `tb_detail_transaksi`
 --
 ALTER TABLE `tb_detail_transaksi`
-  MODIFY `id_det_transaksi` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_det_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tb_member`
@@ -476,7 +547,7 @@ ALTER TABLE `tb_member`
 -- AUTO_INCREMENT for table `tb_outlet`
 --
 ALTER TABLE `tb_outlet`
-  MODIFY `id_outlet` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_outlet` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `tb_paket`
@@ -488,7 +559,7 @@ ALTER TABLE `tb_paket`
 -- AUTO_INCREMENT for table `tb_transaksi`
 --
 ALTER TABLE `tb_transaksi`
-  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tb_user`
