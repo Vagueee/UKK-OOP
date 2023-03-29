@@ -294,7 +294,7 @@ def edit_transaksi(self):
 def detail_transaksi(self):
     self.detail = tk.Toplevel()
     self.detail.title("Laundrive")
-    self.detail.geometry("400x540+260+80")
+    self.detail.geometry("700x540+260+80")
     self.detail.resizable(False, False)
     self.frame = ttk.Frame(self.detail)
     self.frame.pack(fill="both", expand=False)
@@ -320,25 +320,25 @@ def detail_transaksi(self):
 
     self.canvas.create_text(20, 220, text=f"Klien \n\n{data[2]}", anchor="w", font=(
         "Verdana", 12), fill="#b5b3b3")
-    self.canvas.create_text(20, 260, text=f"{data[3]}", anchor="w", font=(
+    self.canvas.create_text(20, 260, text=f"{data[4]}", anchor="w", font=(
         "Verdana", 12), fill="#b5b3b3")
-    self.canvas.create_text(20, 280, text=f"{data[4]}", anchor="w", font=(
-        "Verdana", 12), fill="#b5b3b3")
-    self.canvas.create_text(380, 220, text=f"Outlet\n\n{data[5]}", anchor="e", font=(
+    self.canvas.create_text(20, 280, text=f"{data[3]}", anchor="w", font=(
+        "Verdana", 12), fill="#b5b3b3", width=300)
+    self.canvas.create_text(680, 220, text=f"Outlet\n\n{data[5]}", anchor="e", font=(
         "Verdana", 12), fill="#b5b3b3", justify="right")
-    self.canvas.create_text(380, 260, text=f"{data[6]}", anchor="e", font=(
+    self.canvas.create_text(680, 260, text=f"{data[7]}", anchor="e", font=(
         "Verdana", 12), fill="#b5b3b3")
-    self.canvas.create_text(380, 280, text=f"{data[7]}", anchor="e", font=(
-        "Verdana", 12), fill="#b5b3b3")
+    self.canvas.create_text(680, 270, text=f"{data[6]}", anchor="ne", font=(
+        "Verdana", 12), fill="#b5b3b3", width=300, justify="right")
 
-    self.canvas.create_text(45, 420, text=f"Paket \n\n{data[8]}", anchor="center", font=(
+    self.canvas.create_text(20, 420, text=f"Paket \n\n{data[8]}", anchor="w", font=(
         "Verdana", 12), fill="#b5b3b3")
-    self.canvas.create_text(130, 420, text=f"Keterangan \n\n{data[9]}", anchor="center", font=(
+    self.canvas.create_text(220, 420, text=f"Keterangan \n\n{data[9]}", anchor="center", font=(
         "Verdana", 12), fill="#b5b3b3")
-    self.canvas.create_text(230, 420, text=f"Kuantitas \n\n{data[10]}", anchor="center", font=(
+    self.canvas.create_text(480, 420, text=f"Kuantitas \n\n{data[10]}", anchor="center", font=(
         "Verdana", 12), fill="#b5b3b3")
-    self.canvas.create_text(335, 420, text=f"Total Harga \n\nRp. {int(data[14])}", anchor="center", font=(
-        "Verdana", 12), fill="#b5b3b3")
+    self.canvas.create_text(680, 420, text=f"Total Harga\n\nRp. {int(data[14])}", anchor="e", font=(
+        "Verdana", 12), fill="#b5b3b3", justify="right")
 
     def pdf_invoice(data):
         default_filename = 'invoice.pdf'
