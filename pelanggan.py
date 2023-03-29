@@ -54,9 +54,9 @@ def start_pelanggan(self, role):
         self, proc="pelanggansearch", search=var_search.get(), treeview=treeview))
 
     csv_button = create_laporan_button(
-        self, frame=self.pelanggan, x=800, y=110, text="CSV", command=lambda: csv_pelanggan(self))
+        self, frame=self.pelanggan, x=800, y=110, text="Export CSV", command=lambda: csv_pelanggan(self))
     xls_button = create_laporan_button(
-        self, frame=self.pelanggan, x=900, y=110, text="Excel", command=lambda: xls_pelanggan(self))
+        self, frame=self.pelanggan, x=900, y=110, text="Export Excel", command=lambda: xls_pelanggan(self))
 
 
 def csv_pelanggan(self):

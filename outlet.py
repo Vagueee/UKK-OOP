@@ -54,9 +54,9 @@ def start_outlet(self, role):
         self, proc="outletsearch", search=var_search.get(), treeview=treeview))
 
     csv_button = create_laporan_button(
-        self, frame=self.outlet, x=800, y=110, text="CSV", command=lambda: csv_outlet(self))
+        self, frame=self.outlet, x=800, y=110, text="Export CSV", command=lambda: csv_outlet(self))
     xls_button = create_laporan_button(
-        self, frame=self.outlet, x=900, y=110, text="Excel", command=lambda: xls_outlet(self))
+        self, frame=self.outlet, x=900, y=110, text="Export Excel", command=lambda: xls_outlet(self))
 
 
 def csv_outlet(self):

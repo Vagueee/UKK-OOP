@@ -55,9 +55,9 @@ def start_karyawan(self, role):
         self, proc="karyawansearch", search=var_search.get(), treeview=treeview))
 
     csv_button = create_laporan_button(
-        self, frame=self.karyawan, x=800, y=110, text="CSV", command=lambda: csv_karyawan(self))
+        self, frame=self.karyawan, x=800, y=110, text="Export CSV", command=lambda: csv_karyawan(self))
     xls_button = create_laporan_button(
-        self, frame=self.karyawan, x=900, y=110, text="Excel", command=lambda: xls_karyawan(self))
+        self, frame=self.karyawan, x=900, y=110, text="Export Excel", command=lambda: xls_karyawan(self))
 
 
 def csv_karyawan(self):

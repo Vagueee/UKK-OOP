@@ -54,9 +54,9 @@ def start_paket(self, role):
         self, proc="paketsearch", search=var_search.get(), treeview=treeview))
 
     csv_button = create_laporan_button(
-        self, frame=self.paket, x=800, y=110, text="CSV", command=lambda: csv_paket(self))
+        self, frame=self.paket, x=800, y=110, text="Export CSV", command=lambda: csv_paket(self))
     xls_button = create_laporan_button(
-        self, frame=self.paket, x=900, y=110, text="Excel", command=lambda: xls_paket(self))
+        self, frame=self.paket, x=900, y=110, text="Export Excel", command=lambda: xls_paket(self))
 
 
 def csv_paket(self):

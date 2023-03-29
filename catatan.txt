@@ -1,15 +1,16 @@
 Database :
-.other/db_laundry.sql
+./other/db_laundry.sql
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Akun :
 Username, Password, Role
 
-kanna, kanna, Admin
-rizza, rizza, Kasir
-fajjri, fajjri, Owner
+- kanna, kanna, Admin
+- rizza, rizza, Kasir
+- fajjri, fajjri, Owner
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Tambahan :
-Untuk versi saat ini grafik bar hanya menampilkan data selama 7 hari terakhir
-Untuk value enum pada database tidak boleh ada spasi
+- Untuk versi saat ini grafik bar hanya menampilkan data selama 7 hari terakhir
+- Untuk value enum pada database tidak boleh ada spasi
+- Untuk entry Search (Entry diatas tabel treeview) kurang sesuai tapi bisa digunakan
