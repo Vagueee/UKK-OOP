@@ -30,10 +30,10 @@ load_dotenv()
 #     self.pktimg = PhotoImage(file=pkt)
 #     kar = os.getenv("ic_karyawan")
 #     self.karimg = PhotoImage(file=kar)
-#     tr = os.getenv("ic_transaksi")
-#     self.trimg = PhotoImage(file=tr)
 #     plg = os.getenv("ic_pelanggan")
 #     self.plgimg = PhotoImage(file=plg)
+#     tr = os.getenv("ic_transaksi")
+#     self.trimg = PhotoImage(file=tr)
 
 
 def database(self):
